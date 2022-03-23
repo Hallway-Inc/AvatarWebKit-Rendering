@@ -27,7 +27,6 @@
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-webpack-plugin": "^2.5.0",
-    "javascript-obfuscator": "^4.0.0",
     "prettier": "2.1.0",
     "release-it": "^14.12.4",
     "rollup": "^2.68.0",
@@ -40,14 +39,13 @@
     "build": "rollup -c",
     "start": "rollup -cw",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "obfuscate": "javascript-obfuscator dist --output dist",
     "release": "release-it"
   },
   "files": [
     "dist/*"
   ],
   "publishConfig": {
-    "registry": "https://gitlab.com/api/v4/projects/34714742/packages/npm/"
+    "registry": "https://gitlab.com/api/v4/projects/34748229/packages/npm/"
   },
   "eslintConfig": {
     "extends": [
