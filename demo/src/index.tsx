@@ -1,13 +1,13 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-import TryMeWrapper from './components/tryMeWrapper'
+import AvatarLayout from './avatarLayout'
 
 import './index.css'
 
 ReactDOM.render(
   <React.StrictMode>
-    <TryMeWrapper />
+    <AvatarLayout />
   </React.StrictMode>,
   document.getElementById('root')
 )

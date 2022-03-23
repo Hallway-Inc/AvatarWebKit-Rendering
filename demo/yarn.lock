@@ -1454,8 +1454,16 @@
     schema-utils "^3.0.0"
     source-map "^0.7.3"
 
-"@quarkworks-inc/avatar-webkit@file:..":
+"@quarkworks-inc/avatar-webkit-rendering@file:..":
+  version "0.0.1"
+  dependencies:
+    "@quarkworks-inc/avatar-webkit" "^0.2.0"
+    three "^0.138.3"
+
+"@quarkworks-inc/avatar-webkit@0.2.0", "@quarkworks-inc/avatar-webkit@^0.2.0":
   version "0.2.0"
+  resolved "https://gitlab.com/api/v4/projects/33101379/packages/npm/@quarkworks-inc/avatar-webkit/-/@quarkworks-inc/avatar-webkit-0.2.0.tgz#21f512803059dcb79b454cae38c02683ac66908d"
+  integrity sha1-IfUSgDBZ3LebRUyuOMAmg6xmkI0=
   dependencies:
     "@mediapipe/face_mesh" "0.4.1633559619"
     "@tensorflow/tfjs" "3.1.0"
@@ -2023,11 +2031,6 @@
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/@types/stack-utils/-/stack-utils-2.0.1.tgz#20f18294f797f2209b5f65c8e3b5c8e8261d127c"
   integrity sha512-Hl219/BT5fLAaz6NDkSuhzasy49dwQS/DSdu4MdggFB8zcXv7vflBI3xp7FEmkmdDkBUI2bPUNeMttp2knYdxw==
-
-"@types/three@^0.137.0":
-  version "0.137.0"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.137.0.tgz#6047e0658262b4de7c464a40288f9071ddd9a6d5"
-  integrity sha512-Xc5EAlfYmgrCLI/VlSVqiRJAtzhWF0Rw2jSq48nqJy+Hcb5sfDOXyfZn1+RNcHyi9l8CeCAXCZygO8IyeOJVEA==
 
 "@types/trusted-types@^2.0.2":
   version "2.0.2"
@@ -8785,10 +8788,10 @@ text-table@^0.2.0:
   resolved "https://registry.yarnpkg.com/text-table/-/text-table-0.2.0.tgz#7f5ee823ae805207c00af2df4a84ec3fcfa570b4"
   integrity sha1-f17oI66AUgfACvLfSoTsP8+lcLQ=
 
-three@^0.138.0:
-  version "0.138.2"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.138.2.tgz#946c7c550b58e16606343cec0e44715e8865c04e"
-  integrity sha512-l49+mdqpevKIk7ByLmt7cc5RdSwSnZ6rP1cLe8VCI/++c0/6AFYyHw6xjT2VyXYxodCnDSw7iARjKL2MlHVCOg==
+three@^0.138.3:
+  version "0.138.3"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.138.3.tgz#7be5153d79dcbf9e9baad82e7faf8c29edda4ed0"
+  integrity sha512-4t1cKC8gimNyJChJbaklg8W/qj3PpsLJUIFm5LIuAy/hVxxNm1ru2FGTSfbTSsuHmC/7ipsyuGKqrSAKLNtkzg==
 
 throat@^6.0.1:
   version "6.0.1"
