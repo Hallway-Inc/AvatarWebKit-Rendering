@@ -53,7 +53,8 @@ export default {
       typescript: require('typescript')
     }),
     commonjs({
-      include: /\/node_modules\//
+      include: /\/node_modules\//,
+      extensions: ['.js', 'js']
     }),
     nodeResolve({
       browser: true

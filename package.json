@@ -8,15 +8,18 @@
   "module": "dist/index.modern.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.2.0"
+    "@quarkworks-inc/avatar-webkit": "^0.2.0",
+    "three": "^0.138.3"
   },
   "peerDependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.2.0"
+    "@quarkworks-inc/avatar-webkit": "^0.2.0",
+    "three": "^0.138.3"
   },
   "devDependencies": {
     "@csmith/release-it-calver-plugin": "^2021.12.10",
     "@rollup/plugin-commonjs": "^21.0.2",
     "@rollup/plugin-node-resolve": "^13.1.3",
+    "@types/three": "^0.138.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^7.2.0",
     "eslint-config-react-app": "^6.0.0",
