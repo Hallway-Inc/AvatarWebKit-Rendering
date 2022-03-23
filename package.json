@@ -1,0 +1,102 @@
+{
+  "name": "@quarkworks-inc/avatar-webkit-rendering",
+  "version": "0.0.1",
+  "license": "UNLICENSED",
+  "description": "Avatar WebKit Rendering",
+  "source": "src/index.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "types": "dist/index.d.ts",
+  "dependencies": {
+    "@mediapipe/face_mesh": "0.4.1633559619",
+    "@tensorflow/tfjs": "3.1.0",
+    "async-lock": "^1.3.1",
+    "axios": "0.25.0",
+    "bezier-easing": "2.1.0",
+    "mathjs": "10.1.1",
+    "path": "^0.12.7",
+    "rxjs": "7.0.0"
+  },
+  "peerDependencies": {
+    "@mediapipe/face_mesh": "0.4.1633559619",
+    "@tensorflow/tfjs": "3.1.0",
+    "axios": "0.25.0",
+    "bezier-easing": "2.1.0",
+    "mathjs": "10.1.1",
+    "rxjs": "7.0.0"
+  },
+  "devDependencies": {
+    "@csmith/release-it-calver-plugin": "^2021.12.10",
+    "@rollup/plugin-commonjs": "^21.0.2",
+    "@rollup/plugin-node-resolve": "^13.1.3",
+    "@types/async-lock": "^1.1.3",
+    "@types/mathjs": "^6.0.11",
+    "eslint": "^7.10.0",
+    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-react-app": "^6.0.0",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-webpack-plugin": "^2.5.0",
+    "javascript-obfuscator": "^4.0.0",
+    "prettier": "2.1.0",
+    "release-it": "^14.12.4",
+    "rollup": "^2.68.0",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-globals": "^1.4.0",
+    "rollup-plugin-typescript2": "^0.31.2",
+    "typescript": "^4.6.2"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -cw",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "obfuscate": "javascript-obfuscator dist --output dist",
+    "release": "release-it"
+  },
+  "files": [
+    "dist/*"
+  ],
+  "publishConfig": {
+    "registry": "https://gitlab.com/api/v4/projects/33101379/packages/npm/"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest",
+      "prettier",
+      "prettier/@typescript-eslint",
+      "prettier/react"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/quarkworks-inc/avatar-webkit-rendering.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering/issues"
+  },
+  "homepage": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering#readme",
+  "release-it": {
+    "gitlab": {
+      "release": false
+    },
+    "plugins": {},
+    "npm": {
+      "publish": false
+    }
+  }
+}

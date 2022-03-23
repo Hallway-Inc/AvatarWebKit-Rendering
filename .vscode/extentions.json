@@ -1,0 +1,11 @@
+{
+    "recommendations": [
+      "clinyong.vscode-css-modules",
+      "ionutvmi.path-autocomplete",
+      "esbenp.prettier-vscode",
+      "syler.sass-indented",
+      "mrmlnc.vscode-scss",
+      "dbaeumer.vscode-eslint"
+    ]
+  }
+  

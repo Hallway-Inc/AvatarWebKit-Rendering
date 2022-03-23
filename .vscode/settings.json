@@ -1,0 +1,10 @@
+{
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "path-autocomplete.extensionOnImport": true,
+    "path-autocomplete.excludedItems": {
+      "**/*.js": { "when": "**" }
+    },
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+}
+  

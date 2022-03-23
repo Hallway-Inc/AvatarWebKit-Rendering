@@ -1,0 +1,11 @@
+.cache
+.vscode
+assets
+bin
+build
+dist
+hallway-serve
+node_modules
+public
+package.json
+package-lock.json
