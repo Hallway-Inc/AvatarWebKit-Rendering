@@ -47,7 +47,7 @@
     "dist/*"
   ],
   "publishConfig": {
-    "registry": "https://gitlab.com/api/v4/projects/33101379/packages/npm/"
+    "registry": "https://gitlab.com/api/v4/projects/34714742/packages/npm/"
   },
   "eslintConfig": {
     "extends": [
