@@ -1,6 +1,6 @@
 {
   "name": "@quarkworks-inc/avatar-webkit-rendering",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "license": "UNLICENSED",
   "description": "Avatar WebKit Rendering",
   "source": "src/index.ts",
