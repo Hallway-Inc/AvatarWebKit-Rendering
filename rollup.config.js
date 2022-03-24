@@ -3,8 +3,12 @@ import nodeResolve from '@rollup/plugin-node-resolve'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import typescript from 'rollup-plugin-typescript2'
+import dotenv from 'dotenv'
 
 import pkg from './package.json'
+
+// Load vars from .env into process.env
+dotenv.config()
 
 /**
  * NOTES: injecting mediapipe
