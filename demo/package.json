@@ -1,9 +1,9 @@
 {
-  "name": "avatar",
+  "name": "avatar-webkit-rendering-demo",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "0.2.0",
+    "@quarkworks-inc/avatar-webkit": "0.3.0",
     "@quarkworks-inc/avatar-webkit-rendering": "file:.."
   },
   "devDependencies": {

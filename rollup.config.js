@@ -1,5 +1,6 @@
 import commonjs from '@rollup/plugin-commonjs'
 import nodeResolve from '@rollup/plugin-node-resolve'
+import replace from '@rollup/plugin-replace'
 import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import typescript from 'rollup-plugin-typescript2'
@@ -9,6 +10,25 @@ import pkg from './package.json'
 
 // Load vars from .env into process.env
 dotenv.config()
+
+/**
+ * We want to inject the process.env values into our code as if they were hard-coded
+ * The best way to do that is with plugin-replace, which is a string comparison.
+ * So we need to build a map like:
+ *
+ * {
+ *     "process.env.VAR1": `'foo'`,
+ *     "process.env.VAR2": `'bar'`
+ * }
+ *
+ * Also, the values are wrapped in quotes because the injection is very literal and will need
+ * to add the quotes. process.env values are string|undefined type.
+ */
+const envReplaceMap = {}
+
+Object.entries(process.env).forEach(([key, value]) => {
+  envReplaceMap[`process.env.${key}`] = `'${value}'`
+})
 
 /**
  * NOTES: injecting mediapipe
@@ -53,6 +73,9 @@ export default {
   ],
   external,
   plugins: [
+    replace({
+      ...envReplaceMap
+    }),
     typescript({
       typescript: require('typescript')
     }),
