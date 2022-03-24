@@ -2,7 +2,7 @@ import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
 import { Group, Object3D, Scene, SkinnedMesh } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
-import { object3DChildNamed, setMorphTarget } from '../utils/three'
+import { object3DChildNamed, setMorphTarget } from '../../utils/three'
 
 const Y_OFFSET = -0.55
 

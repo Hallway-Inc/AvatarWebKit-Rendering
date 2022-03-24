@@ -1,8 +1,8 @@
 import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
 import { Group, Scene, Mesh, MeshStandardMaterial, MathUtils } from 'three'
 import { Model, ModelType } from '../../types'
-import { emojiKeyMap } from '../utils/emojiKeyMap'
-import { loadModel } from '../systems/loadModel'
+import { emojiKeyMap } from '../../utils/emojiKeyMap'
+import { loadModelFromPublicCDN } from '../systems/loadModel'
 
 const Y_OFFSET = -0.55
 
@@ -32,8 +32,8 @@ export class EmojiModel implements Model {
   private constructor() {}
 
   private async load(): Promise<EmojiModel> {
-    this.model = await loadModel('models/Smiley_eye.glb')
-    this.headphones = await loadModel('models/headphones_2.glb')
+    this.model = await loadModelFromPublicCDN('models/Smiley_eye.glb')
+    this.headphones = await loadModelFromPublicCDN('models/headphones_2.glb')
 
     this.model.add(this.headphones)
 

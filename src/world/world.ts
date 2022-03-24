@@ -9,6 +9,7 @@ import { createScene } from './components/scene'
 import { createControls, UpdateableControls } from './systems/controls'
 import { Renderable, Updateable, Model } from '../types'
 import { EnvironmentLoader } from './systems/environmentLoader'
+import { hallwayPublicCDNUrl } from '../utils/cdn'
 
 const sceneBackgroundColor = new Color(0xffffff)
 
@@ -68,7 +69,8 @@ export class AvatarWorld implements Updateable, Renderable {
     this.camera.position.z = model.type === 'emoji' ? 1 : 0.6
     this.camera.position.y = 0
 
-    this.environmentLoader.load('backgrounds/venice_sunset_1k.hdr').then(envMap => {
+    const envUrl = hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr')
+    this.environmentLoader.load(envUrl).then(envMap => {
       this.scene.environment = envMap
       this.scene.background = envMap
     })

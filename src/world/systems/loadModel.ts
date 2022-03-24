@@ -1,4 +1,5 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { hallwayPublicCDNUrl } from '../../utils/cdn'
 
 async function loadModel(url: string) {
   const loader = new GLTFLoader()
@@ -11,4 +12,8 @@ async function loadModel(url: string) {
   return emoji
 }
 
-export { loadModel }
+async function loadModelFromPublicCDN(path: string) {
+  return loadModel(hallwayPublicCDNUrl(path))
+}
+
+export { loadModel, loadModelFromPublicCDN }
