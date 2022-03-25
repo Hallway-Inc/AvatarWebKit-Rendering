@@ -13,8 +13,7 @@ import styles from './avatarLayout.module.scss'
 const CAMERA_WIDTH = 640
 const CAMERA_HEIGHT = 360
 
-const AVATAR_WIDTH = 1280
-const AVATAR_HEIGHT = 720
+const SCENE_ASPECT_RATIO = 16.0 / 9.0
 
 type ComponentState = 'loading' | 'running' | 'paused'
 
@@ -24,6 +23,8 @@ type State = {
   avatarState: ComponentState
   videoInDevices: MediaDeviceInfo[]
   selectedVideoInDeviceId?: string
+  sceneWidth: number
+  sceneHeight: number
 }
 
 class AvatarLayout extends React.Component<Props, State> {
@@ -40,7 +41,9 @@ class AvatarLayout extends React.Component<Props, State> {
   state: State = {
     flipped: true,
     avatarState: 'loading',
-    videoInDevices: []
+    videoInDevices: [],
+    sceneWidth: 0,
+    sceneHeight: 0
   }
 
   async componentDidMount() {
@@ -54,11 +57,41 @@ class AvatarLayout extends React.Component<Props, State> {
 
     this.setState({ videoInDevices, selectedVideoInDeviceId })
 
+    this._windowDidResize = this._windowDidResize.bind(this)
+    window.addEventListener('resize', this._windowDidResize)
+
+    this._calculateSceneSize()
+
     this.start()
   }
 
   componentWillUnmount(): void {
+    window.removeEventListener('resize', this._windowDidResize)
     this.stop()
+  }
+
+  private _windowDidResize() {
+    this._calculateSceneSize()
+  }
+
+  private _calculateSceneSize() {
+    // Calculate potential width/height for scene based on both screen width & height
+    // At least 10% padding on every side
+    const widthBasedW = window.innerWidth * 0.8
+    const widthBasedH = widthBasedW / SCENE_ASPECT_RATIO
+
+    const heightBasedH = window.innerHeight * 0.8
+    const heightBasedW = heightBasedH * SCENE_ASPECT_RATIO
+
+    // Treating widthBasedW & heightBasedH as max width/height,
+    // choose one or the other
+    if (widthBasedH > heightBasedH) {
+      // Base on max height
+      this.setState({ sceneWidth: heightBasedW, sceneHeight: heightBasedH })
+    } else {
+      // Base on max width
+      this.setState({ sceneWidth: widthBasedW, sceneHeight: widthBasedH })
+    }
   }
 
   async start() {
@@ -184,7 +217,7 @@ class AvatarLayout extends React.Component<Props, State> {
   }
 
   render() {
-    const { avatarState, videoInDevices } = this.state
+    const { avatarState, videoInDevices, sceneWidth, sceneHeight } = this.state
 
     return (
       <div
@@ -196,8 +229,8 @@ class AvatarLayout extends React.Component<Props, State> {
         }}
       >
         <div className={styles.container}>
-          <div className={styles.videoContainer}>
-            <canvas ref={this.avatarCanvas} style={{ width: AVATAR_WIDTH, height: AVATAR_HEIGHT }} />
+          <div className={styles.sceneContainer} style={{ width: sceneWidth, height: sceneHeight }}>
+            <canvas ref={this.avatarCanvas} width={sceneWidth} height={sceneHeight} />
             <video
               ref={this.videoRef}
               className={styles.video}

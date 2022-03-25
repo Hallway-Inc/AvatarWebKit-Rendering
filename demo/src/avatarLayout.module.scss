@@ -16,9 +16,7 @@
   width: 100%;
 }
 
-.videoContainer {
-  width: 1280px;
-  height: 720px;
+.sceneContainer {
   position: relative;
 }
 
@@ -28,23 +26,6 @@
   right: 16px;
   max-width: 160px;
   height: auto;
-}
-
-.inActiveContainer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.inActiveContainer video {
-  max-width: 100%;
-  max-height: 100%;
 }
 
 .loadingContainer {
@@ -85,14 +66,4 @@
   position: absolute;
   width: 100%;
   height: 100%;
-}
-
-@media screen and (max-width: 768px) {
-  .app {
-    display: none;
-  }
-
-  .inActiveContainer {
-    display: none;
-  }
 }
