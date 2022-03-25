@@ -74,6 +74,8 @@ export default {
   external,
   plugins: [
     replace({
+      // prevents strings followed by '=' sign from being replaced. ex)
+      preventAssignment: true,
       ...envReplaceMap
     }),
     typescript({
