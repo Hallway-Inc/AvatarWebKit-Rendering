@@ -9,6 +9,9 @@ const Y_OFFSET = -0.55
 export class ReadyPlayerMeModel implements Model {
   readonly type: ModelType = 'readyPlayerMe'
 
+  // No settings (yet)
+  settings = {}
+
   // Model group
   private model: Group
   private avatarRoot: Object3D

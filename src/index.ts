@@ -14,6 +14,8 @@ export * from './world/systems/environmentLoader'
 export * from './world/systems/loadModel'
 export * from './world/systems/webGLRenderer'
 
+export * from './utils/cdn'
+export * from './utils/emojiColors'
 export * from './utils/emojiKeyMap'
 export * from './utils/three'
 

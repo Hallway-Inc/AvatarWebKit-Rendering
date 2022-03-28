@@ -1,25 +1,40 @@
 import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
-import { Group, Scene, Mesh, MeshStandardMaterial, MathUtils } from 'three'
-import { Model, ModelType } from '../../types'
+import { Group, Scene, Mesh, MeshStandardMaterial, MathUtils, Color } from 'three'
+import { EmojiModelSettings, Model, ModelType } from '../../types'
+import { emojiColors } from '../../utils/emojiColors'
 import { emojiKeyMap } from '../../utils/emojiKeyMap'
 import { loadModelFromPublicCDN } from '../systems/loadModel'
 
 const Y_OFFSET = -0.55
 
+const defaultSettings: EmojiModelSettings = {
+  faceColor: emojiColors[0],
+  eyeColor: 0x000000
+}
+
 export class EmojiModel implements Model {
   readonly type: ModelType = 'emoji'
+
+  private _settings = defaultSettings
 
   // Groups
   private model: Group
   private headphones?: Group
 
-  // Model mesh components
+  // Mesh components
   private face: Mesh
   private mouth: Mesh
   private tongue: Mesh
   private teeth: Mesh
   private rightEye: Mesh
+  private rightPupil: Mesh
   private leftEye: Mesh
+  private leftPupil: Mesh
+
+  // Materials
+  private faceMaterial: MeshStandardMaterial
+  private leftPupilMaterial: MeshStandardMaterial
+  private rightPupilMaterial: MeshStandardMaterial
 
   // TODO: fix dis
   private isMe = true
@@ -39,8 +54,13 @@ export class EmojiModel implements Model {
 
     this.model.position.y = Y_OFFSET
 
-    this.leftEye = this.model.children[0] as Mesh
-    this.rightEye = this.model.children[1] as Mesh
+    // Mesh components
+    this.rightEye = this.model.children[0] as Mesh
+    this.leftEye = this.model.children[1] as Mesh
+
+    this.rightPupil = this.rightEye.children[1] as Mesh
+    this.leftPupil = this.leftEye.children[1] as Mesh
+
     const smileyGroup = this.model.children[2]
 
     this.face = smileyGroup.children[0] as Mesh
@@ -48,11 +68,17 @@ export class EmojiModel implements Model {
     this.tongue = smileyGroup.children[2] as Mesh
     this.teeth = smileyGroup.children[3] as Mesh
 
-    if (this.face.material instanceof MeshStandardMaterial) {
-      this.face.material.metalness = 0.1
-      this.face.material.roughness = 0.5
-      this.face.material.needsUpdate = true
-    }
+    // Materials
+    this.faceMaterial = this.face.material as MeshStandardMaterial
+    this.leftPupilMaterial = this.leftPupil.material as MeshStandardMaterial
+    this.rightPupilMaterial = this.rightPupil.material as MeshStandardMaterial
+
+    this.faceMaterial.metalness = 0.1
+    this.faceMaterial.roughness = 0.5
+    this.faceMaterial.needsUpdate = true
+
+    // Update props from settings
+    this.settings = this._settings
 
     return this
   }
@@ -134,5 +160,17 @@ export class EmojiModel implements Model {
     this.model.position.x = x
     this.model.position.y = y
     // this.head.position.z = z
+  }
+
+  get settings(): EmojiModelSettings {
+    return this._settings
+  }
+
+  set settings(settings: EmojiModelSettings) {
+    this._settings = settings
+
+    this.faceMaterial.color = new Color(settings.faceColor)
+    this.leftPupilMaterial.color = new Color(settings.eyeColor)
+    this.rightPupilMaterial.color = new Color(settings.eyeColor)
   }
 }

@@ -9,6 +9,9 @@ const Y_OFFSET = -0.55
 export class MozillaModel implements Model {
   readonly type: ModelType = 'mozilla'
 
+  // No settings (yet)
+  settings = {}
+
   private model: Group
   private combinedMesh: SkinnedMesh
 
