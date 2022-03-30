@@ -1,23 +1,23 @@
 import { ColorRepresentation } from 'three'
 
 export const emojiColors: ColorRepresentation[] = [
-  0xff6200,
-  0xeb144c,
-  0xc00000,
+  '#ff6200',
+  '#eb144c',
+  '#c00000',
 
-  0xff6900,
-  0x28cd41,
-  0xf78da7,
+  '#ff6900',
+  '#28cd41',
+  '#f78da7',
 
-  0x7bdcb5,
-  0x8ed1fc,
-  0x337bf6,
+  '#7bdcb5',
+  '#8ed1fc',
+  '#337bf6',
 
-  0x1d5adc,
-  0x9900ef,
-  0xabb8c3,
+  '#1d5adc',
+  '#9900ef',
+  '#abb8c3',
 
-  0x000000,
-  0xe2d4b7,
-  0xffffff
+  '#000000',
+  '#e2d4b7',
+  '#ffffff'
 ]
