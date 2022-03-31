@@ -61,19 +61,31 @@ export class AvatarWorld implements Updateable, Renderable {
     this.resize()
   }
 
-  async loadScene(model: Model) {
+  async setModel(model: Model) {
+    if (this.model) {
+      this.model.removeFromScene(this.scene)
+    }
+
     this.model = model
     this.model.addToScene(this.scene)
 
     this.camera.position.x = 0
     this.camera.position.z = model.type === 'emoji' ? 1 : 0.6
     this.camera.position.y = 0
+  }
+
+  async setEnvironment(envUrl: string) {
+    const envMap = await this.environmentLoader.load(envUrl)
+
+    this.scene.environment = envMap
+    this.scene.background = envMap
+  }
+
+  async loadScene(model: Model) {
+    await this.setModel(model)
 
     const envUrl = hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr')
-    this.environmentLoader.load(envUrl).then(envMap => {
-      this.scene.environment = envMap
-      this.scene.background = envMap
-    })
+    await this.setEnvironment(envUrl)
   }
 
   cleanUp() {
