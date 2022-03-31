@@ -9,7 +9,7 @@ const Y_OFFSET = -0.55
 
 const defaultSettings: EmojiModelSettings = {
   faceColor: emojiColors[0],
-  eyeColor: 0x000000
+  eyeColor: '#000000'
 }
 
 export class EmojiModel implements Model {
