@@ -16,7 +16,7 @@ export class AvatarRenderer {
   updatables: Updateable[] = []
   renderables: Renderable[] = []
 
-  constructor({ canvas, webGLRenderer, environmentLoader }: AvatarRendererConfig) {
+  constructor({ canvas, webGLRenderer, environmentLoader }: AvatarRendererConfig = {}) {
     this.canvas = canvas || createGlobalCanvas()
     this.webGLRenderer = webGLRenderer || createDefaultWebGLRenderer(this.canvas)
     this.environmentLoader = environmentLoader || new EnvironmentLoader(this.webGLRenderer)
