@@ -5,6 +5,7 @@ export * from './world/components/lights'
 export * from './world/components/scene'
 
 export * from './world/models/factory'
+export * from './world/models/modelSettings'
 export * from './world/models/emoji'
 export * from './world/models/mozilla'
 export * from './world/models/readyPlayerMe'

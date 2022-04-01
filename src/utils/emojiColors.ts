@@ -1,6 +1,6 @@
-import { ColorRepresentation } from 'three'
+import { ColorValue } from '../world/models/modelSettings'
 
-export const emojiColors: ColorRepresentation[] = [
+export const emojiColors: ColorValue[] = [
   '#ff6200',
   '#eb144c',
   '#c00000',

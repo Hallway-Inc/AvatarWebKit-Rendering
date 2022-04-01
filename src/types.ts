@@ -1,7 +1,7 @@
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { ColorRepresentation, Scene, Vector3, WebGLRenderer } from 'three'
+import { Scene, Vector3, WebGLRenderer } from 'three'
 import { AvatarRenderer } from './avatarRenderer'
-import { EmojiModel } from './world/models/emoji'
+import { ModelSettings } from './world/models/modelSettings'
 import { EnvironmentLoader } from './world/systems/environmentLoader'
 
 export type AvatarRendererConfig = {
@@ -19,16 +19,10 @@ export interface Renderable {
   getContainerRect(): DOMRect
 }
 
-export type EmojiModelSettings = {
-  faceColor: ColorRepresentation
-  eyeColor: ColorRepresentation
-}
-
-export type ModelSettings<M extends Model> = M extends EmojiModel ? EmojiModelSettings : {}
-
 export interface Model {
   readonly type: ModelType
-  settings: ModelSettings<this> | {}
+  readonly defaultSettings: ModelSettings
+  settings: ModelSettings
 
   addToScene(scene: Scene): void
   removeFromScene(scene: Scene): void

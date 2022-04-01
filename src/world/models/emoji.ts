@@ -1,21 +1,36 @@
 import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
 import { Group, Scene, Mesh, MeshStandardMaterial, MathUtils, Color } from 'three'
-import { EmojiModelSettings, Model, ModelType } from '../../types'
+import { Model, ModelType } from '../../types'
 import { emojiColors } from '../../utils/emojiColors'
 import { emojiKeyMap } from '../../utils/emojiKeyMap'
 import { loadModelFromPublicCDN } from '../systems/loadModel'
+import { ModelColorSetting, ModelSettings, ModelSettingType } from './modelSettings'
 
 const Y_OFFSET = -0.55
 
-const defaultSettings: EmojiModelSettings = {
-  faceColor: emojiColors[0],
-  eyeColor: '#000000'
+export interface EmojiModelSettings extends ModelSettings {
+  faceColor: ModelColorSetting
+  eyeColor: ModelColorSetting
 }
 
 export class EmojiModel implements Model {
   readonly type: ModelType = 'emoji'
 
-  private _settings = defaultSettings
+  static readonly defaultSettings: EmojiModelSettings = {
+    faceColor: {
+      name: 'Face Color',
+      type: ModelSettingType.color,
+      value: emojiColors[0]
+    },
+    eyeColor: {
+      name: 'Eye Color',
+      type: ModelSettingType.color,
+      value: '#000000'
+    }
+  }
+
+  readonly defaultSettings = EmojiModel.defaultSettings
+  private _settings = this.defaultSettings
 
   // Groups
   private model: Group
@@ -169,8 +184,13 @@ export class EmojiModel implements Model {
   set settings(settings: EmojiModelSettings) {
     this._settings = settings
 
-    this.faceMaterial.color = new Color(settings.faceColor)
-    this.leftPupilMaterial.color = new Color(settings.eyeColor)
-    this.rightPupilMaterial.color = new Color(settings.eyeColor)
+    const {
+      faceColor = EmojiModel.defaultSettings.faceColor,
+      eyeColor = EmojiModel.defaultSettings.eyeColor
+    } = settings
+
+    this.faceMaterial.color = new Color(faceColor.value)
+    this.leftPupilMaterial.color = new Color(eyeColor.value)
+    this.rightPupilMaterial.color = new Color(eyeColor.value)
   }
 }

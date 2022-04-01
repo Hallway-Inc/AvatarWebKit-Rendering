@@ -1,7 +1,6 @@
 import { Loader, PMREMGenerator, Texture, WebGLRenderer } from 'three'
 import path from 'path'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
-import { HDRCubeTextureLoader } from 'three/examples/jsm/loaders/HDRCubeTextureLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 
 export class EnvironmentLoader {
