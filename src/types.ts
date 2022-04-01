@@ -1,6 +1,14 @@
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import { ColorRepresentation, Scene, Vector3, WebGLRenderer } from 'three'
+import { AvatarRenderer } from './avatarRenderer'
 import { EmojiModel } from './world/models/emoji'
+import { EnvironmentLoader } from './world/systems/environmentLoader'
+
+export type AvatarRendererConfig = {
+  canvas?: HTMLCanvasElement
+  webGLRenderer?: WebGLRenderer
+  environmentLoader?: EnvironmentLoader
+}
 
 export interface Updateable {
   tick(delta: number): void
@@ -29,3 +37,10 @@ export interface Model {
 }
 
 export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla'
+
+export type WorldConfig = {
+  container: HTMLElement
+  renderer: AvatarRenderer
+  isMe?: boolean
+  enableControls?: boolean
+}

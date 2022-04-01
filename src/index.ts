@@ -22,4 +22,4 @@ export * from './utils/three'
 export * from './world/world'
 
 export * from './globalCanvas'
-export * from './renderLoop'
+export * from './avatarRenderer'

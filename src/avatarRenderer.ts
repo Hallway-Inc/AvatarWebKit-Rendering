@@ -1,22 +1,25 @@
 import { Clock, WebGLRenderer } from 'three'
-import { isGlobalCanvas } from './globalCanvas'
-import { Updateable, Renderable } from './types'
+import { createGlobalCanvas, isGlobalCanvas } from './globalCanvas'
+import { Updateable, Renderable, AvatarRendererConfig } from './types'
+import { EnvironmentLoader } from './world/systems/environmentLoader'
 import { createDefaultWebGLRenderer } from './world/systems/webGLRenderer'
 
 const clock = new Clock()
 
-export class RenderLoop {
+export class AvatarRenderer {
   webGLRenderer: WebGLRenderer
   canvas: HTMLCanvasElement
+  environmentLoader: EnvironmentLoader
   drawWhenOffscreen: boolean
   isRunning: boolean = false
 
   updatables: Updateable[] = []
   renderables: Renderable[] = []
 
-  constructor({ canvas, webGLRenderer }: { canvas: HTMLCanvasElement; webGLRenderer?: WebGLRenderer }) {
-    this.canvas = canvas
-    this.webGLRenderer = webGLRenderer || createDefaultWebGLRenderer(canvas)
+  constructor({ canvas, webGLRenderer, environmentLoader }: AvatarRendererConfig) {
+    this.canvas = canvas || createGlobalCanvas()
+    this.webGLRenderer = webGLRenderer || createDefaultWebGLRenderer(this.canvas)
+    this.environmentLoader = environmentLoader || new EnvironmentLoader(this.webGLRenderer)
   }
 
   start() {

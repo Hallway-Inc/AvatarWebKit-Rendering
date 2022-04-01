@@ -7,7 +7,7 @@ import { createCamera } from './components/camera'
 import { createLights } from './components/lights'
 import { createScene } from './components/scene'
 import { createControls, UpdateableControls } from './systems/controls'
-import { Renderable, Updateable, Model } from '../types'
+import { Renderable, Updateable, Model, WorldConfig } from '../types'
 import { EnvironmentLoader } from './systems/environmentLoader'
 import { hallwayPublicCDNUrl } from '../utils/cdn'
 
@@ -27,21 +27,11 @@ export class AvatarWorld implements Updateable, Renderable {
 
   private model?: Model
 
-  constructor({
-    container,
-    isMe,
-    enableControls,
-    environmentLoader
-  }: {
-    container: HTMLElement
-    isMe?: boolean
-    enableControls?: boolean
-    environmentLoader: EnvironmentLoader
-  }) {
+  constructor({ container, renderer, isMe, enableControls }: WorldConfig) {
     this.container = container
     this.isMe = isMe ?? true
     this.enableControls = enableControls ?? false
-    this.environmentLoader = environmentLoader
+    this.environmentLoader = renderer.environmentLoader
 
     this.camera = createCamera()
     this.scene = createScene()

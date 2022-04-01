@@ -2,7 +2,7 @@ import React from 'react'
 
 // eslint-disable-next-line
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { RenderLoop, EnvironmentLoader, AvatarWorld, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
+import { AvatarRenderer, AvatarWorld, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
 
 import { Loader } from './components/loader'
 import { Switch } from './components/switch'
@@ -28,8 +28,7 @@ type State = {
 }
 
 class AvatarLayout extends React.Component<Props, State> {
-  private renderLoop: RenderLoop
-  private environmentLoader: EnvironmentLoader
+  private avatarRenderer: AvatarRenderer
   private world?: AvatarWorld
 
   private predictor!: AUPredictor
@@ -112,8 +111,8 @@ class AvatarLayout extends React.Component<Props, State> {
   }
 
   async stop() {
-    this.renderLoop.stop()
-    this.renderLoop.canvas.remove()
+    this.avatarRenderer.stop()
+    this.avatarRenderer.canvas.remove()
     this.predictor.stop()
     this.world = undefined
   }
@@ -124,21 +123,20 @@ class AvatarLayout extends React.Component<Props, State> {
     const avatarCanvas = this.avatarCanvas.current
     if (!avatarCanvas) return
 
-    this.renderLoop = new RenderLoop({ canvas: avatarCanvas })
-    this.environmentLoader = new EnvironmentLoader(this.renderLoop.webGLRenderer)
+    this.avatarRenderer = new AvatarRenderer({ canvas: avatarCanvas })
 
     this.world = new AvatarWorld({
       container: avatarCanvas,
-      environmentLoader: this.environmentLoader
+      renderer: this.avatarRenderer
     })
 
     const model = await modelFactory('emoji')
     await this.world.loadScene(model)
 
-    this.renderLoop.updatables.push(this.world)
-    this.renderLoop.renderables.push(this.world)
+    this.avatarRenderer.updatables.push(this.world)
+    this.avatarRenderer.renderables.push(this.world)
 
-    this.renderLoop.start()
+    this.avatarRenderer.start()
   }
 
   private async _startAvatar() {
