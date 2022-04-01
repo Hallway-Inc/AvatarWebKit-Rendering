@@ -19,7 +19,6 @@ export class EnvironmentLoader {
         return new EXRLoader()
       case 'hdr':
       case '.hdr':
-        // return new HDRCubeTextureLoader()
         return new RGBELoader()
       default:
         return fallback
@@ -40,11 +39,8 @@ export class EnvironmentLoader {
     if (!url) return Promise.reject('invalid url')
 
     return textureLoader.loadAsync(url, onProgress).then(texture => {
-      console.log('loaded', texture)
       const envMap = this.pmremGenerator.fromEquirectangular(texture).texture
       this.pmremGenerator.dispose()
-
-      console.log('envMap', envMap)
 
       return envMap
     })
