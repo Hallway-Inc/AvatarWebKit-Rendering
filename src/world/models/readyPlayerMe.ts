@@ -3,18 +3,14 @@ import { Group, Object3D, Scene, SkinnedMesh } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
-import { ModelSettings } from './modelSettings'
+import { ReadyPlayerMeModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
-
-export interface ReadyPlayerMeModelSettings extends ModelSettings {
-  // nothing yet
-}
 
 export class ReadyPlayerMeModel implements Model {
   readonly type: ModelType = 'readyPlayerMe'
 
-  static readonly defaultSettings = {}
+  static readonly defaultSettings: ReadyPlayerMeModelSettings = {}
 
   readonly defaultSettings = ReadyPlayerMeModel.defaultSettings
   settings = this.defaultSettings

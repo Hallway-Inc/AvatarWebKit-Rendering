@@ -4,14 +4,9 @@ import { Model, ModelType } from '../../types'
 import { emojiColors } from '../../utils/emojiColors'
 import { emojiKeyMap } from '../../utils/emojiKeyMap'
 import { loadModelFromPublicCDN } from '../systems/loadModel'
-import { ModelColorSetting, ModelSettings, ModelSettingType } from './modelSettings'
+import { EmojiModelSettings, ModelSettingType } from './modelSettings'
 
 const Y_OFFSET = -0.55
-
-export interface EmojiModelSettings extends ModelSettings {
-  faceColor: ModelColorSetting
-  eyeColor: ModelColorSetting
-}
 
 export class EmojiModel implements Model {
   readonly type: ModelType = 'emoji'

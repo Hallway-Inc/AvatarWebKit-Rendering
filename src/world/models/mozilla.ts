@@ -3,18 +3,14 @@ import { Group, SkinnedMesh, Scene } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
-import { ModelSetting, ModelSettings } from './modelSettings'
+import { MozillaModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
-
-export interface MozillaModelSettings extends ModelSettings {
-  // nothing yet
-}
 
 export class MozillaModel implements Model {
   readonly type: ModelType = 'mozilla'
 
-  static readonly defaultSettings = {}
+  static readonly defaultSettings: MozillaModelSettings = {}
 
   readonly defaultSettings = MozillaModel.defaultSettings
   settings = this.defaultSettings

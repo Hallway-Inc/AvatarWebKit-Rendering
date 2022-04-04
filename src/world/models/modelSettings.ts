@@ -1,6 +1,3 @@
-import { Model } from '../../types'
-import { EmojiModel, EmojiModelSettings } from './emoji'
-
 // Expecting '#ffffff'
 export type ColorValue = string
 
@@ -25,3 +22,16 @@ export type ModelColorSetting = ModelSetting<ModelSettingType.color>
 export type ModelBooleanSetting = ModelSetting<ModelSettingType.boolean>
 
 export type ModelSettings = Record<string, ModelSetting<any>>
+
+export interface EmojiModelSettings extends ModelSettings {
+  faceColor: ModelColorSetting
+  eyeColor: ModelColorSetting
+}
+
+export interface MozillaModelSettings extends ModelSettings {
+  // nothing yet
+}
+
+export interface ReadyPlayerMeModelSettings extends ModelSettings {
+  // nothing yet
+}
