@@ -2,7 +2,7 @@ import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
 import { Group, SkinnedMesh, Scene } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
-import { object3DChildNamed, setMorphTarget } from '../../utils/three'
+import { availableChildren, availableMorphTargets, object3DChildNamed, setMorphTarget } from '../../utils/three'
 import { MozillaModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
@@ -16,8 +16,9 @@ export class MozillaModel implements Model {
   settings = this.defaultSettings
   shouldMirror = true
 
-  private model: Group
-  private combinedMesh: SkinnedMesh
+  private model?: Group
+  private combinedMesh?: SkinnedMesh
+  private headNode?: SkinnedMesh
 
   static async init(url: string): Promise<MozillaModel> {
     const model = new MozillaModel()
@@ -33,6 +34,7 @@ export class MozillaModel implements Model {
 
     const object = this.model.children[0]
     this.combinedMesh = object3DChildNamed(object, 'CombinedMesh') as SkinnedMesh
+    this.headNode = object3DChildNamed(object, 'Head', { recursive: true }) as SkinnedMesh
 
     return this
   }
@@ -56,6 +58,8 @@ export class MozillaModel implements Model {
   }
 
   private updateMorphTargets(targets: ActionUnits) {
+    if (!this.combinedMesh) return
+
     const blink = (targets.eyeBlinkLeft + targets.eyeBlinkRight) / 2
     setMorphTarget(this.combinedMesh, 'Blink', blink)
 
@@ -69,15 +73,18 @@ export class MozillaModel implements Model {
   }
 
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
-    // this.head.rotation.x = pitch
-    // // Inverse yaw & roll effects for yourself to give mirror effect
-    // this.head.rotation.y = this.isMe ? -yaw : yaw
-    // this.head.rotation.z = this.isMe ? roll : -roll
+    if (!this.headNode) return
+
+    this.headNode.rotation.x = pitch
+    this.headNode.rotation.y = this.shouldMirror ? -yaw : yaw
+    this.headNode.rotation.z = this.shouldMirror ? roll : -roll
   }
 
   private updatePosition(x: number, y: number, z: number) {
-    // this.head.position.x = x
-    // this.head.position.y = Y_OFFSET + y
-    // this.head.position.z = z
+    if (!this.model) return
+
+    this.model.position.x = x
+    this.model.position.y = Y_OFFSET + y
+    this.model.position.z = z
   }
 }

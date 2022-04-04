@@ -131,7 +131,8 @@ class AvatarLayout extends React.Component<Props, State> {
     })
 
     // const model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/rose2.glb'))
-    const model = await modelFactory('emoji')
+    const model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
+    // const model = await modelFactory('emoji')
     await this.world.setModel(model)
     await this.world.setEnvironment(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
 

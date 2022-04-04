@@ -26,3 +26,58 @@ export const setMorphTarget = (mesh: Mesh | undefined, key: string, value: any) 
   if (!idx) return
   mesh.morphTargetInfluences[idx] = value
 }
+
+export type AvailableMorphTarget = {
+  meshId: number
+  meshUuid: string
+  name: string
+}
+
+export const availableMorphTargets = (object: Object3D): AvailableMorphTarget[] => {
+  let targets: AvailableMorphTarget[] = []
+
+  const mesh = object as Mesh
+  if (mesh && mesh.morphTargetDictionary) {
+    targets = Object.keys(mesh.morphTargetDictionary).map(name => ({
+      meshId: mesh.id,
+      meshUuid: mesh.uuid,
+      name
+    }))
+  }
+
+  object.children.forEach(child => {
+    const found = availableMorphTargets(child)
+    if (found && found.length > 0) {
+      targets = targets.concat(found)
+    }
+  })
+
+  return targets
+}
+
+export type AvailableChildren = {
+  meshId: number
+  meshUuid: string
+  name: string
+  type: string
+}
+
+export const availableChildren = (object: Object3D): AvailableChildren[] => {
+  let children: AvailableChildren[] = []
+
+  children.push({
+    meshId: object.id,
+    meshUuid: object.uuid,
+    name: object.name,
+    type: object.type
+  })
+
+  object.children.forEach(child => {
+    const found = availableChildren(child)
+    if (found && found.length > 0) {
+      children = children.concat(found)
+    }
+  })
+
+  return children
+}
