@@ -2,7 +2,7 @@ import React from 'react'
 
 // eslint-disable-next-line
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { AvatarRenderer, AvatarWorld, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
+import { AvatarRenderer, AvatarWorld, hallwayPublicCDNUrl, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
 
 import { Loader } from './components/loader'
 import { Switch } from './components/switch'
@@ -130,8 +130,10 @@ class AvatarLayout extends React.Component<Props, State> {
       renderer: this.avatarRenderer
     })
 
+    // const model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/rose2.glb'))
     const model = await modelFactory('emoji')
-    await this.world.loadScene(model)
+    await this.world.setModel(model)
+    await this.world.setEnvironment(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
 
     this.avatarRenderer.updatables.push(this.world)
     this.avatarRenderer.renderables.push(this.world)

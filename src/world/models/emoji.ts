@@ -6,8 +6,6 @@ import { emojiKeyMap } from '../../utils/emojiKeyMap'
 import { loadModelFromPublicCDN } from '../systems/loadModel'
 import { EmojiModelSettings, ModelSettingType } from './modelSettings'
 
-const Y_OFFSET = -0.55
-
 export class EmojiModel implements Model {
   readonly type: ModelType = 'emoji'
 
@@ -26,6 +24,7 @@ export class EmojiModel implements Model {
 
   readonly defaultSettings = EmojiModel.defaultSettings
   private _settings = this.defaultSettings
+  shouldMirror = true
 
   // Groups
   private model: Group
@@ -46,9 +45,6 @@ export class EmojiModel implements Model {
   private leftPupilMaterial: MeshStandardMaterial
   private rightPupilMaterial: MeshStandardMaterial
 
-  // TODO: fix dis
-  private isMe = true
-
   static async init(): Promise<EmojiModel> {
     const model = new EmojiModel()
     return model.load()
@@ -61,8 +57,6 @@ export class EmojiModel implements Model {
     this.headphones = await loadModelFromPublicCDN('models/headphones_2.glb')
 
     this.model.add(this.headphones)
-
-    this.model.position.y = Y_OFFSET
 
     // Mesh components
     this.rightEye = this.model.children[0] as Mesh
@@ -160,16 +154,16 @@ export class EmojiModel implements Model {
     if (!this.model) return
 
     this.model.rotation.x = pitch
-
-    // Inverse yaw & roll effects for yourself to give mirror effect
-    this.model.rotation.y = this.isMe ? -yaw : yaw
-    this.model.rotation.z = this.isMe ? roll : -roll
+    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
+    this.model.rotation.z = this.shouldMirror ? roll : -roll
   }
 
   updatePosition(x: number, y: number, z: number) {
+    if (!this.model) return
+
     this.model.position.x = x
     this.model.position.y = y
-    // this.head.position.z = z
+    this.model.position.z = z
   }
 
   get settings(): EmojiModelSettings {

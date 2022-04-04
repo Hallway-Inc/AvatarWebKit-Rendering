@@ -23,6 +23,7 @@ export interface Model {
   readonly type: ModelType
   readonly defaultSettings: ModelSettings
   settings: ModelSettings
+  shouldMirror: boolean
 
   addToScene(scene: Scene): void
   removeFromScene(scene: Scene): void

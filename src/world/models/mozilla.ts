@@ -14,6 +14,7 @@ export class MozillaModel implements Model {
 
   readonly defaultSettings = MozillaModel.defaultSettings
   settings = this.defaultSettings
+  shouldMirror = true
 
   private model: Group
   private combinedMesh: SkinnedMesh
