@@ -1,8 +1,8 @@
 import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
-import { Group, SkinnedMesh, Scene } from 'three'
+import { Group, SkinnedMesh, Scene, Bone } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
-import { availableChildren, availableMorphTargets, object3DChildNamed, setMorphTarget } from '../../utils/three'
+import { object3DChildNamed, setMorphTarget } from '../../utils/three'
 import { MozillaModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
@@ -18,7 +18,7 @@ export class MozillaModel implements Model {
 
   private model?: Group
   private combinedMesh?: SkinnedMesh
-  private headNode?: SkinnedMesh
+  private headNode?: Bone
 
   static async init(url: string): Promise<MozillaModel> {
     const model = new MozillaModel()
@@ -34,7 +34,7 @@ export class MozillaModel implements Model {
 
     const object = this.model.children[0]
     this.combinedMesh = object3DChildNamed(object, 'CombinedMesh') as SkinnedMesh
-    this.headNode = object3DChildNamed(object, 'Head', { recursive: true }) as SkinnedMesh
+    this.headNode = object3DChildNamed(object, 'Head', { recursive: true }) as Bone
 
     return this
   }
