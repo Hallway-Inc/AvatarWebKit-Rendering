@@ -98,12 +98,6 @@ class AvatarLayout extends React.Component<Props, State> {
       avatarState: 'loading'
     })
 
-    const videoElement = this.videoRef.current
-    videoElement.width = CAMERA_WIDTH
-    videoElement.height = CAMERA_HEIGHT
-    videoElement.srcObject = this.predictor.stream
-    videoElement.play()
-
     this.predictor.dataStream.subscribe(this.updateScene.bind(this))
 
     await this._initWorlds()
@@ -157,6 +151,8 @@ class AvatarLayout extends React.Component<Props, State> {
     await this.predictor.start({ stream })
 
     const videoElement = this.videoRef.current
+    videoElement.width = CAMERA_WIDTH
+    videoElement.height = CAMERA_HEIGHT
     videoElement.srcObject = this.predictor.stream
     videoElement.play()
 

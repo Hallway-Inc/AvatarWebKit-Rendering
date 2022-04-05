@@ -54,22 +54,32 @@ export const createDefaultWebGLRenderer = (canvas: HTMLCanvasElement, opts: Defa
       for (const entry of entries) {
         renderer.setSize(entry.contentRect.width, entry.contentRect.height, updateCanvasStyle)
       }
-    }).observe(canvas)
+    }).observe(canvas, { box: 'content-box' })
   }
+
+  /**
+   * Note: I think this pixel ratio listener is unneeded now because the
+   * ResizeObserver accounts for it in its contentRect. I no longer see a
+   * blurring problem when moving the page between 1dpi / 2dpi monitor.
+   * If I enable this code, the canvas size scales out of control on 2dpi monitor
+   * because the setSize() multiplies the size given it by the pixel ratio that's
+   * been set.
+   */
 
   // Listen for pixel ratio changes using matchMedia() query and update the WebGL renderer
   // as needed. This can happen when the window switches between devices. ex) retina --> monitor
-  const updatePixelRatio = () => {
-    renderer.setPixelRatio(window.devicePixelRatio)
+  // const updatePixelRatio = () => {
+  //   console.log('setting pixel ratio...', window.devicePixelRatio)
+  //   renderer.setPixelRatio(window.devicePixelRatio)
 
-    const mediaQuery = `(resolution: ${window.devicePixelRatio}dppx)`
-    matchMedia(mediaQuery).addEventListener('change', updatePixelRatio, {
-      once: true
-    })
-  }
+  //   const mediaQuery = `(resolution: ${window.devicePixelRatio}dppx)`
+  //   matchMedia(mediaQuery).addEventListener('change', updatePixelRatio, {
+  //     once: true
+  //   })
+  // }
 
   // Sets initial value
-  updatePixelRatio()
+  // updatePixelRatio()
 
   return renderer
 }
