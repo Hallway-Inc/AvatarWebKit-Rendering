@@ -1,5 +1,5 @@
 import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
-import { AxesHelper, Euler, Group, Object3D, Scene, SkinnedMesh, Vector3 } from 'three'
+import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh, Vector3 } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
@@ -21,8 +21,11 @@ export class ReadyPlayerMeModel implements Model {
   // Nodes for current RPM version
   private faceNode?: SkinnedMesh
   private teethNode?: SkinnedMesh
-  private leftEyeNode?: SkinnedMesh
-  private rightEyeNode?: SkinnedMesh
+
+  // Bonez
+  private headBone?: Bone
+  private leftEyeBone?: Bone
+  private rightEyeBone?: Bone
 
   // Nodes for old RPM versions
   private wolf3D_Avatar?: SkinnedMesh
@@ -45,16 +48,19 @@ export class ReadyPlayerMeModel implements Model {
 
     this.avatarRoot = object3DChildNamed(this.model, 'AvatarRoot')
 
+    // Meshes & bonez
     this.faceNode = object3DChildNamed(this.avatarRoot, 'Wolf3D_Head') as SkinnedMesh
     this.teethNode = object3DChildNamed(this.avatarRoot, 'Wolf3D_Teeth') as SkinnedMesh
-    this.leftEyeNode = object3DChildNamed(this.avatarRoot, 'LeftEye', { recursive: true }) as SkinnedMesh
-    this.rightEyeNode = object3DChildNamed(this.avatarRoot, 'RightEye', { recursive: true }) as SkinnedMesh
+    this.headBone = object3DChildNamed(this.avatarRoot, 'Head', { recursive: true }) as Bone
+    this.leftEyeBone = object3DChildNamed(this.avatarRoot, 'LeftEye', { recursive: true }) as Bone
+    this.rightEyeBone = object3DChildNamed(this.avatarRoot, 'RightEye', { recursive: true }) as Bone
 
+    // Old version of RPM models
     this.wolf3D_Avatar = object3DChildNamed(this.avatarRoot, 'Wolf3D_Avatar') as SkinnedMesh
 
     // Save initial rotation of eye nodes. We will apply our transforms to eye gaze as deltas to this
-    this.eulerLeftUnity = this.leftEyeNode?.rotation.clone() ?? this.eulerLeftUnity
-    this.eulerRightUnity = this.rightEyeNode?.rotation.clone() ?? this.eulerRightUnity
+    this.eulerLeftUnity = this.leftEyeBone?.rotation.clone() ?? this.eulerLeftUnity
+    this.eulerRightUnity = this.rightEyeBone?.rotation.clone() ?? this.eulerRightUnity
 
     // Remove hands
     const handsNode = object3DChildNamed(this.avatarRoot, 'Wolf3D_Hands', { recursive: true }) as SkinnedMesh
@@ -100,7 +106,7 @@ export class ReadyPlayerMeModel implements Model {
      *     that original rotation.
      *
      */
-    if (this.leftEyeNode && this.rightEyeNode) {
+    if (this.leftEyeBone && this.rightEyeBone) {
       const gazeRightDelta = new Euler(
         targets.eyeLookDownLeft + -targets.eyeLookUpLeft,
         targets.eyeLookOutLeft + -targets.eyeLookInLeft,
@@ -125,8 +131,8 @@ export class ReadyPlayerMeModel implements Model {
         this.eulerRightUnity.z - gazeRightDelta.y * this.maxAngle
       )
 
-      this.leftEyeNode?.setRotationFromEuler(eyeRotationLeft)
-      this.rightEyeNode?.setRotationFromEuler(eyeRotationRight)
+      this.leftEyeBone?.setRotationFromEuler(eyeRotationLeft)
+      this.rightEyeBone?.setRotationFromEuler(eyeRotationRight)
     }
   }
 
@@ -142,11 +148,17 @@ export class ReadyPlayerMeModel implements Model {
   }
 
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
-    this.avatarRoot?.rotation.set(pitch, this.shouldMirror ? -yaw : yaw, this.shouldMirror ? roll : -roll)
+    const object = this.headBone ?? this.wolf3D_Avatar
+
+    object.rotation.x = pitch
+    object.rotation.y = this.shouldMirror ? -yaw : yaw
+    object.rotation.z = this.shouldMirror ? roll : -roll
   }
 
   private updatePosition(x: number, y: number, z: number) {
+    const object = this.avatarRoot ?? this.wolf3D_Avatar
+
     // Note: The default Z values feel pretty far back. These are adjusted.
-    this.avatarRoot?.position.set(x, y, z + 0.55)
+    object.position.set(x, y, z + 0.55)
   }
 }
