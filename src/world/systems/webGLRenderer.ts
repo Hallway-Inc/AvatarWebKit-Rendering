@@ -37,7 +37,21 @@ export const createDefaultWebGLRenderer = (canvas: HTMLCanvasElement, opts: Defa
     alpha: true,
     antialias: true,
     canvas: canvas,
-    preserveDrawingBuffer: true
+    // MSN Docs: whether to preserve the buffers until manually cleared or overwritten. Default is false.
+    //
+    // We should probably not change this to true.
+    // * If canvas context is lost & restored, something with three.js/canvas stops functioning and it becomes blank.
+    //   This can happen for example if you connect/disconnect a monitor (open/close laptop lid to test). For some reason,
+    //   a new React render of the <canvas> element fixes it. This what discovered by accident. Couldn't find out why or
+    //   how to trigger ourselves. This module itself is not a React-based lib, so we couldn't use a Reactful way to solve
+    //   the problem from within the lib.
+    // * 'false' is the more optimized option. The browser has 2 drawing buffers, only 1 is actively on screen. The other
+    //   is drawn to while offscreen and swapped when ready. Turning this on changes the paradigm to copy instead of swap,
+    //   which is inefficient.
+    // * We may want to set this to 'true' for scissoring optimizations (ex. with this enabled, we could leave one scene
+    //   untouched child updating another in 1 frame pass, instead of clearing and redrawing everything.) If we decide to
+    //   do this we will want to figure out how to handle the context loss/restoration issue.
+    preserveDrawingBuffer: false
   })
 
   renderer.physicallyCorrectLights = true

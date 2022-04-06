@@ -100,19 +100,20 @@ class AvatarLayout extends React.Component<Props, State> {
 
     this.predictor.dataStream.subscribe(this.updateScene.bind(this))
 
-    await this._initWorlds()
+    await this._initRenderer()
     await this._startAvatar()
   }
 
   async stop() {
     this.avatarRenderer.stop()
-    this.avatarRenderer.canvas.remove()
     this.predictor.stop()
+
     this.world = undefined
+    this.avatarRenderer = undefined
   }
 
-  async _initWorlds() {
-    if (this.world) return
+  async _initRenderer() {
+    if (this.avatarRenderer) return
 
     const avatarCanvas = this.avatarCanvas.current
     if (!avatarCanvas) return
