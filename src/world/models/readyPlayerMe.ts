@@ -159,6 +159,6 @@ export class ReadyPlayerMeModel implements Model {
     const object = this.avatarRoot ?? this.wolf3D_Avatar
 
     // Note: The default Z values feel pretty far back. These are adjusted.
-    object.position.set(x, y, z + 0.55)
+    object.position.set(x, y, z / 2)
   }
 }

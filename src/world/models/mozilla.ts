@@ -6,6 +6,7 @@ import { object3DChildNamed, setMorphTarget } from '../../utils/three'
 import { MozillaModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
+const Z_OFFSET = -0.5
 
 export class MozillaModel implements Model {
   readonly type: ModelType = 'mozilla'
@@ -19,6 +20,8 @@ export class MozillaModel implements Model {
   private model?: Group
   private combinedMesh?: SkinnedMesh
   private headNode?: Bone
+  private rightHandNode?: Bone
+  private leftHandNode?: Bone
 
   static async init(url: string): Promise<MozillaModel> {
     const model = new MozillaModel()
@@ -31,10 +34,16 @@ export class MozillaModel implements Model {
     this.model = await loadModel(url)
 
     this.model.position.y = Y_OFFSET
-
+    this.model.position.z = Z_OFFSET
     const object = this.model.children[0]
     this.combinedMesh = object3DChildNamed(object, 'CombinedMesh') as SkinnedMesh
     this.headNode = object3DChildNamed(object, 'Head', { recursive: true }) as Bone
+    this.rightHandNode = object3DChildNamed(object, 'RightHand', { recursive: true }) as Bone
+    this.leftHandNode = object3DChildNamed(object, 'LeftHand', { recursive: true }) as Bone
+
+    // Hide hands
+    this.leftHandNode.position.y = -10
+    this.rightHandNode.position.y = -10
 
     return this
   }
@@ -85,6 +94,6 @@ export class MozillaModel implements Model {
 
     this.model.position.x = x
     this.model.position.y = Y_OFFSET + y
-    this.model.position.z = z
+    this.model.position.z = Z_OFFSET + z / 2
   }
 }

@@ -163,7 +163,7 @@ export class EmojiModel implements Model {
 
     this.model.position.x = x
     this.model.position.y = y
-    this.model.position.z = z
+    this.model.position.z = z / 2
   }
 
   get settings(): EmojiModelSettings {
