@@ -77,7 +77,6 @@ deploy:
     - tags
   stage: deploy
   script:
-    - npm run obfuscate
     - npm publish
   artifacts:
     paths:
