@@ -8,11 +8,11 @@
   "module": "dist/index.modern.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.3.0",
+    "@quarkworks-inc/avatar-webkit": "^0.7.2",
     "three": "^0.138.3"
   },
   "peerDependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.3.0",
+    "@quarkworks-inc/avatar-webkit": "^0.7.2",
     "three": "^0.138.3"
   },
   "devDependencies": {

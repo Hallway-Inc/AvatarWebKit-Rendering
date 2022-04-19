@@ -125,8 +125,8 @@ class AvatarLayout extends React.Component<Props, State> {
       renderer: this.avatarRenderer
     })
 
-    // const model = await modelFactory('emoji')
-    const model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
+    const model = await modelFactory('emoji')
+    // const model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
     // const model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
 
     await this.world.setModel(model)

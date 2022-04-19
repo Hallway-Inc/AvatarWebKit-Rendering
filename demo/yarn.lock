@@ -1455,13 +1455,13 @@
 "@quarkworks-inc/avatar-webkit-rendering@file:..":
   version "0.7.0"
   dependencies:
-    "@quarkworks-inc/avatar-webkit" "^0.3.0"
+    "@quarkworks-inc/avatar-webkit" "^0.7.2"
     three "^0.138.3"
 
-"@quarkworks-inc/avatar-webkit@0.3.0", "@quarkworks-inc/avatar-webkit@^0.3.0":
-  version "0.3.0"
-  resolved "https://gitlab.com/api/v4/projects/34748229/packages/npm/@quarkworks-inc/avatar-webkit/-/@quarkworks-inc/avatar-webkit-0.3.0.tgz#77758c6d197dc931defd40469fac21ba5a8ba62d"
-  integrity sha1-d3WMbRl9yTHe/UBGn6whulqLpi0=
+"@quarkworks-inc/avatar-webkit@0.7.2", "@quarkworks-inc/avatar-webkit@^0.7.2":
+  version "0.7.2"
+  resolved "https://gitlab.com/api/v4/projects/34748229/packages/npm/@quarkworks-inc/avatar-webkit/-/@quarkworks-inc/avatar-webkit-0.7.2.tgz#e7280e2be36aa2441117d5fab02fff67c2bc98b5"
+  integrity sha1-5ygOK+NqokQRF9X6sC//Z8K8mLU=
   dependencies:
     "@mediapipe/face_mesh" "0.4.1633559619"
     "@tensorflow/tfjs" "3.1.0"
@@ -3786,9 +3786,9 @@ ejs@^3.1.6:
     jake "^10.6.1"
 
 electron-to-chromium@^1.4.84:
-  version "1.4.111"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.111.tgz#897613f6504f3f17c9381c7499a635b413e4df4e"
-  integrity sha512-/s3+fwhKf1YK4k7btOImOzCQLpUjS6MaPf0ODTNuT4eTM1Bg4itBpLkydhOzJmpmH6Z9eXFyuuK5czsmzRzwtw==
+  version "1.4.113"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.113.tgz#b3425c086e2f4fc31e9e53a724c6f239e3adb8b9"
+  integrity sha512-s30WKxp27F3bBH6fA07FYL2Xm/FYnYrKpMjHr3XVCTUb9anAyZn/BeZfPWgTZGAbJeT4NxNwISSbLcYZvggPMA==
 
 emittery@^0.8.1:
   version "0.8.1"
@@ -7911,9 +7911,9 @@ sass-loader@^12.3.0:
     neo-async "^2.6.2"
 
 sass@^1.49.0:
-  version "1.50.0"
-  resolved "https://registry.yarnpkg.com/sass/-/sass-1.50.0.tgz#3e407e2ebc53b12f1e35ce45efb226ea6063c7c8"
-  integrity sha512-cLsD6MEZ5URXHStxApajEh7gW189kkjn4Rc8DQweMyF+o5HF5nfEz8QYLMlPsTOD88DknatTmBWkOcw5/LnJLQ==
+  version "1.50.1"
+  resolved "https://registry.yarnpkg.com/sass/-/sass-1.50.1.tgz#e9b078a1748863013c4712d2466ce8ca4e4ed292"
+  integrity sha512-noTnY41KnlW2A9P8sdwESpDmo+KBNkukI1i8+hOK3footBUcohNHtdOJbckp46XO95nuvcHDDZ+4tmOnpK3hjw==
   dependencies:
     chokidar ">=3.0.0 <4.0.0"
     immutable "^4.0.0"

@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "0.3.0",
+    "@quarkworks-inc/avatar-webkit": "0.7.2",
     "@quarkworks-inc/avatar-webkit-rendering": "file:.."
   },
   "devDependencies": {

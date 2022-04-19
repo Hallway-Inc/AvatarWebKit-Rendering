@@ -17,7 +17,6 @@ export * from './world/systems/webGLRenderer'
 
 export * from './utils/cdn'
 export * from './utils/emojiColors'
-export * from './utils/emojiKeyMap'
 export * from './utils/three'
 
 export * from './world/world'

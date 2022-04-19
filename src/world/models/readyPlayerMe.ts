@@ -1,5 +1,5 @@
-import { AvatarPrediction, ActionUnits } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh, Vector3 } from 'three'
+import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
+import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh } from 'three'
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
@@ -82,18 +82,21 @@ export class ReadyPlayerMeModel implements Model {
   updateFromResults(results: AvatarPrediction) {
     if (!this.model) return
 
-    this.updateMorphTargets(results.actionUnits)
+    this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)
     this.updatePosition(results.transform.x, results.transform.y, results.transform.z)
   }
 
-  private updateMorphTargets(targets: ActionUnits) {
-    for (const key in targets) {
-      const value = this._tuneMorphTargetValue(key, targets[key])
+  private updateBlendShapes(blendShapes: BlendShapes) {
+    for (const key in blendShapes) {
+      const value = this._tuneMorphTargetValue(key, blendShapes[key])
 
-      setMorphTarget(this.faceNode, key, value)
-      setMorphTarget(this.teethNode, key, value)
-      setMorphTarget(this.wolf3D_Avatar, key, value)
+      // RPM uses the ARKit key convention ("mouthSmileLeft" as opposed to "mouthSmile_L")
+      const arKitKey = BlendShapeKeys.toARKitConvention(key)
+
+      setMorphTarget(this.faceNode, arKitKey, value)
+      setMorphTarget(this.teethNode, arKitKey, value)
+      setMorphTarget(this.wolf3D_Avatar, arKitKey, value)
     }
 
     /**
@@ -108,14 +111,14 @@ export class ReadyPlayerMeModel implements Model {
      */
     if (this.leftEyeBone && this.rightEyeBone) {
       const gazeRightDelta = new Euler(
-        targets.eyeLookDownLeft + -targets.eyeLookUpLeft,
-        targets.eyeLookOutLeft + -targets.eyeLookInLeft,
+        blendShapes.eyeLookDown_L + -blendShapes.eyeLookUp_L,
+        blendShapes.eyeLookOut_L + -blendShapes.eyeLookIn_L,
         0
       )
 
       const gazeLeftDelta = new Euler(
-        targets.eyeLookDownRight + -targets.eyeLookUpRight,
-        -targets.eyeLookOutRight + targets.eyeLookInRight,
+        blendShapes.eyeLookDown_R + -blendShapes.eyeLookUp_R,
+        -blendShapes.eyeLookOut_R + blendShapes.eyeLookIn_R,
         0
       )
 
@@ -138,8 +141,8 @@ export class ReadyPlayerMeModel implements Model {
 
   private _tuneMorphTargetValue(key: string, value: number): number {
     switch (key) {
-      case 'mouthSmileLeft':
-      case 'mouthSmileRight':
+      case BlendShapeKeys.mouthSmile_L:
+      case BlendShapeKeys.mouthSmile_R:
         // Tuning down RPM smile so it's less creepy
         return Math.min(Math.max(0, value), 1.0) * 0.7
       default:
