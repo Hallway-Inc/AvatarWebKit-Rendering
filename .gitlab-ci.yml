@@ -1,16 +1,83 @@
-image: node:latest
+# .gitlab-ci.yml
+default:
+  image: node:lts-alpine
+  before_script:
+    - yarn install
+
+variables:
+  FF_USE_FASTZIP: 'true'
+  # These can be specified per job or per pipeline
+  ARTIFACT_COMPRESSION_LEVEL: 'fast'
+  CACHE_COMPRESSION_LEVEL: 'fast'
 
 stages:
+  - install_deps
+  - test
+  - build
   - deploy
+
+# Caches
+.node_modules-cache: &node_modules-cache
+  key:
+    files:
+      - yarn.lock
+  paths:
+    - node_modules
+  policy: pull
+
+.yarn-cache: &yarn-cache
+  key: yarn-$CI_JOB_IMAGE
+  paths:
+    - .yarn
+
+.test-cache: &test-cache
+  key: test-$CI_JOB_IMAGE
+  paths:
+    - .jestcache
+  policy: pull-push
+
+.build-cache: &build-cache
+  key: build-$CI_JOB_IMAGE
+  paths:
+    - .cache
+    - build
+  policy: pull-push
+
+Install Dependencies:
+  stage: install_deps
+  script:
+    - yarn install --cache-folder .yarn &> /dev/null
+  cache:
+    - <<: *node_modules-cache
+      policy: pull-push # We override the policy
+    - <<: *yarn-cache # This is not required if your internet speed is good or if you use a local npm registry.
+
+Test:
+  stage: test
+  script:
+    - yarn test --cacheDirectory ".jestcache"
+  cache:
+    - <<: *node_modules-cache
+    - <<: *test-cache
+
+Build:
+  stage: build
+  script:
+    - yarn build
+  cache:
+    - <<: *node_modules-cache
+    - <<: *build-cache
+  artifacts:
+    paths:
+      - build
+      - dist
 
 deploy:
   only:
     - tags
   stage: deploy
-  before_script:
-    - yarn install --frozen-lockfile
   script:
-    - yarn build
+    - npm run obfuscate
     - npm publish
   artifacts:
     paths:
