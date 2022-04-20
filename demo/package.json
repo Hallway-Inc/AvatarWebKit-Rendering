@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "0.7.2",
+    "@quarkworks-inc/avatar-webkit": "0.7.4",
     "@quarkworks-inc/avatar-webkit-rendering": "file:.."
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "start": "react-scripts start",
     "dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
     "build:prod": "cross-env HALLWAY_ENV=production node scripts/build.js",
     "build:qa": "cross-env HALLWAY_ENV=qa node scripts/build.js",

@@ -1,8 +1,10 @@
 import { AvatarPrediction, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import { Group, SkinnedMesh, Scene, Bone } from 'three'
+
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
+
 import { MozillaModelSettings } from './modelSettings'
 
 const Y_OFFSET = -0.55
@@ -28,7 +30,9 @@ export class MozillaModel implements Model {
     return model.load(url)
   }
 
-  private constructor() {}
+  private constructor() {
+    // use static init
+  }
 
   private async load(url: string): Promise<MozillaModel> {
     this.model = await loadModel(url)

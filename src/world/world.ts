@@ -1,15 +1,15 @@
 import { Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
-
-// eslint-disable-next-line
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
+
+import { Renderable, Updateable, Model, WorldConfig } from '../types'
+
+import { hallwayPublicCDNUrl } from '../utils/cdn'
 
 import { createCamera } from './components/camera'
 import { createLights } from './components/lights'
 import { createScene } from './components/scene'
 import { createControls, UpdateableControls } from './systems/controls'
-import { Renderable, Updateable, Model, WorldConfig } from '../types'
 import { EnvironmentLoader } from './systems/environmentLoader'
-import { hallwayPublicCDNUrl } from '../utils/cdn'
 
 const sceneBackgroundColor = new Color(0xffffff)
 

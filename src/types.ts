@@ -1,5 +1,6 @@
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import { Scene, Vector3, WebGLRenderer } from 'three'
+
 import { AvatarRenderer } from './avatarRenderer'
 import { ModelSettings } from './world/models/modelSettings'
 import { EnvironmentLoader } from './world/systems/environmentLoader'

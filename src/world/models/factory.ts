@@ -1,6 +1,7 @@
 import { Model, ModelType } from '../../types'
+
 import { EmojiModel } from './emoji'
-import { EmojiModelSettings, ModelSettings } from './modelSettings'
+import { ModelSettings } from './modelSettings'
 import { MozillaModel } from './mozilla'
 import { ReadyPlayerMeModel } from './readyPlayerMe'
 

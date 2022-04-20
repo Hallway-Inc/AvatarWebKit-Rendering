@@ -1,8 +1,10 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh } from 'three'
+
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { object3DChildNamed, setMorphTarget } from '../../utils/three'
+
 import { ReadyPlayerMeModelSettings } from './modelSettings'
 
 export class ReadyPlayerMeModel implements Model {
@@ -39,7 +41,9 @@ export class ReadyPlayerMeModel implements Model {
     return model.load(url)
   }
 
-  private constructor() {}
+  private constructor() {
+    // use static init
+  }
 
   private async load(url: string): Promise<ReadyPlayerMeModel> {
     this.model = await loadModel(url)

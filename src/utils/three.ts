@@ -22,7 +22,7 @@ export const object3DChildNamed = (
 
 export const setMorphTarget = (mesh: Mesh | undefined, key: string, value: any) => {
   if (!mesh) return
-  let idx = mesh.morphTargetDictionary[key]
+  const idx = mesh.morphTargetDictionary[key]
   if (!idx) return
   mesh.morphTargetInfluences[idx] = value
 }

@@ -1,4 +1,5 @@
 import { Clock, WebGLRenderer } from 'three'
+
 import { createGlobalCanvas, isGlobalCanvas } from './globalCanvas'
 import { Updateable, Renderable, AvatarRendererConfig } from './types'
 import { EnvironmentLoader } from './world/systems/environmentLoader'
@@ -11,7 +12,7 @@ export class AvatarRenderer {
   canvas: HTMLCanvasElement
   environmentLoader: EnvironmentLoader
   drawWhenOffscreen: boolean
-  isRunning: boolean = false
+  isRunning = false
 
   updatables: Updateable[] = []
   renderables: Renderable[] = []

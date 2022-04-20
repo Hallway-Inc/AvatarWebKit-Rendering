@@ -7,12 +7,34 @@
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist/*"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/quarkworks-inc/avatar-webkit-rendering.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering/issues"
+  },
+  "homepage": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering#readme",
+  "scripts": {
+    "build": "rollup -c",
+    "start": "rollup -cw",
+    "test": "jest --passWithNoTests",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings=0",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings=0 --fix",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "release": "release-it"
+  },
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.7.2",
+    "@quarkworks-inc/avatar-webkit": "^0.7.4",
     "three": "^0.138.3"
   },
   "peerDependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.7.2",
+    "@quarkworks-inc/avatar-webkit": "^0.7.4",
     "three": "^0.138.3"
   },
   "devDependencies": {
@@ -21,6 +43,8 @@
     "@rollup/plugin-node-resolve": "^13.1.3",
     "@rollup/plugin-replace": "^4.0.0",
     "@types/three": "^0.138.0",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
     "dotenv": "^16.0.0",
     "eslint": "^7.10.0",
     "eslint-config-prettier": "^7.2.0",
@@ -39,15 +63,6 @@
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.2"
   },
-  "scripts": {
-    "build": "rollup -c",
-    "start": "rollup -cw",
-    "test": "jest --passWithNoTests",
-    "release": "release-it"
-  },
-  "files": [
-    "dist/*"
-  ],
   "publishConfig": {
     "registry": "https://gitlab.com/api/v4/projects/34748229/packages/npm/"
   },
@@ -72,15 +87,6 @@
       "last 1 safari version"
     ]
   },
-  "repository": {
-    "type": "git",
-    "url": "git+ssh://git@gitlab.com/quarkworks-inc/avatar-webkit-rendering.git"
-  },
-  "author": "",
-  "bugs": {
-    "url": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering/issues"
-  },
-  "homepage": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering#readme",
   "release-it": {
     "gitlab": {
       "release": false

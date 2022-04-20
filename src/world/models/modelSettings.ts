@@ -28,10 +28,6 @@ export interface EmojiModelSettings extends ModelSettings {
   eyeColor: ModelColorSetting
 }
 
-export interface MozillaModelSettings extends ModelSettings {
-  // nothing yet
-}
+export type MozillaModelSettings = ModelSettings
 
-export interface ReadyPlayerMeModelSettings extends ModelSettings {
-  // nothing yet
-}
+export type ReadyPlayerMeModelSettings = ModelSettings

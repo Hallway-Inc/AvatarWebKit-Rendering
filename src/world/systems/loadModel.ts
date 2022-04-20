@@ -1,4 +1,5 @@
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+
 import { hallwayPublicCDNUrl } from '../../utils/cdn'
 
 async function loadModel(url: string) {

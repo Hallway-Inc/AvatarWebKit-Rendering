@@ -1,5 +1,6 @@
-import { Loader, PMREMGenerator, Texture, WebGLRenderer } from 'three'
 import path from 'path'
+
+import { Loader, PMREMGenerator, Texture, WebGLRenderer } from 'three'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 

@@ -1,11 +1,13 @@
+# dirs
 .cache
 .vscode
 assets
 bin
-build
 dist
-hallway-serve
 node_modules
 public
+
+# files
 package.json
 package-lock.json
+yarn.lock

@@ -1,6 +1,5 @@
 import React from 'react'
 
-// eslint-disable-next-line
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import { AvatarRenderer, AvatarWorld, hallwayPublicCDNUrl, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
 

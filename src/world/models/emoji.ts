@@ -1,9 +1,10 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import { Group, Scene, Mesh, MeshStandardMaterial, MathUtils, Color } from 'three'
+
 import { Model, ModelType } from '../../types'
 import { emojiColors } from '../../utils/emojiColors'
-import { availableMorphTargets } from '../../utils/three'
 import { loadModelFromPublicCDN } from '../systems/loadModel'
+
 import { EmojiModelSettings, ModelSettingType } from './modelSettings'
 
 export class EmojiModel implements Model {
@@ -50,7 +51,9 @@ export class EmojiModel implements Model {
     return model.load()
   }
 
-  private constructor() {}
+  private constructor() {
+    // use static init
+  }
 
   private async load(): Promise<EmojiModel> {
     this.model = await loadModelFromPublicCDN('models/Smiley_eye.glb')
