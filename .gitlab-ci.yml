@@ -1,8 +1,6 @@
 # .gitlab-ci.yml
 default:
   image: node:lts-alpine
-  before_script:
-    - yarn install
 
 variables:
   FF_USE_FASTZIP: 'true'
@@ -13,11 +11,10 @@ variables:
 stages:
   - install_deps
   - build
-  - install_deps_demo
-  # The webpack build is super slow
+  # - install_deps_demo
   # - build_demo
-  - lint
-  - test
+  # - lint
+  # - test
   - deploy
 
 # Caches
@@ -25,9 +22,15 @@ stages:
   key:
     files:
       - yarn.lock
-      - demo/yarn.lock
   paths:
     - node_modules
+  policy: pull
+
+.node_modules-cache-demo: &node_modules-cache-demo
+  key:
+    files:
+      - demo/yarn.lock
+  paths:
     - demo/node_modules
   policy: pull
 
@@ -35,6 +38,10 @@ stages:
   key: yarn-$CI_JOB_IMAGE
   paths:
     - .yarn
+
+.yarn-cache-demo: &yarn-cache-demo
+  key: yarn-demo-$CI_JOB_IMAGE
+  paths:
     - demo/.yarn
 
 .test-cache: &test-cache
@@ -60,15 +67,16 @@ Install Dependencies:
       policy: pull-push # We override the policy
     - <<: *yarn-cache # This is not required if your internet speed is good or if you use a local npm registry.
 
-Install Demo Dependencies:
-  stage: install_deps_demo
-  script:
-    - cd demo
-    - yarn install --cache-folder .yarn
-  cache:
-    - <<: *node_modules-cache
-      policy: pull-push # We override the policy
-    - <<: *yarn-cache # This is not required if your internet speed is good or if you use a local npm registry.
+# Install Demo Dependencies:
+#   stage: install_deps_demo
+#   script:
+#     - cd demo
+#     - yarn install --cache-folder .yarn
+#   cache:
+#     - <<: *build-cache
+#     - <<: *node_modules-cache-demo
+#       policy: pull-push # We override the policy
+#     - <<: *yarn-cache-demo # This is not required if your internet speed is good or if you use a local npm registry.
 
 Build:
   stage: build
@@ -81,36 +89,38 @@ Build:
     paths:
       - dist
 
-# Webpack build is really slow
+# # Webpack build is really slow
 # Build Demo:
 #   stage: build_demo
+#   # Webpack build is really slow, so only running this for releases
+#   # to verify the SDK can be imported correctly
+#   only:
+#     - tags
 #   script:
 #     - cd demo
 #     - yarn build
 #   cache:
+#     - <<: *node_modules-cache-demo
+
+# Lint:
+#   stage: lint
+#   script:
+#     - yarn lint
+#     - yarn format:check
+#   cache:
 #     - <<: *node_modules-cache
-#     - <<: *build-cache
-#   artifacts:
-#     paths:
-#       - demo/build
+#     - <<: *node_modules-cache-demo
 
-Lint:
-  stage: lint
-  script:
-    - yarn lint
-    - yarn format:check
-  cache:
-    - <<: *node_modules-cache
-
-Test:
-  stage: test
-  script:
-    - yarn test --cacheDirectory ".jestcache"
-    - cd demo
-    - yarn test --cacheDirectory ".jestcache"
-  cache:
-    - <<: *node_modules-cache
-    - <<: *test-cache
+# Test:
+#   stage: test
+#   script:
+#     - yarn test --cacheDirectory ".jestcache"
+#     - cd demo
+#     - yarn test --cacheDirectory ".jestcache"
+#   cache:
+#     - <<: *node_modules-cache
+#     - <<: *node_modules-cache-demo
+#     - <<: *test-cache
 
 Deploy:
   stage: deploy
@@ -118,6 +128,9 @@ Deploy:
     - tags
   script:
     - npm publish
+  cache:
+    - <<: *node_modules-cache
+    - <<: *build-cache
   artifacts:
     paths:
       - dist

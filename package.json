@@ -30,11 +30,11 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.7.4",
+    "@quarkworks-inc/avatar-webkit": "^0.8.0",
     "three": "^0.138.3"
   },
   "peerDependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.7.4",
+    "@quarkworks-inc/avatar-webkit": "^0.8.0",
     "three": "^0.138.3"
   },
   "devDependencies": {
