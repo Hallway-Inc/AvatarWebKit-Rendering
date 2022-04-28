@@ -87,6 +87,10 @@
       "last 1 safari version"
     ]
   },
+  "resolutions": {
+    "bl": "^1.2.3",
+    "semver": "^4.3.2"
+  },
   "release-it": {
     "gitlab": {
       "release": false
