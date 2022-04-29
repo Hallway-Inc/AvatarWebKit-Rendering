@@ -12,13 +12,13 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@gitlab.com/quarkworks-inc/avatar-webkit-rendering.git"
+    "url": "git+ssh://git@github.com:Hallway-Inc/AvatarWebKit-Rendering.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering/issues"
+    "url": "https://github.com/Hallway-Inc/AvatarWebKit-Rendering/issues"
   },
-  "homepage": "https://gitlab.com/quarkworks-inc/avatar-webkit-rendering#readme",
+  "homepage": "https://github.com/Hallway-Inc/AvatarWebKit-Rendering",
   "scripts": {
     "build": "rollup -c",
     "start": "rollup -cw",
@@ -63,9 +63,6 @@
     "ts-jest": "^27.1.4",
     "typescript": "^4.6.2"
   },
-  "publishConfig": {
-    "registry": "https://gitlab.com/api/v4/projects/34748229/packages/npm/"
-  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -88,8 +85,7 @@
     ]
   },
   "resolutions": {
-    "bl": "^1.2.3",
-    "semver": "^4.3.2"
+    "bl": "^1.2.3"
   },
   "release-it": {
     "gitlab": {
