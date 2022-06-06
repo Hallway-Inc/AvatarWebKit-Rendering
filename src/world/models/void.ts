@@ -29,7 +29,7 @@ export class VoidModel implements Model {
   private leftArm?: Bone
   private rightArm?: Bone
 
-  private maxAngle = (-1 / 57.3) * 30
+  private maxAngle = (1 / 57.3) * 30
 
   static async init(url: string): Promise<VoidModel> {
     const model = new VoidModel()
