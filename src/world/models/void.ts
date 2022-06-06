@@ -96,11 +96,12 @@ export class VoidModel implements Model {
       0.0
     ]
 
-    this.rightEyeBone.rotation.z = eulerRight[0] * this.maxAngle
+    const flip = this.shouldMirror ? -1 : 1
+    this.rightEyeBone.rotation.z = flip * eulerRight[0] * this.maxAngle
     this.rightEyeBone.rotation.y = eulerRight[1] * this.maxAngle
     // this.rightEyeBone.rotation.z = eulerRight[2] * this.maxAngle
 
-    this.leftEyeBone.rotation.z = eulerLeft[0] * this.maxAngle
+    this.leftEyeBone.rotation.z = flip * eulerLeft[0] * this.maxAngle
     this.leftEyeBone.rotation.y = eulerLeft[1] * this.maxAngle
     // this.leftEyeBone.rotation.z = eulerLeft[2] * this.maxAngle
 
