@@ -1,5 +1,5 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh } from 'three'
+import { Bone, Group, Object3D, Scene, SkinnedMesh } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
