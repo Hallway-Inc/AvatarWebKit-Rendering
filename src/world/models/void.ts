@@ -1,14 +1,15 @@
-import { AvatarPrediction, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Euler, Group, Mesh, Object3D, Scene, SkinnedMesh } from 'three'
+import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
+import { Bone, Euler, Group, Object3D, Scene, SkinnedMesh } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
-import { object3DChildNamed } from '../../utils/three'
+import { enumerateChildNodes, object3DChildNamed } from '../../utils/three'
 
 import { ModelSettings, VoidModelSettings } from './modelSettings'
 
-const Y_OFFSET = -1
-const Z_OFFSET = -1
+const Y_OFFSET = -1.57
+const Z_OFFSET = -0.1
+const Z_ROTATION_OFFSET = -0.5
 
 export class VoidModel implements Model {
   readonly type: ModelType = 'void'
@@ -21,16 +22,14 @@ export class VoidModel implements Model {
 
   // Model group
   private model: Group
-  private avatarRoot: Object3D
 
-  private faceNode?: SkinnedMesh
-  private headBone?: Bone
-  private leftEyeBone?: Mesh
+  private neckBone?: Bone
+  private leftEyeBone?: Bone
   private rightEyeBone?: Bone
+  private leftArm?: Bone
+  private rightArm?: Bone
 
   private maxAngle = (-1 / 57.3) * 30
-  private eulerLeftUnity = new Euler(-0.14, 0, 0)
-  private eulerRightUnity = new Euler(-0.14, 0, 0)
 
   static async init(url: string): Promise<VoidModel> {
     const model = new VoidModel()
@@ -47,20 +46,21 @@ export class VoidModel implements Model {
     this.model.position.y = Y_OFFSET
     this.model.position.z = Z_OFFSET
 
-    this.avatarRoot = object3DChildNamed(this.model, 'Node_0')
-
-    console.log('Root ', this.avatarRoot)
+    enumerateChildNodes(this.model, (node: Object3D) => {
+      node.frustumCulled = false
+    })
 
     // Meshes & bonez
-    this.faceNode = object3DChildNamed(this.avatarRoot, 'Head') as SkinnedMesh
+    this.neckBone =
+      (object3DChildNamed(this.model, 'Neck', { recursive: true }) as Bone) ??
+      (object3DChildNamed(this.model, 'Neck_1', { recursive: true }) as Bone)
+    this.leftEyeBone = object3DChildNamed(this.model, 'LeftEye', { recursive: true }) as Bone
+    this.rightEyeBone = object3DChildNamed(this.model, 'RightEye', { recursive: true }) as Bone
+    this.leftArm = object3DChildNamed(this.model, 'LeftArm', { recursive: true }) as Bone
+    this.rightArm = object3DChildNamed(this.model, 'RightArm', { recursive: true }) as Bone
 
-    this.headBone = object3DChildNamed(this.avatarRoot, 'HeadSSC', { recursive: true }) as Bone
-    this.leftEyeBone = object3DChildNamed(this.avatarRoot, 'LeftEyeSSC', { recursive: true }) as Mesh
-    this.rightEyeBone = object3DChildNamed(this.avatarRoot, 'RightEyeSSC', { recursive: true }) as Bone
-
-    console.log('headBone', this.faceNode)
-    console.log('left', this.leftEyeBone)
-    console.log('right', this.rightEyeBone)
+    if (this.leftArm) this.leftArm.rotation.x = -1.3
+    if (this.rightArm) this.rightArm.rotation.x = -1.3
 
     return this
   }
@@ -83,13 +83,7 @@ export class VoidModel implements Model {
   }
 
   private updateBlendShapes(blendShapes: BlendShapes) {
-    if (!this.faceNode) return
-
-    for (const key in blendShapes) {
-      const morphIndex = this.faceNode.morphTargetDictionary[key]
-
-      this.faceNode.morphTargetInfluences[morphIndex] = blendShapes[key]
-    }
+    if (!this.model) return
 
     const eulerRight = [
       blendShapes.eyeLookDown_L + -blendShapes.eyeLookUp_L,
@@ -102,20 +96,34 @@ export class VoidModel implements Model {
       0.0
     ]
 
-    this.rightEyeBone.rotation.x = this.eulerLeftUnity[0] + eulerRight[0] * this.maxAngle
+    this.rightEyeBone.rotation.z = eulerRight[0] * this.maxAngle
     this.rightEyeBone.rotation.y = eulerRight[1] * this.maxAngle
-    this.rightEyeBone.rotation.z = eulerRight[2] * this.maxAngle
+    // this.rightEyeBone.rotation.z = eulerRight[2] * this.maxAngle
 
-    this.leftEyeBone.rotation.x = this.eulerRightUnity[0] + eulerLeft[0] * this.maxAngle
+    this.leftEyeBone.rotation.z = eulerLeft[0] * this.maxAngle
     this.leftEyeBone.rotation.y = eulerLeft[1] * this.maxAngle
-    this.leftEyeBone.rotation.z = eulerLeft[2] * this.maxAngle
+    // this.leftEyeBone.rotation.z = eulerLeft[2] * this.maxAngle
+
+    enumerateChildNodes(this.model, node => {
+      const nodeMesh = node as SkinnedMesh
+
+      if (!nodeMesh.morphTargetDictionary || !nodeMesh.morphTargetInfluences) return
+
+      for (const key in blendShapes) {
+        const arKitKey = BlendShapeKeys.toARKitConvention(key)
+
+        const morphIndex = nodeMesh.morphTargetDictionary[arKitKey]
+
+        nodeMesh.morphTargetInfluences[morphIndex] = blendShapes[key]
+      }
+    })
   }
 
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
-    if (!this.headBone) return
+    if (!this.neckBone) return
 
-    this.model.rotation.x = pitch
-    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
-    this.model.rotation.z = this.shouldMirror ? roll : -roll
+    this.neckBone.rotation.x = this.shouldMirror ? roll : -roll
+    this.neckBone.rotation.y = this.shouldMirror ? -yaw : yaw
+    this.neckBone.rotation.z = Z_ROTATION_OFFSET - pitch
   }
 }

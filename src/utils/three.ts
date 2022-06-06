@@ -20,6 +20,16 @@ export const object3DChildNamed = (
   return undefined
 }
 
+export const enumerateChildNodes = (object: Object3D, callback: (object: Object3D) => void): void => {
+  for (const child of object.children) {
+    callback(child)
+
+    if (child.children.length > 0) {
+      enumerateChildNodes(child, callback)
+    }
+  }
+}
+
 export const setMorphTarget = (mesh: Mesh | undefined, key: string, value: any) => {
   if (!mesh) return
   const idx = mesh.morphTargetDictionary[key]
