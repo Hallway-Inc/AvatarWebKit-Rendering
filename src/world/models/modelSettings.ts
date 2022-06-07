@@ -31,3 +31,5 @@ export interface EmojiModelSettings extends ModelSettings {
 export type MozillaModelSettings = ModelSettings
 
 export type ReadyPlayerMeModelSettings = ModelSettings
+
+export type VoidModelSettings = ModelSettings
