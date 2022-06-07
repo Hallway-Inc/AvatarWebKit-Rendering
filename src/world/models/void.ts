@@ -52,8 +52,9 @@ export class VoidModel implements Model {
 
     // Meshes & bonez
     this.neckBone =
-      (object3DChildNamed(this.model, 'Neck', { recursive: true }) as Bone) ??
-      (object3DChildNamed(this.model, 'Neck_1', { recursive: true }) as Bone)
+      (object3DChildNamed(this.model, 'Neck_1', { recursive: true }) as Bone) ??
+      (object3DChildNamed(this.model, 'Neck', { recursive: true }) as Bone)
+
     this.leftEyeBone = object3DChildNamed(this.model, 'LeftEye', { recursive: true }) as Bone
     this.rightEyeBone = object3DChildNamed(this.model, 'RightEye', { recursive: true }) as Bone
     this.leftArm = object3DChildNamed(this.model, 'LeftArm', { recursive: true }) as Bone
