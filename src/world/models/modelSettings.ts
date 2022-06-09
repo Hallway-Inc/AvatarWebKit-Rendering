@@ -32,4 +32,6 @@ export type MozillaModelSettings = ModelSettings
 
 export type ReadyPlayerMeModelSettings = ModelSettings
 
-export type VoidModelSettings = ModelSettings
+export interface VoidModelSettings extends ModelSettings {
+  hideExtraAssets: ModelBooleanSetting
+}

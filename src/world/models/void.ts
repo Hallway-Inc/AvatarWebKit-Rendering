@@ -5,7 +5,7 @@ import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { enumerateChildNodes, object3DChildNamed } from '../../utils/three'
 
-import { ModelSettings, VoidModelSettings } from './modelSettings'
+import { ModelSettingType, VoidModelSettings } from './modelSettings'
 
 const Y_OFFSET = -1.57
 const Z_OFFSET = -0.1
@@ -14,10 +14,16 @@ const Z_ROTATION_OFFSET = -0.5
 export class VoidModel implements Model {
   readonly type: ModelType = 'void'
 
-  static readonly defaultSettings: VoidModelSettings = {}
+  static readonly defaultSettings: VoidModelSettings = {
+    hideExtraAssets: {
+      name: 'Hide Extra Assets',
+      type: ModelSettingType.boolean,
+      value: false
+    }
+  }
 
-  readonly defaultSettings: ModelSettings = VoidModel.defaultSettings
-  settings = this.defaultSettings
+  readonly defaultSettings: VoidModelSettings = VoidModel.defaultSettings
+  private _settings = this.defaultSettings
   shouldMirror = true
 
   // Model group
@@ -30,6 +36,20 @@ export class VoidModel implements Model {
   private rightArm?: Bone
 
   private maxAngle = (1 / 57.3) * 30
+
+  private assetsToHide = [
+    'Fangs',
+    'ToothPick',
+    'Rose',
+    'Knife',
+    'BuckImage',
+    'BanditMask',
+    'FaceMask',
+    'Respirator',
+    'Pipe',
+    'Gagged',
+    'BubbleGum'
+  ]
 
   static async init(url: string): Promise<VoidModel> {
     const model = new VoidModel()
@@ -48,6 +68,10 @@ export class VoidModel implements Model {
 
     enumerateChildNodes(this.model, (node: Object3D) => {
       node.frustumCulled = false
+
+      if ((this.settings.hideExtraAssets.value as boolean) && this.assetsToHide.includes(node.name)) {
+        node.visible = false
+      }
     })
 
     // Meshes & bonez
@@ -127,5 +151,21 @@ export class VoidModel implements Model {
     this.neckBone.rotation.x = this.shouldMirror ? roll : -roll
     this.neckBone.rotation.y = this.shouldMirror ? -yaw : yaw
     this.neckBone.rotation.z = Z_ROTATION_OFFSET - pitch
+  }
+
+  get settings(): VoidModelSettings {
+    return this._settings
+  }
+
+  set settings(settings: VoidModelSettings) {
+    this._settings = settings
+
+    const { hideExtraAssets = VoidModel.defaultSettings.hideExtraAssets } = settings
+
+    enumerateChildNodes(this.model, (node: Object3D) => {
+      if (hideExtraAssets.value && this.assetsToHide.includes(node.name)) {
+        node.visible = false
+      }
+    })
   }
 }

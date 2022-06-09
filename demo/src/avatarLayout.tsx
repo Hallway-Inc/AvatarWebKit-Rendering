@@ -1,7 +1,13 @@
 import React from 'react'
 
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { AvatarRenderer, AvatarWorld, hallwayPublicCDNUrl, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
+import {
+  AvatarRenderer,
+  AvatarWorld,
+  hallwayPublicCDNUrl,
+  Model,
+  modelFactory
+} from '@quarkworks-inc/avatar-webkit-rendering'
 
 import { Loader } from './components/loader'
 import { Switch } from './components/switch'
@@ -29,8 +35,8 @@ type State = {
 class AvatarLayout extends React.Component<Props, State> {
   private avatarRenderer: AvatarRenderer
   private world?: AvatarWorld
-
   private predictor!: AUPredictor
+  private model?: Model
 
   private node: HTMLDivElement
   private videoRef = React.createRef<HTMLVideoElement>()
@@ -124,12 +130,12 @@ class AvatarLayout extends React.Component<Props, State> {
       renderer: this.avatarRenderer
     })
 
-    const model = await modelFactory('emoji')
-    // const model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
-    // const model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
-    // const model = await modelFactory('void', 'void_9996.glb')
+    // this.model = await modelFactory('emoji')
+    // this.model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
+    // this.model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
+    this.model = await modelFactory('void', 'void_9999.glb')
 
-    await this.world.setModel(model)
+    await this.world.setModel(this.model)
     await this.world.setEnvironment(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
 
     this.avatarRenderer.updatables.push(this.world)
