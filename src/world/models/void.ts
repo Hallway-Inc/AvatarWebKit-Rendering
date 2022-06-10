@@ -23,6 +23,7 @@ export class VoidModel implements Model {
   // Model group
   private model: Group
 
+  private headBone?: Bone
   private neckBone?: Bone
   private leftEyeBone?: Bone
   private rightEyeBone?: Bone
@@ -54,6 +55,10 @@ export class VoidModel implements Model {
     this.neckBone =
       (object3DChildNamed(this.model, 'Neck_1', { recursive: true }) as Bone) ??
       (object3DChildNamed(this.model, 'Neck', { recursive: true }) as Bone)
+
+    this.headBone =
+      (object3DChildNamed(this.neckBone, 'Head_1', { recursive: true }) as Bone) ??
+      (object3DChildNamed(this.neckBone, 'Head', { recursive: true }) as Bone)
 
     this.leftEyeBone = object3DChildNamed(this.model, 'LeftEye', { recursive: true }) as Bone
     this.rightEyeBone = object3DChildNamed(this.model, 'RightEye', { recursive: true }) as Bone
@@ -122,10 +127,18 @@ export class VoidModel implements Model {
   }
 
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
-    if (!this.neckBone) return
+    if (!this.neckBone || !this.headBone) return
 
-    this.neckBone.rotation.x = this.shouldMirror ? roll : -roll
-    this.neckBone.rotation.y = this.shouldMirror ? -yaw : yaw
-    this.neckBone.rotation.z = Z_ROTATION_OFFSET - pitch
+    const reducedYaw = yaw / 2
+    const reducedRoll = roll / 4
+    const reducedZRotation = (Z_ROTATION_OFFSET - pitch) / 4
+
+    this.headBone.rotation.x = this.shouldMirror ? reducedRoll : -reducedRoll
+    this.headBone.rotation.y = this.shouldMirror ? -reducedYaw : reducedYaw
+    this.headBone.rotation.z = reducedZRotation
+
+    this.neckBone.rotation.x = this.shouldMirror ? reducedRoll : -reducedRoll
+    this.neckBone.rotation.y = this.shouldMirror ? -reducedYaw : reducedYaw
+    this.neckBone.rotation.z = reducedZRotation
   }
 }
