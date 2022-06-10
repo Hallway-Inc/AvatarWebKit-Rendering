@@ -129,16 +129,16 @@ export class VoidModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.neckBone || !this.headBone) return
 
-    const reducedYaw = yaw / 2
-    const reducedRoll = roll / 4
-    const reducedZRotation = (Z_ROTATION_OFFSET - pitch) / 4
+    const xRotation = roll / 4
+    const yRotation = yaw / 2
+    const zRotation = (Z_ROTATION_OFFSET - pitch) / 4
 
-    this.headBone.rotation.x = this.shouldMirror ? reducedRoll : -reducedRoll
-    this.headBone.rotation.y = this.shouldMirror ? -reducedYaw : reducedYaw
-    this.headBone.rotation.z = reducedZRotation
+    this.headBone.rotation.x = this.shouldMirror ? xRotation : -xRotation
+    this.headBone.rotation.y = this.shouldMirror ? -yRotation : yRotation
+    this.headBone.rotation.z = zRotation
 
-    this.neckBone.rotation.x = this.shouldMirror ? reducedRoll : -reducedRoll
-    this.neckBone.rotation.y = this.shouldMirror ? -reducedYaw : reducedYaw
-    this.neckBone.rotation.z = reducedZRotation
+    this.neckBone.rotation.x = this.shouldMirror ? xRotation : -xRotation
+    this.neckBone.rotation.y = this.shouldMirror ? -yRotation : yRotation
+    this.neckBone.rotation.z = zRotation
   }
 }
