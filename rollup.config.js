@@ -64,14 +64,12 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      dir: path.dirname(pkg.main),
-      format: 'cjs',
-      entryFileNames: () => '[name].js'
+      file: pkg.main,
+      format: 'cjs'
     },
     {
-      dir: path.dirname(pkg.module),
-      format: 'es',
-      entryFileNames: () => '[name].modern.js'
+      file: pkg.main,
+      format: 'es'
     }
   ],
   external,
