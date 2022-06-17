@@ -68,7 +68,7 @@ export default {
       format: 'cjs'
     },
     {
-      file: pkg.main,
+      file: pkg.module,
       format: 'es'
     }
   ],
