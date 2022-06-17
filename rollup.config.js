@@ -5,7 +5,6 @@ import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import typescript from 'rollup-plugin-typescript2'
 import dotenv from 'dotenv'
-import path from 'path'
 
 import pkg from './package.json'
 
