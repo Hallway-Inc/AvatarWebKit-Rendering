@@ -5,6 +5,7 @@ import builtins from 'rollup-plugin-node-builtins'
 import globals from 'rollup-plugin-node-globals'
 import typescript from 'rollup-plugin-typescript2'
 import dotenv from 'dotenv'
+import path from 'path'
 
 import pkg from './package.json'
 
@@ -63,12 +64,14 @@ export default {
   input: 'src/index.ts',
   output: [
     {
-      file: pkg.main,
-      format: 'cjs'
+      dir: path.dirname(pkg.main),
+      format: 'cjs',
+      entryFileNames: () => '[name].js'
     },
     {
-      file: pkg.module,
-      format: 'es'
+      dir: path.dirname(pkg.module),
+      format: 'es',
+      entryFileNames: () => '[name].modern.js'
     }
   ],
   external,

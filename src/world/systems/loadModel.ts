@@ -2,8 +2,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 import { hallwayPublicCDNUrl } from '../../utils/cdn'
 
-async function loadModel(url: string) {
+async function loadModel(url: string, useMeshopt = false) {
   const loader = new GLTFLoader()
+
+  if (useMeshopt) {
+    // Lazy load
+    const { MeshoptDecoder } = await import('three/examples/jsm/libs/meshopt_decoder.module')
+    loader.setMeshoptDecoder(MeshoptDecoder)
+  }
 
   const [emojiData] = await Promise.all([loader.loadAsync(url)])
   const emoji = emojiData.scene
