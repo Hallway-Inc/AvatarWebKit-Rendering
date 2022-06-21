@@ -17,7 +17,7 @@ export class ReadyPlayerMeModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  root?: Group
   private avatarRoot: Object3D
 
   // Nodes for current RPM version
@@ -46,11 +46,11 @@ export class ReadyPlayerMeModel implements Model {
   }
 
   private async load(url: string): Promise<ReadyPlayerMeModel> {
-    this.model = await loadModel(url)
+    this.root = await loadModel(url)
 
-    this.model.position.set(0, -0.55, 0)
+    this.root.position.set(0, -0.55, 0)
 
-    this.avatarRoot = object3DChildNamed(this.model, 'AvatarRoot')
+    this.avatarRoot = object3DChildNamed(this.root, 'AvatarRoot')
 
     // Meshes & bonez
     this.faceNode = object3DChildNamed(this.avatarRoot, 'Wolf3D_Head') as SkinnedMesh
@@ -74,17 +74,17 @@ export class ReadyPlayerMeModel implements Model {
   }
 
   addToScene(scene: Scene) {
-    scene.add(this.model)
+    scene.add(this.root)
   }
 
   removeFromScene(scene: Scene) {
-    scene.remove(this.model)
+    scene.remove(this.root)
   }
 
-  getPosition = () => this.model.position
+  getPosition = () => this.root.position
 
   updateFromResults(results: AvatarPrediction) {
-    if (!this.model) return
+    if (!this.root) return
 
     this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)

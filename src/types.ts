@@ -25,6 +25,7 @@ export interface Model {
   readonly defaultSettings: ModelSettings
   settings: ModelSettings
   shouldMirror: boolean
+  root?: THREE.Group
 
   addToScene(scene: Scene): void
   removeFromScene(scene: Scene): void

@@ -28,7 +28,7 @@ export class EmojiModel implements Model {
   shouldMirror = true
 
   // Groups
-  private model: Group
+  root: Group
   private headphones?: Group
 
   // Mesh components
@@ -56,19 +56,19 @@ export class EmojiModel implements Model {
   }
 
   private async load(): Promise<EmojiModel> {
-    this.model = await loadModelFromPublicCDN('models/Smiley_eye.glb')
+    this.root = await loadModelFromPublicCDN('models/Smiley_eye.glb')
     this.headphones = await loadModelFromPublicCDN('models/headphones_2.glb')
 
-    this.model.add(this.headphones)
+    this.root.add(this.headphones)
 
     // Mesh components
-    this.rightEye = this.model.children[0] as Mesh
-    this.leftEye = this.model.children[1] as Mesh
+    this.rightEye = this.root.children[0] as Mesh
+    this.leftEye = this.root.children[1] as Mesh
 
     this.rightPupil = this.rightEye.children[1] as Mesh
     this.leftPupil = this.leftEye.children[1] as Mesh
 
-    const smileyGroup = this.model.children[2]
+    const smileyGroup = this.root.children[2]
 
     this.face = smileyGroup.children[0] as Mesh
     this.mouth = smileyGroup.children[1] as Mesh
@@ -91,17 +91,17 @@ export class EmojiModel implements Model {
   }
 
   addToScene(scene: Scene) {
-    scene.add(this.model)
+    scene.add(this.root)
   }
 
   removeFromScene(scene: Scene) {
-    scene.remove(this.model)
+    scene.remove(this.root)
   }
 
-  getPosition = () => this.model.position
+  getPosition = () => this.root.position
 
   updateFromResults(results: AvatarPrediction) {
-    if (!this.model) return
+    if (!this.root) return
 
     this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)
@@ -154,19 +154,19 @@ export class EmojiModel implements Model {
   }
 
   updateHeadRotation(pitch: number, yaw: number, roll: number) {
-    if (!this.model) return
+    if (!this.root) return
 
-    this.model.rotation.x = pitch
-    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
-    this.model.rotation.z = this.shouldMirror ? roll : -roll
+    this.root.rotation.x = pitch
+    this.root.rotation.y = this.shouldMirror ? -yaw : yaw
+    this.root.rotation.z = this.shouldMirror ? roll : -roll
   }
 
   updatePosition(x: number, y: number, z: number) {
-    if (!this.model) return
+    if (!this.root) return
 
-    this.model.position.x = x
-    this.model.position.y = y
-    this.model.position.z = z / 2
+    this.root.position.x = x
+    this.root.position.y = y
+    this.root.position.z = z / 2
   }
 
   get settings(): EmojiModelSettings {

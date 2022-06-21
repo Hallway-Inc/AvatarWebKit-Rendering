@@ -27,7 +27,7 @@ export class VoidModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  root?: Group
 
   private headBone?: Bone
   private neckBone?: Bone
@@ -62,12 +62,12 @@ export class VoidModel implements Model {
   }
 
   private async load(url: string): Promise<VoidModel> {
-    this.model = await loadModel(url)
+    this.root = await loadModel(url)
 
-    this.model.position.y = Y_OFFSET
-    this.model.position.z = Z_OFFSET
+    this.root.position.y = Y_OFFSET
+    this.root.position.z = Z_OFFSET
 
-    enumerateChildNodes(this.model, (node: Object3D) => {
+    enumerateChildNodes(this.root, (node: Object3D) => {
       node.frustumCulled = false
 
       if ((this.settings.hideExtraAssets.value as boolean) && this.assetsToHide.includes(node.name)) {
@@ -77,17 +77,17 @@ export class VoidModel implements Model {
 
     // Meshes & bonez
     this.neckBone =
-      (object3DChildNamed(this.model, 'Neck_1', { recursive: true }) as Bone) ??
-      (object3DChildNamed(this.model, 'Neck', { recursive: true }) as Bone)
+      (object3DChildNamed(this.root, 'Neck_1', { recursive: true }) as Bone) ??
+      (object3DChildNamed(this.root, 'Neck', { recursive: true }) as Bone)
 
     this.headBone =
       (object3DChildNamed(this.neckBone, 'Head_1', { recursive: true }) as Bone) ??
       (object3DChildNamed(this.neckBone, 'Head', { recursive: true }) as Bone)
 
-    this.leftEyeBone = object3DChildNamed(this.model, 'LeftEye', { recursive: true }) as Bone
-    this.rightEyeBone = object3DChildNamed(this.model, 'RightEye', { recursive: true }) as Bone
-    this.leftArm = object3DChildNamed(this.model, 'LeftArm', { recursive: true }) as Bone
-    this.rightArm = object3DChildNamed(this.model, 'RightArm', { recursive: true }) as Bone
+    this.leftEyeBone = object3DChildNamed(this.root, 'LeftEye', { recursive: true }) as Bone
+    this.rightEyeBone = object3DChildNamed(this.root, 'RightEye', { recursive: true }) as Bone
+    this.leftArm = object3DChildNamed(this.root, 'LeftArm', { recursive: true }) as Bone
+    this.rightArm = object3DChildNamed(this.root, 'RightArm', { recursive: true }) as Bone
 
     if (this.leftArm) this.leftArm.rotation.x = -1.3
     if (this.rightArm) this.rightArm.rotation.x = -1.3
@@ -96,24 +96,24 @@ export class VoidModel implements Model {
   }
 
   addToScene(scene: Scene) {
-    scene.add(this.model)
+    scene.add(this.root)
   }
 
   removeFromScene(scene: Scene) {
-    scene.remove(this.model)
+    scene.remove(this.root)
   }
 
-  getPosition = () => this.model.position
+  getPosition = () => this.root.position
 
   updateFromResults(results: AvatarPrediction) {
-    if (!this.model) return
+    if (!this.root) return
 
     this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)
   }
 
   private updateBlendShapes(blendShapes: BlendShapes) {
-    if (!this.model) return
+    if (!this.root) return
 
     const eulerRight = [
       blendShapes.eyeLookDown_L + -blendShapes.eyeLookUp_L,
@@ -135,7 +135,7 @@ export class VoidModel implements Model {
     this.leftEyeBone.rotation.y = eulerLeft[1] * this.maxAngle
     // this.leftEyeBone.rotation.z = eulerLeft[2] * this.maxAngle
 
-    enumerateChildNodes(this.model, node => {
+    enumerateChildNodes(this.root, node => {
       const nodeMesh = node as SkinnedMesh
 
       if (!nodeMesh.morphTargetDictionary || !nodeMesh.morphTargetInfluences) return
@@ -175,7 +175,7 @@ export class VoidModel implements Model {
 
     const { hideExtraAssets = VoidModel.defaultSettings.hideExtraAssets } = settings
 
-    enumerateChildNodes(this.model, (node: Object3D) => {
+    enumerateChildNodes(this.root, (node: Object3D) => {
       if (hideExtraAssets.value && this.assetsToHide.includes(node.name)) {
         node.visible = false
       }

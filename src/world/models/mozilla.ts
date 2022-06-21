@@ -19,7 +19,7 @@ export class MozillaModel implements Model {
   settings = this.defaultSettings
   shouldMirror = true
 
-  private model?: Group
+  root?: Group
   private combinedMesh?: SkinnedMesh
   private headNode?: Bone
   private rightHandNode?: Bone
@@ -35,11 +35,11 @@ export class MozillaModel implements Model {
   }
 
   private async load(url: string): Promise<MozillaModel> {
-    this.model = await loadModel(url)
+    this.root = await loadModel(url)
 
-    this.model.position.y = Y_OFFSET
-    this.model.position.z = Z_OFFSET
-    const object = this.model.children[0]
+    this.root.position.y = Y_OFFSET
+    this.root.position.z = Z_OFFSET
+    const object = this.root.children[0]
     this.combinedMesh = object3DChildNamed(object, 'CombinedMesh') as SkinnedMesh
     this.headNode = object3DChildNamed(object, 'Head', { recursive: true }) as Bone
     this.rightHandNode = object3DChildNamed(object, 'RightHand', { recursive: true }) as Bone
@@ -53,17 +53,17 @@ export class MozillaModel implements Model {
   }
 
   addToScene(scene: Scene) {
-    scene.add(this.model)
+    scene.add(this.root)
   }
 
   removeFromScene(scene: Scene) {
-    scene.remove(this.model)
+    scene.remove(this.root)
   }
 
-  getPosition = () => this.model.position
+  getPosition = () => this.root.position
 
   updateFromResults(results: AvatarPrediction) {
-    if (!this.model) return
+    if (!this.root) return
 
     this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)
@@ -94,10 +94,10 @@ export class MozillaModel implements Model {
   }
 
   private updatePosition(x: number, y: number, z: number) {
-    if (!this.model) return
+    if (!this.root) return
 
-    this.model.position.x = x
-    this.model.position.y = Y_OFFSET + y
-    this.model.position.z = Z_OFFSET + z / 2
+    this.root.position.x = x
+    this.root.position.y = Y_OFFSET + y
+    this.root.position.z = Z_OFFSET + z / 2
   }
 }
