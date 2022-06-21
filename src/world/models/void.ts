@@ -62,7 +62,7 @@ export class VoidModel implements Model {
   }
 
   private async load(url: string): Promise<VoidModel> {
-    this.model = await loadModel(url)
+    this.model = await loadModel(url, { useMeshopt: true })
 
     this.model.position.y = Y_OFFSET
     this.model.position.z = Z_OFFSET
