@@ -1,4 +1,4 @@
-import { Color, PerspectiveCamera, Scene, WebGLRenderer } from 'three'
+import { Color, PerspectiveCamera, Scene, WebGLRenderer, Texture } from 'three'
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 
 import { Renderable, Updateable, Model, WorldConfig } from '../types'
@@ -63,14 +63,15 @@ export class AvatarWorld implements Updateable, Renderable {
     this.camera.position.z = model.type === 'emoji' ? 1 : 0.6
     this.camera.position.y = 0
   }
-
   async setEnvironment(envUrl: string) {
     const envMap = await this.environmentLoader.load(envUrl)
-
     this.scene.environment = envMap
-    this.scene.background = envMap
   }
-
+  async setBackground(background: string) {
+    const bgTexture = await this.environmentLoader.load(background)
+    this.scene.background = bgTexture
+    this.resize()
+  }
   async loadScene(model: Model) {
     await this.setModel(model)
 
@@ -96,6 +97,20 @@ export class AvatarWorld implements Updateable, Renderable {
 
     this.camera.aspect = this.container.clientWidth / this.container.clientHeight
     this.camera.updateProjectionMatrix()
+
+    if (this.scene.background instanceof Texture) {
+      const texture = this.scene.background
+      const texAspect = texture.image.width / texture.image.height
+      const combinedAspect = this.camera.aspect / texAspect
+      // Update texture scaling
+      if (combinedAspect > 1) {
+        texture.repeat.set(1, 1 / combinedAspect)
+        texture.offset.set(0, 0.5 * (1 - 1 / combinedAspect))
+      } else {
+        texture.repeat.set(combinedAspect, 1)
+        texture.offset.set(0.5 * (1 - combinedAspect), 0)
+      }
+    }
   }
 
   tick(delta: number): void {

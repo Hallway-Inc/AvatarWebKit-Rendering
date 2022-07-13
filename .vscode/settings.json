@@ -9,6 +9,9 @@
     "cSpell.words": [
       "Equirectangular",
       "pmrem"
-    ]
+    ],
+    "[typescript]": {
+      "editor.defaultFormatter": "vscode.typescript-language-features"
+    }
 }
   
