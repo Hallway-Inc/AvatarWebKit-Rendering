@@ -1,13 +1,7 @@
 import React from 'react'
 
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import {
-  AvatarRenderer,
-  AvatarWorld,
-  hallwayPublicCDNUrl,
-  Model,
-  modelFactory
-} from '@quarkworks-inc/avatar-webkit-rendering'
+import { AvatarRenderer, AvatarWorld, Model, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
 
 import { Loader } from './components/loader'
 import { Switch } from './components/switch'
@@ -130,13 +124,12 @@ class AvatarLayout extends React.Component<Props, State> {
       renderer: this.avatarRenderer
     })
 
-    // this.model = await modelFactory('emoji')
+    this.model = await modelFactory('emoji')
     // this.model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
     // this.model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
-    this.model = await modelFactory('void', 'void_9999.glb')
+    // this.model = await modelFactory('void', 'void_9999.glb')
 
-    await this.world.setModel(this.model)
-    await this.world.setEnvironment(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
+    this.world.setModel(this.model)
 
     this.avatarRenderer.updatables.push(this.world)
     this.avatarRenderer.renderables.push(this.world)

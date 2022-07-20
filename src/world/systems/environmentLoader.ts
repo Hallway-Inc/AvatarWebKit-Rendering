@@ -1,6 +1,6 @@
 import path from 'path'
 
-import { Loader, PMREMGenerator, Texture, WebGLRenderer } from 'three'
+import { Loader, PMREMGenerator, Texture, WebGLRenderer, TextureLoader, sRGBEncoding, RepeatWrapping } from 'three'
 import { EXRLoader } from 'three/examples/jsm/loaders/EXRLoader.js'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 
@@ -12,7 +12,7 @@ export class EnvironmentLoader {
     this.pmremGenerator.compileEquirectangularShader()
   }
 
-  textureLoaderForExtension(ext: string, fallback: Loader | undefined = new RGBELoader()): Loader {
+  textureLoaderForExtension(ext: string, fallback: Loader | undefined = new TextureLoader()): Loader {
     switch (ext) {
       case 'exr':
       case '.exr':
@@ -20,6 +20,13 @@ export class EnvironmentLoader {
       case 'hdr':
       case '.hdr':
         return new RGBELoader()
+      case 'jpg':
+      case '.jpg':
+      case 'jpeg':
+      case '.jpeg':
+      case 'png':
+      case '.png':
+        return new TextureLoader()
       default:
         return fallback
     }
@@ -39,6 +46,11 @@ export class EnvironmentLoader {
     if (!url) return Promise.reject('invalid url')
 
     return textureLoader.loadAsync(url, onProgress).then(texture => {
+      if (textureLoader instanceof TextureLoader) {
+        // LDR images
+        texture.encoding = sRGBEncoding
+        return texture
+      }
       const envMap = this.pmremGenerator.fromEquirectangular(texture).texture
       this.pmremGenerator.dispose()
 
