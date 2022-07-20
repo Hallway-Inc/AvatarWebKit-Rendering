@@ -49,9 +49,18 @@ export class AvatarWorld implements Updateable, Renderable {
     this.scene.add(this.camera)
 
     this.resize()
+
+    // Load default lighting environment
+    this.environmentLoader
+      .load(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
+      .then(texture => {
+        this.setBackground(texture)
+        this.setEnvironment(texture)
+      })
+      .catch(e => console.error('Error loading default environment', e))
   }
 
-  async setModel(model: Model) {
+  setModel(model: Model) {
     if (this.model) {
       this.model.removeFromScene(this.scene)
     }
@@ -63,20 +72,14 @@ export class AvatarWorld implements Updateable, Renderable {
     this.camera.position.z = model.type === 'emoji' ? 1 : 0.6
     this.camera.position.y = 0
   }
-  async setEnvironment(envUrl: string) {
-    const envMap = await this.environmentLoader.load(envUrl)
-    this.scene.environment = envMap
-  }
-  async setBackground(background: string) {
-    const bgTexture = await this.environmentLoader.load(background)
-    this.scene.background = bgTexture
-    this.resize()
-  }
-  async loadScene(model: Model) {
-    await this.setModel(model)
 
-    const envUrl = hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr')
-    await this.setEnvironment(envUrl)
+  setEnvironment(environment: Texture) {
+    this.scene.environment = environment
+  }
+
+  setBackground(background: Texture) {
+    this.scene.background = background
+    this.resize()
   }
 
   cleanUp() {
