@@ -32,7 +32,7 @@ export interface Model {
   updateFromResults(results: AvatarPrediction): void
 }
 
-export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void'
+export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void' | 'chib'
 
 export type WorldConfig = {
   container: HTMLElement

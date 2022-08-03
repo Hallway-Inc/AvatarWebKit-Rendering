@@ -1,4 +1,5 @@
 import { Model, ModelType } from '../../types'
+import { ChibModel } from './chib'
 
 import { EmojiModel } from './emoji'
 import { ModelSettings } from './modelSettings'
@@ -16,6 +17,8 @@ export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
       return MozillaModel.init(url)
     case 'void':
       return VoidModel.init(url)
+    case 'chib':
+      return ChibModel.init(url)
     default:
       return Promise.reject(`Unknown model type: ${type}`)
   }
@@ -31,6 +34,8 @@ export const modelSettingsFactory = (type: ModelType): ModelSettings => {
       return MozillaModel.defaultSettings
     case 'void':
       return VoidModel.defaultSettings
+    case 'chib':
+      return ChibModel.defaultSettings
     default:
       return {}
   }

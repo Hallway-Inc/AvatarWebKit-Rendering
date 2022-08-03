@@ -35,3 +35,5 @@ export type ReadyPlayerMeModelSettings = ModelSettings
 export interface VoidModelSettings extends ModelSettings {
   hideExtraAssets: ModelBooleanSetting
 }
+
+export type ChibModelSettings = ModelSettings
