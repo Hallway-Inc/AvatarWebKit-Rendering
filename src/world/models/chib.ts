@@ -46,7 +46,6 @@ export class ChibModel implements Model {
     })
 
     // Meshes & bonez
-    console.log(this.model)
     this.neckBone = object3DChildNamed(this.model, 'mixamorigNeck', { recursive: true }) as Bone
     this.headBone = object3DChildNamed(this.model, 'mixamorigHead', { recursive: true }) as Bone
 
