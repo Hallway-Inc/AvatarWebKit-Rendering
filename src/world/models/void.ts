@@ -1,5 +1,5 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Group, Object3D, Scene, SkinnedMesh } from 'three'
+import { Bone, Group, MeshStandardMaterial, Object3D, Scene, SkinnedMesh } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
@@ -72,6 +72,13 @@ export class VoidModel implements Model {
 
       if ((this.settings.hideExtraAssets.value as boolean) && this.assetsToHide.includes(node.name)) {
         node.visible = false
+      }
+
+      if (node.name === 'Bubble') {
+        const skinnedMesh = node as SkinnedMesh
+        const material = skinnedMesh.material as MeshStandardMaterial
+        material.transparent = true
+        material.needsUpdate = true
       }
     })
 
