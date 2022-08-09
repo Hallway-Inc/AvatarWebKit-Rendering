@@ -77,7 +77,7 @@ export class AvatarWorld implements Updateable, Renderable {
     this.scene.environment = environment
   }
 
-  setBackground(background: Texture) {
+  setBackground(background: Texture | Color | null) {
     this.scene.background = background
     this.resize()
   }
