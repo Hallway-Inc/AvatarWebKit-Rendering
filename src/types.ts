@@ -39,4 +39,5 @@ export type WorldConfig = {
   renderer: AvatarRenderer
   isMe?: boolean
   enableControls?: boolean
+  useDefaultBackground?: boolean
 }

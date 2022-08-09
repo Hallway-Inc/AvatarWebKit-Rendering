@@ -27,7 +27,7 @@ export class AvatarWorld implements Updateable, Renderable {
 
   private model?: Model
 
-  constructor({ container, renderer, isMe, enableControls }: WorldConfig) {
+  constructor({ container, renderer, isMe, enableControls, useDefaultBackground = true }: WorldConfig) {
     this.container = container
     this.isMe = isMe ?? true
     this.enableControls = enableControls ?? false
@@ -54,7 +54,9 @@ export class AvatarWorld implements Updateable, Renderable {
     this.environmentLoader
       .load(hallwayPublicCDNUrl('backgrounds/venice_sunset_1k.hdr'))
       .then(texture => {
-        this.setBackground(texture)
+        if (useDefaultBackground) {
+          this.setBackground(texture)
+        }
         this.setEnvironment(texture)
       })
       .catch(e => console.error('Error loading default environment', e))
@@ -77,8 +79,8 @@ export class AvatarWorld implements Updateable, Renderable {
     this.scene.environment = environment
   }
 
-  setBackground(background: Texture | Color | null) {
-    this.scene.background = background
+  setBackground(background: Texture | Color | string | null) {
+    this.scene.background = typeof background === 'string' ? new Color(background as string) : background
     this.resize()
   }
 
