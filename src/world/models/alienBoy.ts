@@ -1,5 +1,5 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Group, Mesh, Object3D, Scene, SkinnedMesh } from 'three'
+import { Group, Mesh, Scene, SkinnedMesh } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
@@ -104,7 +104,7 @@ export class AlienBoyModel implements Model {
 
     const xRotation = pitch / 2
     const yRotation = yaw
-    const zRotation = roll / 2
+    const zRotation = roll
 
     this.headNode.rotation.x = xRotation
     this.headNode.rotation.y = this.shouldMirror ? -yRotation : yRotation
