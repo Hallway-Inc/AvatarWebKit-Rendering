@@ -7,6 +7,8 @@ import { enumerateChildNodes, object3DChildNamed } from '../../utils/three'
 
 import { AlienBoyModelSettings } from './modelSettings'
 
+const PITCH_OFFSET = -0.3
+
 const Y_OFFSET = -2.4
 const Z_OFFSET = -3
 
@@ -37,7 +39,7 @@ export class AlienBoyModel implements Model {
   }
 
   private async load(url: string): Promise<AlienBoyModel> {
-    this.model = await loadModel(url)
+    this.model = await loadModel(url, { useMeshopt: true })
 
     this.model.position.y = Y_OFFSET
     this.model.position.z = Z_OFFSET
@@ -102,7 +104,7 @@ export class AlienBoyModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.headNode) return
 
-    const xRotation = pitch / 2
+    const xRotation = pitch + PITCH_OFFSET
     const yRotation = yaw
     const zRotation = roll
 
