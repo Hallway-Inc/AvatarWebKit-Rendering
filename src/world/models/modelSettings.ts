@@ -37,3 +37,5 @@ export interface VoidModelSettings extends ModelSettings {
 }
 
 export type ChibModelSettings = ModelSettings
+
+export type AlienBoyModelSettings = ModelSettings

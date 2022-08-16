@@ -1,11 +1,12 @@
 import { Model, ModelType } from '../../types'
-import { ChibModel } from './chib'
 
 import { EmojiModel } from './emoji'
 import { ModelSettings } from './modelSettings'
 import { MozillaModel } from './mozilla'
 import { ReadyPlayerMeModel } from './readyPlayerMe'
 import { VoidModel } from './void'
+import { ChibModel } from './chib'
+import { AlienBoyModel } from './alienBoy'
 
 export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
   switch (type) {
@@ -19,6 +20,8 @@ export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
       return VoidModel.init(url)
     case 'chib':
       return ChibModel.init(url)
+    case 'alienBoy':
+      return AlienBoyModel.init(url)
     default:
       return Promise.reject(`Unknown model type: ${type}`)
   }
@@ -36,6 +39,8 @@ export const modelSettingsFactory = (type: ModelType): ModelSettings => {
       return VoidModel.defaultSettings
     case 'chib':
       return ChibModel.defaultSettings
+    case 'alienBoy':
+      return AlienBoyModel.defaultSettings
     default:
       return {}
   }
