@@ -168,4 +168,9 @@ export class ReadyPlayerMeModel implements Model {
     // Note: The default Z values feel pretty far back. These are adjusted.
     object.position.set(x, y, z / 2)
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    const object = this.headBone ?? this.wolf3D_Avatar
+    object.lookAt(x, y, z)
+  }
 }

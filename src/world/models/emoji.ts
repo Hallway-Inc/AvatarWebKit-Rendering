@@ -185,4 +185,8 @@ export class EmojiModel implements Model {
     this.leftPupilMaterial.color = new Color(eyeColor.value)
     this.rightPupilMaterial.color = new Color(eyeColor.value)
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    this.model.lookAt(x, y, z)
+  }
 }

@@ -1,7 +1,13 @@
 import React from 'react'
 
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { AvatarRenderer, AvatarWorld, Model, modelFactory } from '@quarkworks-inc/avatar-webkit-rendering'
+import {
+  AvatarRenderer,
+  AvatarWorld,
+  hallwayPublicCDNUrl,
+  Model,
+  modelFactory
+} from '@quarkworks-inc/avatar-webkit-rendering'
 
 import { Loader } from './components/loader'
 import { Switch } from './components/switch'
@@ -57,6 +63,7 @@ class AvatarLayout extends React.Component<Props, State> {
 
     this._windowDidResize = this._windowDidResize.bind(this)
     window.addEventListener('resize', this._windowDidResize)
+    window.addEventListener('mousemove', this._mouseDidMove)
 
     this._calculateSceneSize()
 
@@ -70,6 +77,15 @@ class AvatarLayout extends React.Component<Props, State> {
 
   private _windowDidResize() {
     this._calculateSceneSize()
+  }
+
+  private _mouseDidMove = (event: MouseEvent) => {
+    if (this.state.avatarState != 'running')
+      this.model?.lookAt(
+        event.clientX / document.body.clientWidth - 0.5,
+        -event.clientY / document.body.clientHeight + 0.5,
+        1
+      )
   }
 
   private _calculateSceneSize() {
@@ -124,11 +140,15 @@ class AvatarLayout extends React.Component<Props, State> {
       renderer: this.avatarRenderer
     })
 
-    this.model = await modelFactory('emoji')
+    // this.model = await modelFactory('emoji')
     // this.model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
     // this.model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
-    // this.model = await modelFactory('void', 'void_9999.glb')
-
+    this.model = await modelFactory(
+      'void',
+      'https://hallway-private.nyc3.cdn.digitaloceanspaces.com/avatars/_defaults/voids/void_3157.glb'
+    )
+    // this.model = await modelFactory('alienBoy', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
+    // this.model = await modelFactory('chib', hallwayPublicCDNUrl('models/1.glb'))
     this.world.setModel(this.model)
 
     this.avatarRenderer.updatables.push(this.world)

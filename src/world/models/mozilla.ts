@@ -100,4 +100,8 @@ export class MozillaModel implements Model {
     this.model.position.y = Y_OFFSET + y
     this.model.position.z = Z_OFFSET + z / 2
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    this.headNode.lookAt(x, y, z)
+  }
 }

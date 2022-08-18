@@ -126,4 +126,8 @@ export class ChibModel implements Model {
   set settings(settings: ChibModelSettings) {
     this._settings = settings
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    this.headBone.lookAt(x, y, z)
+  }
 }

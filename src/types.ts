@@ -30,6 +30,7 @@ export interface Model {
   removeFromScene(scene: Scene): void
   getPosition(): Vector3
   updateFromResults(results: AvatarPrediction): void
+  lookAt?(x: number, y: number, z: number): void
 }
 
 export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void' | 'chib' | 'alienBoy'

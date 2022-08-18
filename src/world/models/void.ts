@@ -1,5 +1,5 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Bone, Group, MeshStandardMaterial, Object3D, Scene, SkinnedMesh } from 'three'
+import { AxesHelper, Bone, Group, MeshStandardMaterial, Object3D, Scene, SkinnedMesh } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
@@ -104,6 +104,8 @@ export class VoidModel implements Model {
 
   addToScene(scene: Scene) {
     scene.add(this.model)
+    const axesHelper = new AxesHelper(5)
+    scene.add(axesHelper)
   }
 
   removeFromScene(scene: Scene) {

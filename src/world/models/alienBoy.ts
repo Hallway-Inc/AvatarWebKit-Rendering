@@ -120,4 +120,8 @@ export class AlienBoyModel implements Model {
     this.model.position.y = Y_OFFSET + y
     this.model.position.z = Z_OFFSET + z
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    this.headNode.lookAt(x * 2, y * 2, z)
+  }
 }
