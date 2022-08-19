@@ -133,4 +133,8 @@ export class AvatarWorld implements Updateable, Renderable {
   updateFromResults(results: AvatarPrediction) {
     this.model?.updateFromResults(results)
   }
+
+  lookAt(x: number, y: number, z: number) {
+    this.model.lookAt(x, y, z)
+  }
 }
