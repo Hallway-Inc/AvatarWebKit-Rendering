@@ -135,6 +135,8 @@ export class AvatarWorld implements Updateable, Renderable {
   }
 
   lookAt(x: number, y: number, z: number) {
-    this.model.lookAt(x, y, z)
+    if (this.model?.lookAt) {
+      this.model.lookAt(x, y, z)
+    }
   }
 }
