@@ -56,7 +56,7 @@ export class EmojiModel implements Model {
   }
 
   private async load(): Promise<EmojiModel> {
-    this.model = await loadModelFromPublicCDN('models/Smiley_eye_compressed.glb', { useMeshopt: true })
+    this.model = await loadModelFromPublicCDN('models/Smiley_eye.glb')
     this.headphones = await loadModelFromPublicCDN('models/headphones_2_compressed.glb', { useMeshopt: true })
 
     this.model.add(this.headphones)
