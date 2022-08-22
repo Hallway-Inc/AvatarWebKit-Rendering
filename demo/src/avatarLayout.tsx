@@ -64,6 +64,7 @@ class AvatarLayout extends React.Component<Props, State> {
     this._windowDidResize = this._windowDidResize.bind(this)
     window.addEventListener('resize', this._windowDidResize)
     window.addEventListener('mousemove', this._mouseDidMove)
+    window.addEventListener('dblclick', this._doubleClickListener)
 
     this._calculateSceneSize()
 
@@ -72,6 +73,8 @@ class AvatarLayout extends React.Component<Props, State> {
 
   componentWillUnmount(): void {
     window.removeEventListener('resize', this._windowDidResize)
+    window.removeEventListener('mousemove', this._mouseDidMove)
+    window.removeEventListener('dblclick', this._doubleClickListener)
     this.stop()
   }
 
@@ -86,6 +89,24 @@ class AvatarLayout extends React.Component<Props, State> {
         -event.clientY / document.body.clientHeight + 0.5,
         1
       )
+  }
+
+  private _doubleClickListener = () => {
+    const fullscreenElement = document.fullscreenElement
+    const canvas = this.avatarCanvas.current
+    if (!canvas) return
+
+    if (!fullscreenElement) {
+      if (canvas.requestFullscreen) {
+        canvas.requestFullscreen()
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen()
+      }
+
+      this._windowDidResize()
+    }
   }
 
   private _calculateSceneSize() {
