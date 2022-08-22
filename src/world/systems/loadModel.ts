@@ -17,8 +17,8 @@ async function loadModel(url: string, options: { useMeshopt: boolean } = { useMe
   return emoji
 }
 
-async function loadModelFromPublicCDN(path: string) {
-  return loadModel(hallwayPublicCDNUrl(path))
+async function loadModelFromPublicCDN(path: string, options: { useMeshopt: boolean } = { useMeshopt: false }) {
+  return loadModel(hallwayPublicCDNUrl(path), options)
 }
 
 export { loadModel, loadModelFromPublicCDN }
