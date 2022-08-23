@@ -38,7 +38,7 @@ export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void' | 'chib' 
 export type WorldConfig = {
   container: HTMLElement
   renderer: AvatarRenderer
-  isMe?: boolean
   enableControls?: boolean
   useDefaultBackground?: boolean
+  debug?: boolean
 }

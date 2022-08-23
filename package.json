@@ -54,6 +54,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "eslint-webpack-plugin": "^2.5.0",
     "jest": "^27.5.1",
+    "lil-gui": "^0.17.0",
     "prettier": "2.1.0",
     "release-it": "^14.12.4",
     "rollup": "^2.68.0",

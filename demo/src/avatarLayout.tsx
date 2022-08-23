@@ -1,4 +1,5 @@
 import React from 'react'
+import GUI from 'lil-gui'
 
 import { AUPredictor, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import {
@@ -32,6 +33,8 @@ type State = {
   sceneHeight: number
 }
 
+const gui = new GUI()
+
 class AvatarLayout extends React.Component<Props, State> {
   private avatarRenderer: AvatarRenderer
   private world?: AvatarWorld
@@ -64,7 +67,7 @@ class AvatarLayout extends React.Component<Props, State> {
     this._windowDidResize = this._windowDidResize.bind(this)
     window.addEventListener('resize', this._windowDidResize)
     window.addEventListener('mousemove', this._mouseDidMove)
-    window.addEventListener('dblclick', this._doubleClickListener)
+    this.avatarCanvas.current.addEventListener('dblclick', this._doubleClickListener)
 
     this._calculateSceneSize()
 
@@ -74,7 +77,7 @@ class AvatarLayout extends React.Component<Props, State> {
   componentWillUnmount(): void {
     window.removeEventListener('resize', this._windowDidResize)
     window.removeEventListener('mousemove', this._mouseDidMove)
-    window.removeEventListener('dblclick', this._doubleClickListener)
+    this.avatarCanvas.current.removeEventListener('dblclick', this._doubleClickListener)
     this.stop()
   }
 
@@ -158,7 +161,8 @@ class AvatarLayout extends React.Component<Props, State> {
 
     this.world = new AvatarWorld({
       container: avatarCanvas,
-      renderer: this.avatarRenderer
+      renderer: this.avatarRenderer,
+      debug: true
     })
 
     this.model = await modelFactory('emoji')
@@ -174,6 +178,14 @@ class AvatarLayout extends React.Component<Props, State> {
 
     this.avatarRenderer.updatables.push(this.world)
     this.avatarRenderer.renderables.push(this.world)
+
+    Object.keys(this.world.debugConfig).forEach(key => {
+      const config = this.world.debugConfig[key]
+
+      if (config.property === 'number') {
+        gui.add(config.object, config.value, config.min, config.max)
+      }
+    })
 
     this.avatarRenderer.start()
   }

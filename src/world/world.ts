@@ -15,7 +15,6 @@ const sceneBackgroundColor = new Color(0xffffff)
 
 export class AvatarWorld implements Updateable, Renderable {
   private container: HTMLElement
-  private isMe: boolean
   private enableControls: boolean
   private environmentLoader: EnvironmentLoader
 
@@ -27,9 +26,14 @@ export class AvatarWorld implements Updateable, Renderable {
 
   private model?: Model
 
-  constructor({ container, renderer, isMe, enableControls, useDefaultBackground = true }: WorldConfig) {
+  debugConfig = {
+    cameraPositionX: {},
+    cameraPositionY: {},
+    cameraPositionZ: {}
+  }
+
+  constructor({ container, renderer, enableControls, useDefaultBackground = true, debug = false }: WorldConfig) {
     this.container = container
-    this.isMe = isMe ?? true
     this.enableControls = enableControls ?? false
     this.environmentLoader = renderer.environmentLoader
 
@@ -60,6 +64,32 @@ export class AvatarWorld implements Updateable, Renderable {
         this.setEnvironment(texture)
       })
       .catch(e => console.error('Error loading default environment', e))
+
+    if (debug) this.setupDebug()
+  }
+
+  setupDebug() {
+    this.debugConfig.cameraPositionX = {
+      object: this.camera.position,
+      value: 'x',
+      property: 'number',
+      min: -5,
+      max: 5
+    }
+    this.debugConfig.cameraPositionY = {
+      object: this.camera.position,
+      value: 'y',
+      property: 'number',
+      min: -5,
+      max: 5
+    }
+    this.debugConfig.cameraPositionZ = {
+      object: this.camera.position,
+      value: 'z',
+      property: 'number',
+      min: 0,
+      max: 10
+    }
   }
 
   setModel(model: Model) {
