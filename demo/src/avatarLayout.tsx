@@ -166,6 +166,10 @@ class AvatarLayout extends React.Component<Props, State> {
     })
 
     this.model = await modelFactory('emoji')
+    // this.model = await modelFactory(
+    //   'zuck',
+    //   'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/models/zuck_compressed.glb'
+    // )
     // this.model = await modelFactory('readyPlayerMe', hallwayPublicCDNUrl('models/hannah.glb'))
     // this.model = await modelFactory('mozilla', hallwayPublicCDNUrl('models/mozilla.glb'))
     // this.model = await modelFactory(
