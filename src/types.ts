@@ -33,7 +33,7 @@ export interface Model {
   lookAt?(x: number, y: number, z: number): void
 }
 
-export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void' | 'chib' | 'alienBoy' | 'zuck'
+export type ModelType = 'emoji' | 'readyPlayerMe' | 'mozilla' | 'void' | 'chib' | 'alienBoy' | 'zuck' | 'glb'
 
 export type WorldConfig = {
   container: HTMLElement

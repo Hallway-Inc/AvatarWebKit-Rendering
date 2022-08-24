@@ -8,6 +8,7 @@ import { VoidModel } from './void'
 import { ChibModel } from './chib'
 import { AlienBoyModel } from './alienBoy'
 import { ZuckModel } from './zuck'
+import { GLBModel } from './glb'
 
 export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
   switch (type) {
@@ -25,6 +26,8 @@ export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
       return AlienBoyModel.init(url)
     case 'zuck':
       return ZuckModel.init(url)
+    case 'glb':
+      return GLBModel.init(url)
     default:
       return Promise.reject(`Unknown model type: ${type}`)
   }
@@ -46,6 +49,8 @@ export const modelSettingsFactory = (type: ModelType): ModelSettings => {
       return AlienBoyModel.defaultSettings
     case 'zuck':
       return ZuckModel.defaultSettings
+    case 'glb':
+      return GLBModel.defaultSettings
     default:
       return {}
   }
