@@ -1,14 +1,11 @@
 import { AvatarPrediction, BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { Group, Scene, SkinnedMesh, Object3D, AxesHelper, Mesh } from 'three'
+import { Group, Scene, SkinnedMesh, Box3, Vector3 } from 'three'
 
 import { Model, ModelType } from '../../types'
 import { loadModel } from '../systems/loadModel'
 import { enumerateChildNodes } from '../../utils/three'
 
 import { GLBModelSettings } from './modelSettings'
-
-const Y_OFFSET = 0
-const Z_OFFSET = 0
 
 export class GLBModel implements Model {
   readonly type: ModelType = 'glb'
@@ -33,22 +30,32 @@ export class GLBModel implements Model {
 
   private async load(url: string): Promise<GLBModel> {
     this.model = await loadModel(url)
-
-    this.model.position.y = Y_OFFSET
-    this.model.position.z = Z_OFFSET
-    console.log('Length: ', this.model.position.length())
+    this.normalizeScale()
+    this.centerGLB()
 
     return this
   }
 
   addToScene(scene: Scene) {
-    const axesHelper = new AxesHelper(2)
-    scene.add(axesHelper)
     scene.add(this.model)
   }
 
   removeFromScene(scene: Scene) {
     scene.remove(this.model)
+  }
+
+  centerGLB = () => {
+    const modelBox = new Box3().setFromObject(this.model)
+    const vector = new Vector3()
+    modelBox.getCenter(vector)
+    this.model.position.set(-vector.x, -vector.y, -vector.z)
+  }
+
+  normalizeScale = () => {
+    const modelBox = new Box3().setFromObject(this.model)
+    const depth = modelBox.max.z - modelBox.min.z
+    const mult = 0.35 / depth
+    this.model.scale.set(this.model.scale.x * mult, this.model.scale.y * mult, this.model.scale.z * mult)
   }
 
   getPosition = () => this.model.position
@@ -58,7 +65,6 @@ export class GLBModel implements Model {
 
     this.updateBlendShapes(results.blendShapes)
     this.updateHeadRotation(-results.rotation.pitch, -results.rotation.yaw, -results.rotation.roll)
-    this.updatePosition(results.transform.x, results.transform.y, results.transform.z)
   }
 
   private updateBlendShapes(blendShapes: BlendShapes) {
@@ -90,12 +96,5 @@ export class GLBModel implements Model {
     this.model.rotation.x = xRotation
     this.model.rotation.y = this.shouldMirror ? -yRotation : yRotation
     this.model.rotation.z = this.shouldMirror ? zRotation : -zRotation
-  }
-
-  private updatePosition(x: number, y: number, z: number) {
-    if (!this.model) return
-    this.model.position.x = x
-    this.model.position.y = Y_OFFSET + y
-    this.model.position.z = Z_OFFSET + z
   }
 }
