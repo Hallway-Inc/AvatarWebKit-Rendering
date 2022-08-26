@@ -33,6 +33,8 @@ export class GLBModel implements Model {
     this.normalizeScale()
     this.centerGLB()
 
+    console.log(this.model)
+
     return this
   }
 
@@ -89,12 +91,8 @@ export class GLBModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.model) return
 
-    const xRotation = pitch / 2
-    const yRotation = yaw
-    const zRotation = roll
-
-    this.model.rotation.x = xRotation
-    this.model.rotation.y = this.shouldMirror ? -yRotation : yRotation
-    this.model.rotation.z = this.shouldMirror ? zRotation : -zRotation
+    this.model.rotation.x = pitch / 2
+    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
+    // this.model.rotation.z = this.shouldMirror ? roll : -roll
   }
 }
