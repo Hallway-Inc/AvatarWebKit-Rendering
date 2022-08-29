@@ -33,8 +33,6 @@ export class GLBModel implements Model {
     this.normalizeScale()
     this.centerGLB()
 
-    console.log(this.model)
-
     return this
   }
 
@@ -80,7 +78,8 @@ export class GLBModel implements Model {
       for (const key in blendShapes) {
         const arKitKey = BlendShapeKeys.toARKitConvention(key)
 
-        const morphIndex = nodeMesh.morphTargetDictionary[arKitKey]
+        const morphIndex = nodeMesh.morphTargetDictionary[key] ?? nodeMesh.morphTargetDictionary[arKitKey]
+
         const value = blendShapes[key]
 
         nodeMesh.morphTargetInfluences[morphIndex] = value
@@ -91,9 +90,8 @@ export class GLBModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.model) return
 
-    // console.log(pitch, yaw, roll)
     this.model.rotation.x = pitch / 3
-    this.model.rotation.y = this.shouldMirror ? -roll : roll
-    this.model.rotation.z = this.shouldMirror ? yaw : -yaw
+    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
+    // this.model.rotation.z = this.shouldMirror ? roll : -roll
   }
 }
