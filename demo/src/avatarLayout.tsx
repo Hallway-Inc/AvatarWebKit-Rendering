@@ -178,7 +178,7 @@ class AvatarLayout extends React.Component<Props, State> {
     // )
     // this.model = await modelFactory('alienBoy', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
     // this.model = await modelFactory('chib', hallwayPublicCDNUrl('models/1.glb'))
-    // this.model = await modelFactory(null, hallwayPublicCDNUrl('models/alien_boy_225.glb'))
+    // this.model = await modelFactory('glb', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
 
     this.world.setModel(this.model)
 
