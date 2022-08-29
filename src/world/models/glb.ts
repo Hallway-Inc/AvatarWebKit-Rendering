@@ -29,7 +29,7 @@ export class GLBModel implements Model {
   }
 
   private async load(url: string): Promise<GLBModel> {
-    this.model = await loadModel(url)
+    this.model = await loadModel(url, { useMeshopt: true })
     this.normalizeScale()
     this.centerGLB()
 
@@ -56,7 +56,7 @@ export class GLBModel implements Model {
   normalizeScale = () => {
     const modelBox = new Box3().setFromObject(this.model)
     const depth = modelBox.max.z - modelBox.min.z
-    const mult = 0.35 / depth
+    const mult = 0.375 / depth
     this.model.scale.set(this.model.scale.x * mult, this.model.scale.y * mult, this.model.scale.z * mult)
   }
 
@@ -91,7 +91,7 @@ export class GLBModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.model) return
 
-    this.model.rotation.x = pitch / 2
+    this.model.rotation.x = pitch / 3
     this.model.rotation.y = this.shouldMirror ? -yaw : yaw
     // this.model.rotation.z = this.shouldMirror ? roll : -roll
   }

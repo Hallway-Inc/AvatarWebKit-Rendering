@@ -165,7 +165,7 @@ class AvatarLayout extends React.Component<Props, State> {
       debug: true
     })
 
-    this.model = await modelFactory('emoji')
+    // this.model = await modelFactory('emoji')
     // this.model = await modelFactory(
     //   'zuck',
     //   'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/models/zuck_compressed.glb'
@@ -178,6 +178,11 @@ class AvatarLayout extends React.Component<Props, State> {
     // )
     // this.model = await modelFactory('alienBoy', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
     // this.model = await modelFactory('chib', hallwayPublicCDNUrl('models/1.glb'))
+    this.model = await modelFactory(
+      'glb',
+      'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/models/zuck_compressed.glb'
+    )
+
     this.world.setModel(this.model)
 
     this.avatarRenderer.updatables.push(this.world)
