@@ -26,10 +26,8 @@ export const modelFactory = (type: ModelType, url?: string): Promise<Model> => {
       return AlienBoyModel.init(url)
     case 'zuck':
       return ZuckModel.init(url)
-    case 'glb':
-      return GLBModel.init(url)
     default:
-      return Promise.reject(`Unknown model type: ${type}`)
+      return GLBModel.init(url)
   }
 }
 
@@ -49,9 +47,7 @@ export const modelSettingsFactory = (type: ModelType): ModelSettings => {
       return AlienBoyModel.defaultSettings
     case 'zuck':
       return ZuckModel.defaultSettings
-    case 'glb':
-      return GLBModel.defaultSettings
     default:
-      return {}
+      return GLBModel.defaultSettings
   }
 }
