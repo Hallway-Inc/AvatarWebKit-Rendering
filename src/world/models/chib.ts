@@ -19,7 +19,7 @@ export class ChibModel implements Model {
   private _settings = this.defaultSettings
   shouldMirror = true
 
-  private model: Group
+  model: Group
   private headBone?: Bone
   private neckBone?: Bone
   private leftArm?: Bone

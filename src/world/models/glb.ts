@@ -17,7 +17,7 @@ export class GLBModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  model: Group
 
   static async init(url: string): Promise<GLBModel> {
     const model = new GLBModel()
@@ -91,8 +91,9 @@ export class GLBModel implements Model {
   private updateHeadRotation(pitch: number, yaw: number, roll: number) {
     if (!this.model) return
 
+    // console.log(pitch, yaw, roll)
     this.model.rotation.x = pitch / 3
-    this.model.rotation.y = this.shouldMirror ? -yaw : yaw
-    // this.model.rotation.z = this.shouldMirror ? roll : -roll
+    this.model.rotation.y = this.shouldMirror ? -roll : roll
+    this.model.rotation.z = this.shouldMirror ? yaw : -yaw
   }
 }

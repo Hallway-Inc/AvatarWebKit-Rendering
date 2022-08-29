@@ -1,5 +1,5 @@
 import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
-import { Scene, Vector3, WebGLRenderer } from 'three'
+import { Group, Scene, Vector3, WebGLRenderer } from 'three'
 
 import { AvatarRenderer } from './avatarRenderer'
 import { ModelSettings } from './world/models/modelSettings'
@@ -25,6 +25,7 @@ export interface Model {
   readonly defaultSettings: ModelSettings
   settings: ModelSettings
   shouldMirror: boolean
+  model: Group
 
   addToScene(scene: Scene): void
   removeFromScene(scene: Scene): void

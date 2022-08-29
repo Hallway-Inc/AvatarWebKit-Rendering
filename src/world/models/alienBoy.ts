@@ -22,7 +22,7 @@ export class AlienBoyModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  model: Group
 
   // Mesh
   private headNode: Mesh

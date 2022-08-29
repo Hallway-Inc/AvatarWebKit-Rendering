@@ -19,7 +19,7 @@ export class ZuckModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  model: Group
 
   // Bonez
   private headBone?: SkinnedMesh

@@ -192,7 +192,13 @@ class AvatarLayout extends React.Component<Props, State> {
       const config = this.world.debugConfig[key]
 
       if (config.property === 'number') {
-        gui.add(config.object, config.value, config.min, config.max)
+        let folder = gui.folders.find(folder => folder._title == config.folder)
+
+        if (!folder) {
+          folder = gui.addFolder(config.folder)
+        }
+
+        folder.add(config.object, config.value, config.min, config.max)
       }
     })
 

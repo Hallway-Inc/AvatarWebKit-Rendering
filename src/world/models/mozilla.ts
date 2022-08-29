@@ -19,7 +19,7 @@ export class MozillaModel implements Model {
   settings = this.defaultSettings
   shouldMirror = true
 
-  private model?: Group
+  model: Group
   private combinedMesh?: SkinnedMesh
   private headNode?: Bone
   private rightHandNode?: Bone
