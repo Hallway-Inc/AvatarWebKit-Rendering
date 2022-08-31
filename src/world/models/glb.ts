@@ -30,6 +30,7 @@ export class GLBModel implements Model {
 
   private async load(url: string): Promise<GLBModel> {
     this.model = await loadModel(url, { useMeshopt: true })
+    this.centerPivot()
     this.normalizeScale()
     this.centerGLB()
 
@@ -42,6 +43,14 @@ export class GLBModel implements Model {
 
   removeFromScene(scene: Scene) {
     scene.remove(this.model)
+  }
+
+  centerPivot = () => {
+    const modelBox = new Box3().setFromObject(this.model)
+    const modelCenter = (modelBox.max.y - modelBox.min.y) * 0.5
+    this.model.children.forEach(node => {
+      node.position.set(node.position.x, node.position.y - modelBox.min.y - modelCenter, node.position.z)
+    })
   }
 
   centerGLB = () => {
@@ -92,6 +101,6 @@ export class GLBModel implements Model {
 
     this.model.rotation.x = pitch / 3
     this.model.rotation.y = this.shouldMirror ? -yaw : yaw
-    // this.model.rotation.z = this.shouldMirror ? roll : -roll
+    this.model.rotation.z = this.shouldMirror ? roll : -roll
   }
 }
