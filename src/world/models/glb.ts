@@ -103,4 +103,8 @@ export class GLBModel implements Model {
     this.model.rotation.y = this.shouldMirror ? -yaw : yaw
     this.model.rotation.z = this.shouldMirror ? roll : -roll
   }
+
+  lookAt(x: number, y: number, z: number): void {
+    this.model.lookAt(x, y, z)
+  }
 }
