@@ -1,11 +1,21 @@
 import * as THREE from 'three'
+import { Scene } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 
 import { Experience } from './Experience.js'
+import Sizes from './utils/Sizes.js'
 
 export default class Camera {
+  instance: THREE.PerspectiveCamera
+  controls: OrbitControls
+
+  experience: Experience
+  sizes: Sizes
+  scene: Scene
+  canvas: HTMLCanvasElement
+
   constructor() {
-    this.experience = new Experience()
+    this.experience = Experience.instance
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene
     this.canvas = this.experience.canvas

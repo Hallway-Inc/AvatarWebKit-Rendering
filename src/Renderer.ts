@@ -1,10 +1,21 @@
 import * as THREE from 'three'
+import { Scene, WebGLRenderer } from 'three'
+
+import Camera from './Camera.js'
 
 import { Experience } from './Experience.js'
+import Sizes from './utils/Sizes.js'
 
 export default class Renderer {
+  instance: WebGLRenderer
+  experience: Experience
+  canvas: HTMLCanvasElement
+  sizes: Sizes
+  scene: Scene
+  camera: Camera
+
   constructor() {
-    this.experience = new Experience()
+    this.experience = Experience.instance
     this.canvas = this.experience.canvas
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene
@@ -14,7 +25,7 @@ export default class Renderer {
   }
 
   setInstance() {
-    this.instance = new THREE.WebGLRenderer({
+    this.instance = new WebGLRenderer({
       canvas: this.canvas,
       antialias: true
     })

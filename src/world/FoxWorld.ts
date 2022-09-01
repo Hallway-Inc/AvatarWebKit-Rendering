@@ -1,12 +1,23 @@
+import { Scene } from 'three'
+
 import { Experience } from '../Experience.js'
+import Resources from '../utils/Resources.js'
 
 import Environment from './Environment.js'
 import Floor from './Floor.js'
 import Fox from './Fox.js'
 
 export class World {
+  experience: Experience
+  scene: Scene
+  resources: Resources
+
+  floor: Floor
+  fox: Fox
+  environment: Environment
+
   constructor() {
-    this.experience = new Experience()
+    this.experience = Experience.instance
     this.scene = this.experience.scene
     this.resources = this.experience.resources
 

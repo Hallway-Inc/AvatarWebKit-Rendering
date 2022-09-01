@@ -5,22 +5,31 @@ import Sizes from './utils/Sizes.js'
 import Time from './utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
-import { World } from './world/World.js'
+import { World } from './world/FoxWorld.js'
 import Resources from './utils/Resources.js'
 
 import sources from './sources.js'
 
 export class Experience {
   static instance = null
+  debug: Debug
+  sizes: Sizes
+  time: Time
+  scene: THREE.Scene
+  canvas: HTMLCanvasElement
+  resources: Resources
+  camera: Camera
+  renderer: Renderer
+  world: World
 
-  constructor(_canvas) {
+  constructor(_canvas: HTMLCanvasElement) {
     // Singleton
     if (Experience.instance) {
       return Experience.instance
     }
     Experience.instance = this
 
-    // Global access
+    // @ts-expect-error global access
     window.experience = this
 
     // Options
