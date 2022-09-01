@@ -19,7 +19,11 @@ export * from './utils/cdn'
 export * from './utils/emojiColors'
 export * from './utils/three'
 
-export * from './world/world'
+export * from './world/oldWorld'
+export * from './world/World'
+
+export * from './Experience'
+
 
 export * from './globalCanvas'
 export * from './avatarRenderer'
