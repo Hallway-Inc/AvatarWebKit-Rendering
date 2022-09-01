@@ -178,6 +178,8 @@ class AvatarLayout extends React.Component<Props, State> {
     // )
     // this.model = await modelFactory('alienBoy', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
     // this.model = await modelFactory('chib', hallwayPublicCDNUrl('models/1.glb'))
+    // this.model = await modelFactory('glb', hallwayPublicCDNUrl('models/alien_boy_225.glb'))
+
     this.world.setModel(this.model)
 
     this.avatarRenderer.updatables.push(this.world)
@@ -187,7 +189,13 @@ class AvatarLayout extends React.Component<Props, State> {
       const config = this.world.debugConfig[key]
 
       if (config.property === 'number') {
-        gui.add(config.object, config.value, config.min, config.max)
+        let folder = gui.folders.find(folder => folder._title == config.folder)
+
+        if (!folder) {
+          folder = gui.addFolder(config.folder)
+        }
+
+        folder.add(config.object, config.value, config.min, config.max)
       }
     })
 

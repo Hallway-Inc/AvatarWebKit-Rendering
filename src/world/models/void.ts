@@ -27,7 +27,7 @@ export class VoidModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  model: Group
 
   private headBone?: Bone
   private neckBone?: Bone

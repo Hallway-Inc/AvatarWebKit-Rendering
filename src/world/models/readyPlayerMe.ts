@@ -17,7 +17,7 @@ export class ReadyPlayerMeModel implements Model {
   shouldMirror = true
 
   // Model group
-  private model: Group
+  model: Group
   private avatarRoot: Object3D
 
   // Nodes for current RPM version

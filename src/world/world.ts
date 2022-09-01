@@ -23,13 +23,17 @@ export class AvatarWorld implements Updateable, Renderable {
   private controls: UpdateableControls
 
   private controlsEnabled = true
+  private debug = false
 
   private model?: Model
 
   debugConfig = {
     cameraPositionX: {},
     cameraPositionY: {},
-    cameraPositionZ: {}
+    cameraPositionZ: {},
+    modelRotationX: {},
+    modelRotationY: {},
+    modelRotationZ: {}
   }
 
   constructor({ container, renderer, enableControls, useDefaultBackground = true, debug = false }: WorldConfig) {
@@ -65,11 +69,13 @@ export class AvatarWorld implements Updateable, Renderable {
       })
       .catch(e => console.error('Error loading default environment', e))
 
-    if (debug) this.setupDebug()
+    this.debug = debug
+    if (this.debug) this.setupDebug()
   }
 
   setupDebug() {
     this.debugConfig.cameraPositionX = {
+      folder: 'camera',
       object: this.camera.position,
       value: 'x',
       property: 'number',
@@ -77,6 +83,7 @@ export class AvatarWorld implements Updateable, Renderable {
       max: 5
     }
     this.debugConfig.cameraPositionY = {
+      folder: 'camera',
       object: this.camera.position,
       value: 'y',
       property: 'number',
@@ -84,11 +91,41 @@ export class AvatarWorld implements Updateable, Renderable {
       max: 5
     }
     this.debugConfig.cameraPositionZ = {
+      folder: 'camera',
       object: this.camera.position,
       value: 'z',
       property: 'number',
       min: 0,
       max: 10
+    }
+
+    if (this.model) {
+      this.debugConfig.modelRotationX = {
+        folder: 'rotation',
+        object: this.model.model.rotation,
+        value: 'x',
+        property: 'number',
+        min: -1,
+        max: 1
+      }
+
+      this.debugConfig.modelRotationY = {
+        folder: 'rotation',
+        object: this.model.model.rotation,
+        value: 'y',
+        property: 'number',
+        min: -1,
+        max: 1
+      }
+
+      this.debugConfig.modelRotationZ = {
+        folder: 'rotation',
+        object: this.model.model.rotation,
+        value: 'z',
+        property: 'number',
+        min: -1,
+        max: 1
+      }
     }
   }
 
@@ -103,6 +140,10 @@ export class AvatarWorld implements Updateable, Renderable {
     this.camera.position.x = 0
     this.camera.position.z = model.type === 'emoji' ? 1 : 0.6
     this.camera.position.y = 0
+
+    if (this.debug) {
+      this.setupDebug()
+    }
   }
 
   setEnvironment(environment: Texture) {

@@ -41,3 +41,5 @@ export type ChibModelSettings = ModelSettings
 export type AlienBoyModelSettings = ModelSettings
 
 export type ZuckModelSettings = ModelSettings
+
+export type GLBModelSettings = ModelSettings

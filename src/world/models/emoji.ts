@@ -28,7 +28,7 @@ export class EmojiModel implements Model {
   shouldMirror = true
 
   // Groups
-  private model: Group
+  model: Group
   private headphones?: Group
 
   // Mesh components
