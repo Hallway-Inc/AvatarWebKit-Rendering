@@ -5,10 +5,11 @@ import Sizes from './utils/Sizes.js'
 import Time from './utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
-import { World } from './world/FoxWorld.js'
+import { FoxWorld } from './world/FoxWorld/FoxWorld'
 import Resources from './utils/Resources.js'
 
 import sources from './sources.js'
+import { World } from './world/World'
 
 export class Experience {
   static instance = null
@@ -22,7 +23,7 @@ export class Experience {
   renderer: Renderer
   world: World
 
-  constructor(_canvas: HTMLCanvasElement) {
+  constructor(_canvas: HTMLCanvasElement, name: string) {
     // Singleton
     if (Experience.instance) {
       return Experience.instance
@@ -43,7 +44,10 @@ export class Experience {
     this.resources = new Resources(sources)
     this.camera = new Camera()
     this.renderer = new Renderer()
-    this.world = new World()
+
+    if (name == 'fox') {
+      this.world = new FoxWorld()
+    }
 
     // Resize event
     this.sizes.on('resize', () => {

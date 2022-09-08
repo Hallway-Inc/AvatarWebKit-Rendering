@@ -1,13 +1,15 @@
 import { Scene } from 'three'
 
-import { Experience } from '../Experience.js'
-import Resources from '../utils/Resources.js'
+import { Experience } from '../../Experience'
+import Resources from '../../utils/Resources.js'
+
+import { World } from '../World'
 
 import Environment from './Environment.js'
 import Floor from './Floor.js'
 import Fox from './Fox.js'
 
-export class World {
+export class FoxWorld extends World {
   experience: Experience
   scene: Scene
   resources: Resources
@@ -17,9 +19,7 @@ export class World {
   environment: Environment
 
   constructor() {
-    this.experience = Experience.instance
-    this.scene = this.experience.scene
-    this.resources = this.experience.resources
+    super()
 
     // Wait for resources
     this.resources.on('ready', () => {

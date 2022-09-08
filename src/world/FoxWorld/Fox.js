@@ -1,6 +1,6 @@
 import * as THREE from 'three'
 
-import { Experience } from '../Experience.js'
+import { Experience } from '../../Experience.js'
 
 export default class Fox {
   constructor() {
@@ -12,6 +12,7 @@ export default class Fox {
 
     // Debug
     if (this.debug.active) {
+      console.log('What does the fox say? 🦊')
       this.debugFolder = this.debug.ui.addFolder('fox')
     }
 
