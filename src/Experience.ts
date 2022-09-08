@@ -8,8 +8,12 @@ import Renderer from './Renderer.js'
 import { FoxWorld } from './world/FoxWorld/FoxWorld'
 import Resources from './utils/Resources.js'
 
-import sources from './sources.js'
+// Worlds
+import foxSources from './world/FoxWorld/sources.js'
 import { World } from './world/World'
+
+import level1Sources from './world/Level1/sources'
+import { Level1 } from './world/Level1/level1.js'
 
 export class Experience {
   static instance = null
@@ -41,12 +45,16 @@ export class Experience {
     this.sizes = new Sizes()
     this.time = new Time()
     this.scene = new THREE.Scene()
-    this.resources = new Resources(sources)
     this.camera = new Camera()
     this.renderer = new Renderer()
 
-    if (name == 'fox') {
+    if (name === 'fox') {
+      this.resources = new Resources(foxSources)
       this.world = new FoxWorld()
+    } else if (name === 'level1') {
+      this.resources = new Resources(level1Sources)
+      console.log(level1Sources)
+      this.world = new Level1()
     }
 
     // Resize event
