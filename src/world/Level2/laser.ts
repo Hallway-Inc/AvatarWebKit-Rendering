@@ -8,15 +8,8 @@ export default class Laser extends WorldObject {
 
     this.resource = this.resources.items.level2LaserModel
 
-    this.setMaterial()
-
     this.setModel()
   }
-
-  setMaterial() {
-    this.material = this.props.bakedMaterial
-  }
-
   setModel() {
     this.model = this.resource.scene
 

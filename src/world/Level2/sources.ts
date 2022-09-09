@@ -63,5 +63,15 @@ export default [
     name: 'level2BeamGradientTexture',
     path: '/assets/experience/level2/beamGradient.png',
     type: 'texture'
+  },
+  {
+    name: 'matcapWhiteOnPurpleTexture',
+    path: '/assets/experience/matcaps/whiteOnPurple.jpeg',
+    type: 'texture'
+  },
+  {
+    name: 'matcapDarkGreyOnWhiteTexture',
+    path: '/assets/experience/matcaps/darkGreyOnWhite.jpeg',
+    type: 'texture'
   }
 ]

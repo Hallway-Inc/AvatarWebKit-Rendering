@@ -6,7 +6,7 @@ const ExperienceLayout = () => {
   const [experience, setExperience] = useState(null)
 
   useEffect(() => {
-    setExperience(new Experience(sceneCanvasRef.current, 'level2'))
+    setExperience(new Experience(sceneCanvasRef.current, 'journey'))
   }, [sceneCanvasRef])
 
   return <canvas ref={sceneCanvasRef} width={800} height={600} style={{ position: 'absolute' }} />

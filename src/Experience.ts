@@ -17,6 +17,7 @@ import { Level1 } from './world/Level1/level1'
 
 import level2Sources from './world/Level2/sources'
 import { Level2 } from './world/Level2/level2'
+import { Journey } from './world/journey.js'
 
 export class Experience {
   static instance = null
@@ -56,12 +57,14 @@ export class Experience {
       this.world = new FoxWorld()
     } else if (name === 'level1') {
       this.resources = new Resources(level1Sources)
-      console.log(level1Sources)
       this.world = new Level1()
     } else if (name === 'level2') {
       this.resources = new Resources(level2Sources)
-      console.log(level2Sources)
       this.world = new Level2()
+    } else if (name === 'journey') {
+      console.log([...level1Sources, ...level2Sources])
+      this.resources = new Resources([...level1Sources, ...level2Sources])
+      this.world = new Journey()
     }
 
     // Resize event
