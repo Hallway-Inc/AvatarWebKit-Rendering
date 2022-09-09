@@ -19,7 +19,7 @@ export default class SudoHead extends WorldObject {
 
   setModel() {
     this.model = this.resource.scene
-    console.log(this.model)
+
     const sudoHead = this.model.getObjectByName('sudoHead') as Mesh
     sudoHead.material = this.material
 
