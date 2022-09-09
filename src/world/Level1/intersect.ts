@@ -11,6 +11,7 @@ export default class Intersect extends WorldObject {
 
   setModel() {
     this.model = this.resource.scene
+    this.model.visible = false
     this.scene.add(this.model)
   }
 }
