@@ -24,6 +24,9 @@ import level3Sources from './world/Level3/sources'
 import { Level4 } from './world/Level4/level4.js'
 import level4Sources from './world/Level4/sources'
 
+import { Level5 } from './world/Level5/level5.js'
+import level5Sources from './world/Level5/sources'
+
 import { Journey } from './world/journey.js'
 
 export class Experience {
@@ -74,9 +77,18 @@ export class Experience {
     } else if (name === 'level4') {
       this.resources = new Resources(level4Sources)
       this.world = new Level4()
+    } else if (name === 'level5') {
+      this.resources = new Resources(level5Sources)
+      this.world = new Level5()
     } else if (name === 'journey') {
-      console.log([...level1Sources, ...level2Sources, ...level3Sources, ...level4Sources])
-      this.resources = new Resources([...level1Sources, ...level2Sources, ...level3Sources, ...level4Sources])
+      console.log([...level1Sources, ...level2Sources, ...level3Sources, ...level4Sources, ...level5Sources])
+      this.resources = new Resources([
+        ...level1Sources,
+        ...level2Sources,
+        ...level3Sources,
+        ...level4Sources,
+        ...level5Sources
+      ])
       this.world = new Journey()
     }
 
