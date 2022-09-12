@@ -2,12 +2,11 @@ import { Mesh } from 'three'
 
 import { WorldObject } from '../worldObject'
 
-export default class Drone extends WorldObject {
+export default class Box extends WorldObject {
   constructor(props?: Record<string, any>) {
     super(props)
 
-    this.resource = this.resources.items.level3DroneModel
-    this.setMaterial()
+    this.resource = this.resources.items.level4BlockBakedModel
 
     this.setModel()
   }
@@ -21,9 +20,5 @@ export default class Drone extends WorldObject {
     })
 
     this.scene.add(this.model)
-  }
-
-  setMaterial() {
-    this.material = this.props.bakedMaterial
   }
 }

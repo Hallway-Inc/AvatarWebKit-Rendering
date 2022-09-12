@@ -5,14 +5,17 @@ import { World } from '../World'
 
 import Baked from './baked'
 import Block from './block'
-import Drone from './drone'
-import Printer from './printer'
-export class Level3 extends World {
+import Box from './box'
+import Elevator from './elevator'
+import Intersect from './intersect'
+
+export class Level4 extends World {
   bakedMaterial: MeshBasicMaterial
   baked: Baked
-  printer: Printer
-  drone: Drone
   block: Block
+  intersect: Intersect
+  box: Box
+  elevator: Elevator
 
   constructor() {
     super()
@@ -21,15 +24,16 @@ export class Level3 extends World {
     this.resources.on('ready', () => {
       // Setup
 
-      const bakedTexture = this.resources.items.level3BakedTexture
+      const bakedTexture = this.resources.items.level4BakedTexture
       bakedTexture.flipY = false
       bakedTexture.encoding = THREE.sRGBEncoding
       this.bakedMaterial = new MeshBasicMaterial({ map: bakedTexture })
 
       this.baked = new Baked({ bakedMaterial: this.bakedMaterial })
       this.block = new Block()
-      this.drone = new Drone({ bakedMaterial: this.bakedMaterial })
-      this.printer = new Printer({ bakedMaterial: this.bakedMaterial })
+      // this.intersect = new Intersect()
+      // this.box = new Box()
+      // this.elevator = new Elevator({ bakedMaterial: this.bakedMaterial })
     })
   }
 

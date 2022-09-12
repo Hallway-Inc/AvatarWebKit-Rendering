@@ -14,15 +14,13 @@ export default class Printer extends WorldObject {
     this.setModel()
   }
 
-  setMaterial() {
-    const bakedTexture = this.resources.items.level2BlockBakedTexture
-    bakedTexture.flipY = false
-    bakedTexture.encoding = THREE.sRGBEncoding
-    this.material = new MeshBasicMaterial({ map: bakedTexture })
-  }
-
   setModel() {
     this.model = this.resource.scene
+
+    this.model.traverse(child => {
+      const mesh = child as Mesh
+      mesh.material = this.material
+    })
 
     console.log(this.resource)
     const bobin = this.model.getObjectByName('bobin') as Mesh
@@ -47,5 +45,8 @@ export default class Printer extends WorldObject {
     })
 
     this.scene.add(this.model)
+  }
+  setMaterial() {
+    this.material = this.props.bakedMaterial
   }
 }
