@@ -17,6 +17,10 @@ import { Level1 } from './world/Level1/level1'
 
 import level2Sources from './world/Level2/sources'
 import { Level2 } from './world/Level2/level2'
+
+import { Level3 } from './world/Level3/level3.js'
+import level3Sources from './world/Level3/sources'
+
 import { Journey } from './world/journey.js'
 
 export class Experience {
@@ -61,9 +65,12 @@ export class Experience {
     } else if (name === 'level2') {
       this.resources = new Resources(level2Sources)
       this.world = new Level2()
+    } else if (name === 'level3') {
+      this.resources = new Resources(level3Sources)
+      this.world = new Level3()
     } else if (name === 'journey') {
       console.log([...level1Sources, ...level2Sources])
-      this.resources = new Resources([...level1Sources, ...level2Sources])
+      this.resources = new Resources([...level1Sources, ...level2Sources, ...level3Sources])
       this.world = new Journey()
     }
 
