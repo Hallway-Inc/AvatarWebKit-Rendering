@@ -1,5 +1,4 @@
-import * as THREE from 'three'
-import { Mesh, MeshBasicMaterial, MeshMatcapMaterial } from 'three'
+import { Mesh, MeshMatcapMaterial } from 'three'
 
 import { WorldObject } from '../worldObject'
 
@@ -22,7 +21,6 @@ export default class Printer extends WorldObject {
       mesh.material = this.material
     })
 
-    console.log(this.resource)
     const bobin = this.model.getObjectByName('bobin') as Mesh
     bobin.material = new MeshMatcapMaterial({ matcap: this.resources.items.matcapDarkGreyOnDarkGreyTexture })
 

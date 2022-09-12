@@ -1,4 +1,3 @@
-import * as THREE from 'three'
 import { CubeTextureLoader, TextureLoader } from 'three'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
