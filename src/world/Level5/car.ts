@@ -1,3 +1,5 @@
+import { Mesh, MeshMatcapMaterial } from 'three'
+
 import { WorldObject } from '../worldObject'
 
 export default class Car extends WorldObject {
@@ -16,15 +18,16 @@ export default class Car extends WorldObject {
     // bakedTexture.flipY = false
     // bakedTexture.encoding = THREE.sRGBEncoding
     // this.material = new MeshBasicMaterial({ map: bakedTexture })
+    this.material = new MeshMatcapMaterial({ matcap: this.resources.items.matcapOrangeOnDarkGreyTexture })
   }
 
   setModel() {
     this.model = this.resource.scene
 
-    // this.model.traverse(child => {
-    //   const mesh = child as Mesh
-    //   mesh.material = this.material
-    // })
+    this.model.traverse(child => {
+      const mesh = child as Mesh
+      mesh.material = this.material
+    })
 
     this.scene.add(this.model)
   }

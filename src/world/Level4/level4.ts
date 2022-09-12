@@ -8,6 +8,7 @@ import Block from './block'
 import Box from './box'
 import Elevator from './elevator'
 import Intersect from './intersect'
+import OuterWalls from './outerWalls'
 
 export class Level4 extends World {
   bakedMaterial: MeshBasicMaterial
@@ -16,6 +17,7 @@ export class Level4 extends World {
   intersect: Intersect
   box: Box
   elevator: Elevator
+  outerWalls: OuterWalls
 
   constructor() {
     super()
@@ -31,8 +33,9 @@ export class Level4 extends World {
 
       this.baked = new Baked({ bakedMaterial: this.bakedMaterial })
       this.block = new Block()
-      // this.intersect = new Intersect()
-      // this.box = new Box()
+      this.outerWalls = new OuterWalls({ bakedMaterial: this.bakedMaterial })
+      this.intersect = new Intersect()
+      // this.box = new Box({ bakedMaterial: this.bakedMaterial })
       // this.elevator = new Elevator({ bakedMaterial: this.bakedMaterial })
     })
   }
