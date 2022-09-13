@@ -29,6 +29,12 @@ import level5Sources from './world/Level5/sources'
 
 import { Journey } from './world/journey.js'
 
+export type ExperienceProps = {
+  _canvas: HTMLCanvasElement
+  name: string
+  modelUrl: string
+}
+
 export class Experience {
   static instance = null
   debug: Debug
@@ -41,7 +47,7 @@ export class Experience {
   renderer: Renderer
   world: World
 
-  constructor(_canvas: HTMLCanvasElement, name: string) {
+  constructor({ _canvas, name, modelUrl }: ExperienceProps) {
     // Singleton
     if (Experience.instance) {
       return Experience.instance
@@ -62,11 +68,19 @@ export class Experience {
     this.camera = new Camera()
     this.renderer = new Renderer()
 
+    const modelSource = [
+      {
+        name: 'rpmModel',
+        path: modelUrl,
+        type: 'gltfModel'
+      }
+    ]
+
     if (name === 'fox') {
       this.resources = new Resources(foxSources)
       this.world = new FoxWorld()
     } else if (name === 'level1') {
-      this.resources = new Resources(level1Sources)
+      this.resources = new Resources([...level1Sources, ...modelSource])
       this.world = new Level1()
     } else if (name === 'level2') {
       this.resources = new Resources(level2Sources)
@@ -81,7 +95,6 @@ export class Experience {
       this.resources = new Resources(level5Sources)
       this.world = new Level5()
     } else if (name === 'journey') {
-      console.log([...level1Sources, ...level2Sources, ...level3Sources, ...level4Sources, ...level5Sources])
       this.resources = new Resources([
         ...level1Sources,
         ...level2Sources,
