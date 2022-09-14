@@ -1,13 +1,15 @@
 import * as THREE from 'three'
 import { Scene } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import CameraControls from 'camera-controls'
 
 import { Experience } from './Experience.js'
 import Sizes from './utils/Sizes.js'
 
+CameraControls.install({ THREE })
 export default class Camera {
   instance: THREE.PerspectiveCamera
-  controls: OrbitControls
+  controls: CameraControls
 
   experience: Experience
   sizes: Sizes
@@ -31,12 +33,11 @@ export default class Camera {
   }
 
   setControls() {
-    this.controls = new OrbitControls(this.instance, this.canvas)
+    this.controls = new CameraControls(this.instance, this.canvas)
     this.controls.minAzimuthAngle = 0
     this.controls.maxAzimuthAngle = Math.PI / 2
     this.controls.minPolarAngle = 0
     this.controls.maxPolarAngle = Math.PI / 2
-    this.controls.enableDamping = true
   }
 
   resize() {
@@ -44,7 +45,7 @@ export default class Camera {
     this.instance.updateProjectionMatrix()
   }
 
-  update() {
-    this.controls.update()
+  update(delta: number) {
+    this.controls.update(delta / 1000)
   }
 }

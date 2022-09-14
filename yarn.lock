@@ -1663,6 +1663,11 @@ camelcase@^6.0.0, camelcase@^6.2.0:
   resolved "https://registry.yarnpkg.com/camelcase/-/camelcase-6.3.0.tgz#5685b95eb209ac9c0c177467778c9c84df58ba9a"
   integrity sha512-Gmy6FhYlCY7uOElZUSbxo2UCDH8owEk996gkbrpsgGtrJLM3J7jGxl9Ic7Qwwj4ivOE5AWZWRMecDdF7hqGjFA==
 
+camera-controls@^1.36.2:
+  version "1.36.2"
+  resolved "https://registry.yarnpkg.com/camera-controls/-/camera-controls-1.36.2.tgz#1c13f36b602304db09e43328fb1971bff70d408c"
+  integrity sha512-wF8xeLKtCxZMdKf37gQQta+iSSjTBmmI6xYxq5fESj7CR4UTiYHFuTuXzDogCf8ONYyWc6iunyMTc8ta6HtJAA==
+
 caniuse-lite@^1.0.30001370:
   version "1.0.30001382"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001382.tgz#4d37f0d0b6fffb826c8e5e1c0f4bf8ce592db949"
