@@ -128,7 +128,7 @@ export class Experience {
   }
 
   update() {
-    this.camera.update(this.time.delta)
+    this.camera.update()
     this.world.update()
     this.renderer.update()
   }
