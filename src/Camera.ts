@@ -10,7 +10,7 @@ import Debug from './utils/Debug.js'
 
 CameraControls.install({ THREE })
 
-type CameraKeypoint = {
+type CameraView = {
   /** Camera position */
   position: { x: number; y: number; z: number }
 
@@ -21,7 +21,7 @@ type CameraKeypoint = {
   zoom: number
 }
 
-const KEYPOINTS: { [key in 'isometric' | 'portrait']: CameraKeypoint } = {
+const VIEW: { [key in 'isometric' | 'portrait']: CameraView } = {
   isometric: {
     position: { x: 13.5, y: 14, z: 12.5 },
     target: { x: -0.5, y: 1, z: -0.5 },
@@ -54,8 +54,8 @@ export default class Camera {
 
     if (this.debug.active) {
       const debugObject = {
-        isometric: () => this.setKeypoint(KEYPOINTS.isometric, true),
-        portrait: () => this.setKeypoint(KEYPOINTS.portrait, true)
+        isometric: () => this.setView(VIEW.isometric, true),
+        portrait: () => this.setView(VIEW.portrait, true)
       }
       this.debugFolder = this.debug.ui.addFolder('camera')
       this.debugFolder.add(debugObject, 'isometric')
@@ -64,7 +64,7 @@ export default class Camera {
 
     this.setInstance()
     this.setControls()
-    this.setKeypoint(KEYPOINTS.isometric)
+    this.setView(VIEW.isometric)
   }
 
   setInstance() {
@@ -82,8 +82,8 @@ export default class Camera {
     this.controls.dampingFactor = 0.1
   }
 
-  setKeypoint(keypoint: CameraKeypoint, enableTransition = false) {
-    const { position, target, zoom } = keypoint
+  setView(view: CameraView, enableTransition = false) {
+    const { position, target, zoom } = view
 
     this.controls.setPosition(position.x, position.y, position.z, enableTransition)
     this.controls.setTarget(target.x, target.y, target.z, enableTransition)
