@@ -2,15 +2,12 @@ import * as THREE from 'three'
 import { Scene } from 'three'
 import CameraControls from 'camera-controls'
 
-import type GUI from 'lil-gui'
-
 import { Experience } from './Experience.js'
 import Sizes from './utils/Sizes.js'
-import Debug from './utils/Debug.js'
 
 CameraControls.install({ THREE })
 
-type CameraView = {
+export type CameraView = {
   /** Camera position */
   position: { x: number; y: number; z: number }
 
@@ -21,19 +18,6 @@ type CameraView = {
   zoom: number
 }
 
-const VIEW: { [key in 'isometric' | 'portrait']: CameraView } = {
-  isometric: {
-    position: { x: 13.5, y: 14, z: 12.5 },
-    target: { x: -0.5, y: 1, z: -0.5 },
-    zoom: 1
-  },
-  portrait: {
-    position: { x: 1, y: 3.6, z: 1.2 },
-    target: { x: 1, y: 2.9, z: -1 },
-    zoom: 1
-  }
-}
-
 export default class Camera {
   instance: THREE.PerspectiveCamera
   controls: CameraControls
@@ -42,29 +26,15 @@ export default class Camera {
   sizes: Sizes
   scene: Scene
   canvas: HTMLCanvasElement
-  debug: Debug
-  debugFolder: GUI
 
   constructor() {
     this.experience = Experience.instance
     this.sizes = this.experience.sizes
     this.scene = this.experience.scene
     this.canvas = this.experience.canvas
-    this.debug = this.experience.debug
-
-    if (this.debug.active) {
-      const debugObject = {
-        isometric: () => this.setView(VIEW.isometric, true),
-        portrait: () => this.setView(VIEW.portrait, true)
-      }
-      this.debugFolder = this.debug.ui.addFolder('camera')
-      this.debugFolder.add(debugObject, 'isometric')
-      this.debugFolder.add(debugObject, 'portrait')
-    }
 
     this.setInstance()
     this.setControls()
-    this.setView(VIEW.isometric)
   }
 
   setInstance() {
