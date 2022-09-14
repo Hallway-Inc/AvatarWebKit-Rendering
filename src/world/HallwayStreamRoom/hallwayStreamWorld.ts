@@ -8,11 +8,11 @@ import { WorldObject } from '../worldObject'
 
 import ChibModelV2 from '../models/chibV2'
 
-import HallwayStreamRoom from './cube'
+import HallwayStreamRoomModel from './hallwayStreamRoomModel'
 
 export class HallwayStreamWorld extends World {
-  roomModel: HallwayStreamRoom
   model: WorldObject
+  roomModel: HallwayStreamRoomModel
   rpmModel: ReadyPlayerMeModelV2
   chibModel: ChibModelV2
 
@@ -32,7 +32,7 @@ export class HallwayStreamWorld extends World {
   constructor() {
     super()
 
-    // Wait for resources
+    // Wait for resrpmModelrpmModelrpmModelources
     this.resources.on('ready', () => {
       // Setup
       const color = 0xffffff
@@ -42,7 +42,7 @@ export class HallwayStreamWorld extends World {
 
       const dLight = new DirectionalLight(color)
       this.scene.add(dLight)
-      this.roomModel = new HallwayStreamRoom()
+      this.roomModel = new HallwayStreamRoomModel()
 
       if (this.resources.items.rpmModel) {
         this.rpmModel = new ReadyPlayerMeModelV2()
@@ -80,5 +80,6 @@ export class HallwayStreamWorld extends World {
         }
       })
     }
+    if (this.rpmModel) this.rpmModel.update()
   }
 }
