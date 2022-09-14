@@ -29,6 +29,9 @@ import level5Sources from './world/Level5/sources'
 
 import { Journey } from './world/journey.js'
 
+import { HallwayStreamWorld } from './world/HallwayStreamRoom/hallwayStreamWorld'
+import hallwayStreamWorldSources from './world/HallwayStreamRoom/sources'
+
 export type ExperienceProps = {
   _canvas: HTMLCanvasElement
   name: string
@@ -79,6 +82,9 @@ export class Experience {
     if (name === 'fox') {
       this.resources = new Resources(foxSources)
       this.world = new FoxWorld()
+    } else if (name === 'streamRoom') {
+      this.resources = new Resources([...hallwayStreamWorldSources, ...modelSource])
+      this.world = new HallwayStreamWorld()
     } else if (name === 'level1') {
       this.resources = new Resources([...level1Sources, ...modelSource])
       this.world = new Level1()

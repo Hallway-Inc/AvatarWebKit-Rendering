@@ -1,6 +1,7 @@
 import { CubeTextureLoader, TextureLoader } from 'three'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
+import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module'
 
 import EventEmitter from './EventEmitter.js'
 
@@ -37,6 +38,7 @@ export default class Resources extends EventEmitter {
     }
     this.loaders.dracoLoader.setDecoderPath('draco/')
     this.loaders.gltfLoader.setDRACOLoader(this.loaders.dracoLoader)
+    this.loaders.gltfLoader.setMeshoptDecoder(MeshoptDecoder)
   }
 
   startLoading() {
