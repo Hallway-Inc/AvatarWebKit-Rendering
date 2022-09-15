@@ -1,6 +1,16 @@
+import { BlendShapes, Rotation, Transform } from '@quarkworks-inc/avatar-webkit'
 import { WorldObject } from '../worldObject'
+import * as THREE from 'three'
+
+const rotationEuler = new THREE.Euler()
 
 export default class ReadyPlayerMeModelV2 extends WorldObject {
+  private headBone: THREE.Bone
+  private neckBone: THREE.Bone
+
+  private headBoneInitialQuaternion: THREE.Quaternion
+  private neckBoneInitialQuaternion: THREE.Quaternion
+
   constructor(props?: Record<string, any>) {
     super(props)
 
@@ -11,6 +21,19 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
 
   setModel() {
     this.model = this.resource.scene
+
+    const headBone = this.model.getObjectByName('Head')
+    const neckBone = this.model.getObjectByName('Neck')
+
+    if (!headBone || !(headBone instanceof THREE.Bone)) throw new Error('error finding Head bone')
+    if (!neckBone || !(neckBone instanceof THREE.Bone)) throw new Error('error finding Neck bone')
+
+    this.headBone = headBone
+    this.neckBone = neckBone
+
+    this.headBoneInitialQuaternion = this.headBone.quaternion.clone()
+    this.neckBoneInitialQuaternion = this.neckBone.quaternion.clone()
+
     this.scene.add(this.model)
   }
 
@@ -70,5 +93,19 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
 
     const rightHand = this.model.getObjectByName('RightHand')
     rightHand.rotateY(-Math.PI / 3)
+  }
+
+  updateBlendShapes(blendshapes: BlendShapes) {}
+
+  updatePosition(transform: Transform) {}
+
+  updateHeadRotation(rotation: Rotation) {
+    const headWeight = 0.8
+    rotationEuler.set(-rotation.pitch * headWeight, rotation.yaw * headWeight, -rotation.roll * headWeight)
+    this.headBone.quaternion.setFromEuler(rotationEuler).premultiply(this.headBoneInitialQuaternion)
+
+    const neckWeight = 0.2
+    rotationEuler.set(-rotation.pitch * neckWeight, rotation.yaw * neckWeight, -rotation.roll * neckWeight)
+    this.neckBone.quaternion.setFromEuler(rotationEuler).premultiply(this.neckBoneInitialQuaternion)
   }
 }

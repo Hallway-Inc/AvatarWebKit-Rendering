@@ -1,5 +1,7 @@
 import { AmbientLight, DirectionalLight } from 'three'
 
+import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
+
 import ReadyPlayerMeModelV2 from '../models/readyPlayerMeV2'
 
 import { World } from '../World'
@@ -10,6 +12,8 @@ import HallwayStreamRoom from './cube'
 export class HallwayStreamWorld extends World {
   roomModel: HallwayStreamRoom
   rpmModel: ReadyPlayerMeModelV2
+  predictor: AUWorkerManager
+  running: boolean
 
   readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
     isometric: {
@@ -26,6 +30,9 @@ export class HallwayStreamWorld extends World {
 
   constructor() {
     super()
+
+    this.predictor = new AUWorkerManager()
+    this.running = false
 
     // Wait for resources
     this.resources.on('ready', () => {
@@ -48,19 +55,38 @@ export class HallwayStreamWorld extends World {
 
       // Debug
       if (this.experience.debug.active) {
-        this.experience.camera.setView
-        const debugObject = {
+        // Camera
+        const cameraDebugObject = {
           isometric: () => this.experience.camera.setView(this.views.isometric, true),
           portrait: () => this.experience.camera.setView(this.views.portrait, true)
         }
         const cameraFolder = this.experience.debug.ui.addFolder('camera')
-        cameraFolder.add(debugObject, 'isometric')
-        cameraFolder.add(debugObject, 'portrait')
+        cameraFolder.add(cameraDebugObject, 'isometric')
+        cameraFolder.add(cameraDebugObject, 'portrait')
+
+        // Live Mode
+        const liveModeDebugObject = {
+          start: async () => {
+            const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+            await this.predictor.initialize({
+              apiToken: process.env.AVATAR_WEBKIT_AUTH_TOKEN
+            })
+            this.predictor.start(stream)
+            this.running = true
+          }
+        }
+        const liveModeFolder = this.experience.debug.ui.addFolder('live')
+        liveModeFolder.add(liveModeDebugObject, 'start')
       }
     })
   }
 
   update() {
-    // if (this.fox) this.fox.update()
+    if (this.running) {
+      this.predictor.update(results => {
+        window['results'] = results
+        this.rpmModel.updateHeadRotation(results.rotation)
+      })
+    }
   }
 }
