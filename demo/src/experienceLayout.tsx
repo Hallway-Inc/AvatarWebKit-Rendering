@@ -6,13 +6,16 @@ const ExperienceLayout = () => {
   const [experience, setExperience] = useState(null)
 
   useEffect(() => {
-    setExperience(
-      new Experience({
-        _canvas: sceneCanvasRef.current,
-        name: 'streamRoom',
-        modelUrl: 'https://d1a370nemizbjq.cloudfront.net/9f35ad26-5b47-4530-b245-be743317e094.glb'
-      })
-    )
+    const experience = new Experience({
+      _canvas: sceneCanvasRef.current,
+      name: 'streamRoom',
+      modelUrl: 'https://d1a370nemizbjq.cloudfront.net/9f35ad26-5b47-4530-b245-be743317e094.glb'
+    })
+
+    setExperience(experience)
+
+    // Cleanup
+    return () => experience.destroy()
   }, [sceneCanvasRef])
 
   return <canvas ref={sceneCanvasRef} width={800} height={600} style={{ position: 'absolute' }} />

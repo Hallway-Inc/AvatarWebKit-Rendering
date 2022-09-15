@@ -17,4 +17,8 @@ export class World {
   update() {
     // implement in subclass
   }
+
+  dispose() {
+    // implement in subclass
+  }
 }

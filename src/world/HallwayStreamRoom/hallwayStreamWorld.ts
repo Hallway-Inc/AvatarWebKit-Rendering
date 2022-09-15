@@ -84,9 +84,16 @@ export class HallwayStreamWorld extends World {
   update() {
     if (this.running) {
       this.predictor.update(results => {
-        window['results'] = results
         this.rpmModel.updateHeadRotation(results.rotation)
+        this.rpmModel.updateBlendShapes(results.blendShapes)
+        this.rpmModel.updatePosition(results.transform)
       })
     }
+  }
+
+  dispose() {
+    this.running = false
+    console.log('dispose')
+    this.predictor.dispose()
   }
 }
