@@ -1,13 +1,26 @@
 import * as THREE from 'three'
 import { Scene } from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import CameraControls from 'camera-controls'
 
 import { Experience } from './Experience.js'
 import Sizes from './utils/Sizes.js'
 
+CameraControls.install({ THREE })
+
+export type CameraView = {
+  /** Camera position */
+  position: { x: number; y: number; z: number }
+
+  /** Where the camera is looking */
+  target: { x: number; y: number; z: number }
+
+  /** Camera zoom (affects field of view) */
+  zoom: number
+}
+
 export default class Camera {
   instance: THREE.PerspectiveCamera
-  controls: OrbitControls
+  controls: CameraControls
 
   experience: Experience
   sizes: Sizes
@@ -31,12 +44,20 @@ export default class Camera {
   }
 
   setControls() {
-    this.controls = new OrbitControls(this.instance, this.canvas)
+    this.controls = new CameraControls(this.instance, this.canvas)
     this.controls.minAzimuthAngle = 0
     this.controls.maxAzimuthAngle = Math.PI / 2
     this.controls.minPolarAngle = 0
     this.controls.maxPolarAngle = Math.PI / 2
-    this.controls.enableDamping = true
+    this.controls.dampingFactor = 0.1
+  }
+
+  setView(view: CameraView, enableTransition = false) {
+    const { position, target, zoom } = view
+
+    this.controls.setPosition(position.x, position.y, position.z, enableTransition)
+    this.controls.setTarget(target.x, target.y, target.z, enableTransition)
+    this.controls.zoomTo(zoom, enableTransition)
   }
 
   resize() {
@@ -45,6 +66,11 @@ export default class Camera {
   }
 
   update() {
-    this.controls.update()
+    const deltaSeconds = this.experience.time.delta / 1000
+    this.controls.update(deltaSeconds)
+  }
+
+  dispose() {
+    this.controls.dispose()
   }
 }

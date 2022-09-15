@@ -31,6 +31,7 @@
   },
   "dependencies": {
     "@quarkworks-inc/avatar-webkit": "^0.8.0",
+    "camera-controls": "^1.36.2",
     "three": "^0.138.3"
   },
   "peerDependencies": {
