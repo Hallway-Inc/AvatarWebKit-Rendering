@@ -1,5 +1,5 @@
 import { BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
-import { AnimationMixer } from 'three'
+import { AnimationMixer, Object3D, SkinnedMesh } from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as THREE from 'three'
 
@@ -23,22 +23,23 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   private eyeBoneInitialQuaternion: THREE.Quaternion
 
   typingGLB: GLTF
+  maximoResource: GLTF
+  maximoModel: Object3D
 
   constructor(props?: Record<string, any>) {
     super(props)
 
     this.resource = this.resources.items.rpmModel
 
-    this.typingGLB = this.resources.items.typingAnimation
-    console.log(this.typingGLB)
-    this.scene.add(this.typingGLB.scene)
+    this.maximoResource = this.resources.items.typingAnimation
+    this.maximoModel = this.maximoResource.scene
+
+    this.maximoModel.traverse(child => {
+      child.frustumCulled = false
+    })
+
+    this.scene.add(this.maximoModel)
     this.setModel()
-
-    this.animation.mixer = new AnimationMixer(this.typingGLB.scene)
-
-    this.animation.actions.typing = this.animation.mixer.clipAction(this.typingGLB.animations[0])
-    this.animation.current = this.animation.actions.typing
-    this.playAnimation()
   }
 
   playAnimation() {
@@ -94,32 +95,19 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   }
 
   sitHallwayStreamRoom() {
-    this.model.scale.set(2.5, 2.5, 2.5)
-    this.model.position.set(1, -1.1, -1.2)
+    this.maximoModel.scale.set(2.5, 2.5, 2.5)
+    this.maximoModel.position.set(1, 0.1, -1)
+    this.animation.mixer = new AnimationMixer(this.maximoModel)
 
-    // const leftUpLeg = this.model.getObjectByName('LeftUpLeg')
-    // leftUpLeg.rotateX(Math.PI / 2)
+    this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
+    this.animation.current = this.animation.actions.typing
+    this.playAnimation()
 
-    // const rightUpLeg = this.model.getObjectByName('RightUpLeg')
-    // rightUpLeg.rotateX(Math.PI / 2)
+    const skeletalMesh = this.maximoModel.getObjectByName('SkeletalMesh_01') as SkinnedMesh
+    const rpmMesh = this.model.getObjectByName('Wolf3D_Avatar') as SkinnedMesh
+    skeletalMesh.material = rpmMesh.material
 
-    // const leftLeg = this.model.getObjectByName('LeftLeg')
-    // leftLeg.rotateX(-Math.PI / 2)
-
-    // const rightLeg = this.model.getObjectByName('RightLeg')
-    // rightLeg.rotateX(-Math.PI / 2)
-
-    // const leftArm = this.model.getObjectByName('LeftForeArm')
-    // leftArm.rotateZ(Math.PI / 2.5)
-
-    // const rightArm = this.model.getObjectByName('RightForeArm')
-    // rightArm.rotateZ(-Math.PI / 2.5)
-
-    // const leftHand = this.model.getObjectByName('LeftHand')
-    // leftHand.rotateY(Math.PI / 3)
-
-    // const rightHand = this.model.getObjectByName('RightHand')
-    // rightHand.rotateY(-Math.PI / 3)
+    this.model.visible = false
   }
 
   update() {

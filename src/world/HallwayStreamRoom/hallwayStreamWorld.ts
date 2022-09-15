@@ -32,7 +32,7 @@ export class HallwayStreamWorld extends World {
   constructor() {
     super()
 
-    // Wait for resrpmModelrpmModelrpmModelources
+    // Wait for resources
     this.resources.on('ready', () => {
       // Setup
       const color = 0xffffff
