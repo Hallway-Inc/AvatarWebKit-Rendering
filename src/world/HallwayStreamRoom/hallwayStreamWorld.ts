@@ -14,6 +14,7 @@ export class HallwayStreamWorld extends World {
   rpmModel: ReadyPlayerMeModelV2
   predictor: AUWorkerManager
   running: boolean
+  stream?: MediaStream
 
   readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
     isometric: {
@@ -67,22 +68,34 @@ export class HallwayStreamWorld extends World {
         // Live Mode
         const liveModeDebugObject = {
           start: async () => {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+            const getStream = () => {}
+            const stream = this.stream ?? (await navigator.mediaDevices.getUserMedia({ video: true }))
+            const videoTracks = stream.getVideoTracks()
+
+            if (videoTracks.length === 0) throw new Error('no video tracks found')
+
             await this.predictor.initialize({
               apiToken: process.env.AVATAR_WEBKIT_AUTH_TOKEN
             })
+
             this.predictor.start(stream)
-            this.running = true
+            this.stream = stream
+          },
+          stop: () => {
+            this.predictor.stop()
+            this.stream.getTracks().forEach(track => track.stop())
+            this.stream = undefined
           }
         }
-        const liveModeFolder = this.experience.debug.ui.addFolder('live')
+        const liveModeFolder = this.experience.debug.ui.addFolder('live mode')
         liveModeFolder.add(liveModeDebugObject, 'start')
+        liveModeFolder.add(liveModeDebugObject, 'stop')
       }
     })
   }
 
   update() {
-    if (this.running) {
+    if (this.stream) {
       this.predictor.update(results => {
         this.rpmModel.updateHeadRotation(results.rotation)
         this.rpmModel.updateBlendShapes(results.blendShapes)

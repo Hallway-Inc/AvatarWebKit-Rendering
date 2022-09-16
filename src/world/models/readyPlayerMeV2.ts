@@ -1,9 +1,9 @@
-import { AvatarPrediction, BlendShapeKeys, BlendShapes, Rotation, Transform } from '@quarkworks-inc/avatar-webkit'
+import { BlendShapeKeys, BlendShapes, Rotation, Transform } from '@quarkworks-inc/avatar-webkit'
 import { WorldObject } from '../worldObject'
 import * as THREE from 'three'
-import { setMorphTarget } from '../../utils/three'
+import { getObjectByNameAssert, setMorphTarget } from '../../utils/three'
 
-const rotationEuler = new THREE.Euler()
+const euler = new THREE.Euler()
 
 export default class ReadyPlayerMeModelV2 extends WorldObject {
   private headBone: THREE.Bone
@@ -11,7 +11,6 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   private spineBone: THREE.Bone
   private leftEyeBone: THREE.Bone
   private rightEyeBone: THREE.Bone
-
   private headMesh: THREE.Mesh
   private teethMesh: THREE.Mesh
 
@@ -31,30 +30,13 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   setModel() {
     this.model = this.resource.scene
 
-    const headBone = this.model.getObjectByName('Head')
-    const neckBone = this.model.getObjectByName('Neck')
-    const spineBone = this.model.getObjectByName('Spine')
-    const leftEyeBone = this.model.getObjectByName('LeftEye')
-    const rightEyeBone = this.model.getObjectByName('RightEye')
-
-    const headMesh = this.model.getObjectByName('Wolf3D_Head')
-    const teethMesh = this.model.getObjectByName('Wolf3D_Teeth')
-
-    if (!headBone || !(headBone instanceof THREE.Bone)) throw new Error('error finding Head bone')
-    if (!neckBone || !(neckBone instanceof THREE.Bone)) throw new Error('error finding Neck bone')
-    if (!spineBone || !(spineBone instanceof THREE.Bone)) throw new Error('error finding Spine bone')
-    if (!leftEyeBone || !(leftEyeBone instanceof THREE.Bone)) throw new Error('error finding LeftEye bone')
-    if (!rightEyeBone || !(rightEyeBone instanceof THREE.Bone)) throw new Error('error finding RightEye bone')
-    if (!headMesh || !(headMesh instanceof THREE.Mesh)) throw new Error('error finding Wolf3D_Head mesh')
-    if (!teethMesh || !(teethMesh instanceof THREE.Mesh)) throw new Error('error finding Wolf3D_Teeth mesh')
-
-    this.headBone = headBone
-    this.neckBone = neckBone
-    this.spineBone = spineBone
-    this.leftEyeBone = leftEyeBone
-    this.rightEyeBone = rightEyeBone
-    this.headMesh = headMesh
-    this.teethMesh = teethMesh
+    this.headBone = getObjectByNameAssert(this.model, 'Head', THREE.Bone)
+    this.neckBone = getObjectByNameAssert(this.model, 'Neck', THREE.Bone)
+    this.spineBone = getObjectByNameAssert(this.model, 'Spine', THREE.Bone)
+    this.leftEyeBone = getObjectByNameAssert(this.model, 'LeftEye', THREE.Bone)
+    this.rightEyeBone = getObjectByNameAssert(this.model, 'RightEye', THREE.Bone)
+    this.headMesh = getObjectByNameAssert(this.model, 'Wolf3D_Head', THREE.Mesh)
+    this.teethMesh = getObjectByNameAssert(this.model, 'Wolf3D_Teeth', THREE.Mesh)
 
     this.headBoneInitialQuaternion = this.headBone.quaternion.clone()
     this.neckBoneInitialQuaternion = this.neckBone.quaternion.clone()
@@ -145,26 +127,26 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
 
     // Eye rotation
     const maxAngle = (1 / 57.3) * 28
-    rotationEuler.set(
+    euler.set(
       maxAngle * (blendShapes.eyeLookDown_R + -blendShapes.eyeLookUp_R),
       maxAngle * (-blendShapes.eyeLookOut_R + blendShapes.eyeLookIn_R),
       0
     )
-    this.leftEyeBone.quaternion.setFromEuler(rotationEuler).premultiply(this.eyeBoneInitialQuaternion)
-    this.rightEyeBone.quaternion.setFromEuler(rotationEuler).premultiply(this.eyeBoneInitialQuaternion)
+    this.leftEyeBone.quaternion.setFromEuler(euler).premultiply(this.eyeBoneInitialQuaternion)
+    this.rightEyeBone.quaternion.setFromEuler(euler).premultiply(this.eyeBoneInitialQuaternion)
   }
 
   updatePosition(transform: Transform) {
-    rotationEuler.set(transform.z * 0.1, 0, -transform.x * 0.5)
-    this.spineBone.quaternion.setFromEuler(rotationEuler).premultiply(this.spineBoneInitialQuaternion)
+    euler.set(transform.z * 0.1, 0, -transform.x * 0.5)
+    this.spineBone.quaternion.setFromEuler(euler).premultiply(this.spineBoneInitialQuaternion)
   }
 
   updateHeadRotation(rotation: Rotation) {
     const headWeight = 0.8
-    rotationEuler.set(-rotation.pitch * headWeight, rotation.yaw * headWeight, -rotation.roll * headWeight)
-    this.headBone.quaternion.setFromEuler(rotationEuler).premultiply(this.headBoneInitialQuaternion)
+    euler.set(-rotation.pitch * headWeight, rotation.yaw * headWeight, -rotation.roll * headWeight)
+    this.headBone.quaternion.setFromEuler(euler).premultiply(this.headBoneInitialQuaternion)
     const neckWeight = 0.2
-    rotationEuler.set(-rotation.pitch * neckWeight, rotation.yaw * neckWeight, -rotation.roll * neckWeight)
-    this.neckBone.quaternion.setFromEuler(rotationEuler).premultiply(this.neckBoneInitialQuaternion)
+    euler.set(-rotation.pitch * neckWeight, rotation.yaw * neckWeight, -rotation.roll * neckWeight)
+    this.neckBone.quaternion.setFromEuler(euler).premultiply(this.neckBoneInitialQuaternion)
   }
 }
