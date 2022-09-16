@@ -136,17 +136,17 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     this.rightEyeBone.quaternion.setFromEuler(euler).premultiply(this.eyeBoneInitialQuaternion)
   }
 
-  updatePosition(transform: Transform) {
-    euler.set(transform.z * 0.1, 0, -transform.x * 0.5)
+  updateHeadPosition(x: number, y: number, z: number) {
+    euler.set(z * 0.1, 0, -x * 0.5)
     this.spineBone.quaternion.setFromEuler(euler).premultiply(this.spineBoneInitialQuaternion)
   }
 
-  updateHeadRotation(rotation: Rotation) {
+  updateHeadRotation(pitch: number, yaw: number, roll: number) {
     const headWeight = 0.8
-    euler.set(-rotation.pitch * headWeight, rotation.yaw * headWeight, -rotation.roll * headWeight)
+    euler.set(-pitch * headWeight, yaw * headWeight, -roll * headWeight)
     this.headBone.quaternion.setFromEuler(euler).premultiply(this.headBoneInitialQuaternion)
     const neckWeight = 0.2
-    euler.set(-rotation.pitch * neckWeight, rotation.yaw * neckWeight, -rotation.roll * neckWeight)
+    euler.set(-pitch * neckWeight, yaw * neckWeight, -roll * neckWeight)
     this.neckBone.quaternion.setFromEuler(euler).premultiply(this.neckBoneInitialQuaternion)
   }
 }

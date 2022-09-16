@@ -1,3 +1,5 @@
+import type { Controller } from 'lil-gui'
+
 import { AmbientLight, DirectionalLight } from 'three'
 
 import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
@@ -13,8 +15,9 @@ export class HallwayStreamWorld extends World {
   roomModel: HallwayStreamRoom
   rpmModel: ReadyPlayerMeModelV2
   predictor: AUWorkerManager
-  running: boolean
   stream?: MediaStream
+  startController?: Controller
+  stopController?: Controller
 
   readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
     isometric: {
@@ -33,7 +36,6 @@ export class HallwayStreamWorld extends World {
     super()
 
     this.predictor = new AUWorkerManager()
-    this.running = false
 
     // Wait for resources
     this.resources.on('ready', () => {
@@ -67,46 +69,54 @@ export class HallwayStreamWorld extends World {
 
         // Live Mode
         const liveModeDebugObject = {
-          start: async () => {
-            const getStream = () => {}
-            const stream = this.stream ?? (await navigator.mediaDevices.getUserMedia({ video: true }))
-            const videoTracks = stream.getVideoTracks()
-
-            if (videoTracks.length === 0) throw new Error('no video tracks found')
-
-            await this.predictor.initialize({
-              apiToken: process.env.AVATAR_WEBKIT_AUTH_TOKEN
-            })
-
-            this.predictor.start(stream)
-            this.stream = stream
-          },
-          stop: () => {
-            this.predictor.stop()
-            this.stream.getTracks().forEach(track => track.stop())
-            this.stream = undefined
-          }
+          start: () => this.startLiveMode(),
+          stop: () => this.stopLiveMode()
         }
         const liveModeFolder = this.experience.debug.ui.addFolder('live mode')
-        liveModeFolder.add(liveModeDebugObject, 'start')
-        liveModeFolder.add(liveModeDebugObject, 'stop')
+        this.startController = liveModeFolder.add(liveModeDebugObject, 'start')
+        this.stopController = liveModeFolder.add(liveModeDebugObject, 'stop')
+        this.stopController.hide()
       }
     })
   }
 
   update() {
     if (this.stream) {
-      this.predictor.update(results => {
-        this.rpmModel.updateHeadRotation(results.rotation)
-        this.rpmModel.updateBlendShapes(results.blendShapes)
-        this.rpmModel.updatePosition(results.transform)
+      this.predictor.update(({ rotation, transform, blendShapes }) => {
+        this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+        this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
+        this.rpmModel.updateBlendShapes(blendShapes)
       })
     }
   }
 
   dispose() {
-    this.running = false
-    console.log('dispose')
+    this.stopLiveMode()
     this.predictor.dispose()
+  }
+
+  async startLiveMode() {
+    const stream = this.stream ?? (await navigator.mediaDevices.getUserMedia({ video: true }))
+    const videoTracks = stream.getVideoTracks()
+
+    if (videoTracks.length === 0) throw new Error('no video tracks found')
+
+    await this.predictor.initialize({
+      apiToken: process.env.AVATAR_WEBKIT_AUTH_TOKEN
+    })
+
+    this.predictor.start(stream)
+    this.stream = stream
+    this.startController?.hide()
+    this.stopController?.show()
+  }
+
+  stopLiveMode() {
+    this.predictor.stop()
+    this.stream?.getTracks()?.forEach(track => track.stop())
+    this.stream = undefined
+
+    this.stopController?.hide()
+    this.startController?.show()
   }
 }
