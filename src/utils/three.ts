@@ -91,3 +91,9 @@ export const availableChildren = (object: Object3D): AvailableChildren[] => {
 
   return children
 }
+
+export const getObjectByNameAssert = <T extends Object3D>(object: Object3D, name: string, type: { new (): T }): T => {
+  const node = object.getObjectByName(name)
+  if (!node || !(node instanceof type)) throw new Error(`error finding node "${name}" of type "${type.name}"`)
+  return node
+}

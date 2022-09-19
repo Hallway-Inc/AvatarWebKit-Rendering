@@ -1,4 +1,8 @@
+import type { Controller } from 'lil-gui'
+
 import { AmbientLight, DirectionalLight } from 'three'
+
+import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
 
 import ReadyPlayerMeModelV2 from '../models/readyPlayerMeV2'
 
@@ -48,19 +52,24 @@ export class HallwayStreamWorld extends World {
 
       // Debug
       if (this.experience.debug.active) {
-        this.experience.camera.setView
-        const debugObject = {
+        const cameraDebugObject = {
           isometric: () => this.experience.camera.setView(this.views.isometric, true),
           portrait: () => this.experience.camera.setView(this.views.portrait, true)
         }
         const cameraFolder = this.experience.debug.ui.addFolder('camera')
-        cameraFolder.add(debugObject, 'isometric')
-        cameraFolder.add(debugObject, 'portrait')
+        cameraFolder.add(cameraDebugObject, 'isometric')
+        cameraFolder.add(cameraDebugObject, 'portrait')
       }
     })
   }
 
   update() {
-    // if (this.fox) this.fox.update()
+    if (this.stream) {
+      this.predictor.update(({ rotation, transform, blendShapes }) => {
+        this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+        this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
+        this.rpmModel.updateBlendShapes(blendShapes)
+      })
+    }
   }
 }

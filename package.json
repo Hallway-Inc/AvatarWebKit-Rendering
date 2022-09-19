@@ -30,7 +30,7 @@
     "release": "release-it"
   },
   "dependencies": {
-    "@quarkworks-inc/avatar-webkit": "^0.8.0",
+    "@quarkworks-inc/avatar-webkit": "0.11.0-worker.7",
     "camera-controls": "^1.36.2",
     "three": "^0.138.3"
   },
