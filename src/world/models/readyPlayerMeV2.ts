@@ -151,11 +151,14 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   }
 
   updateHeadRotation(pitch: number, yaw: number, roll: number) {
+    // Maximo model yaw and roll are switched
+    // probably because 3js is Y-up and everything else is not
     const headWeight = 0.8
-    euler.set(-pitch * headWeight, yaw * headWeight, -roll * headWeight)
+    euler.set(-pitch * headWeight, -roll * headWeight, yaw * headWeight)
     this.headBone.quaternion.setFromEuler(euler).premultiply(this.headBoneInitialQuaternion)
+
     const neckWeight = 0.2
-    euler.set(-pitch * neckWeight, yaw * neckWeight, -roll * neckWeight)
+    euler.set(-pitch * neckWeight, -roll * neckWeight, yaw * neckWeight)
     this.neckBone.quaternion.setFromEuler(euler).premultiply(this.neckBoneInitialQuaternion)
   }
 }
