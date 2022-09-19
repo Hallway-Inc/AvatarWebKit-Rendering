@@ -14,15 +14,13 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   private spineBone: THREE.Bone
   private leftEyeBone: THREE.Bone
   private rightEyeBone: THREE.Bone
-  private headMesh: THREE.Mesh
-  private teethMesh: THREE.Mesh
+  private avatarMesh: THREE.SkinnedMesh
 
   private headBoneInitialQuaternion: THREE.Quaternion
   private neckBoneInitialQuaternion: THREE.Quaternion
   private spineBoneInitialQuaternion: THREE.Quaternion
   private eyeBoneInitialQuaternion: THREE.Quaternion
 
-  typingGLB: GLTF
   maximoResource: GLTF
   maximoModel: Object3D
 
@@ -48,14 +46,15 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
 
   setModel() {
     this.model = this.resource.scene
+    console.log(this.maximoModel)
 
-    this.headBone = getObjectByNameAssert(this.model, 'Head', THREE.Bone)
-    this.neckBone = getObjectByNameAssert(this.model, 'Neck', THREE.Bone)
-    this.spineBone = getObjectByNameAssert(this.model, 'Spine', THREE.Bone)
-    this.leftEyeBone = getObjectByNameAssert(this.model, 'LeftEye', THREE.Bone)
-    this.rightEyeBone = getObjectByNameAssert(this.model, 'RightEye', THREE.Bone)
-    this.headMesh = getObjectByNameAssert(this.model, 'Wolf3D_Head', THREE.Mesh)
-    this.teethMesh = getObjectByNameAssert(this.model, 'Wolf3D_Teeth', THREE.Mesh)
+    this.headBone = getObjectByNameAssert(this.maximoModel, 'Head', THREE.Bone)
+    this.neckBone = getObjectByNameAssert(this.maximoModel, 'Neck', THREE.Bone)
+    this.spineBone = getObjectByNameAssert(this.maximoModel, 'Spine', THREE.Bone)
+    this.leftEyeBone = getObjectByNameAssert(this.maximoModel, 'LeftEye', THREE.Bone)
+    this.rightEyeBone = getObjectByNameAssert(this.maximoModel, 'RightEye', THREE.Bone)
+    this.avatarMesh = getObjectByNameAssert(this.maximoModel, 'SkeletalMesh_01', THREE.SkinnedMesh)
+    // this.teethMesh = getObjectByNameAssert(this.model, 'Wolf3D_Teeth', THREE.Mesh)
 
     this.headBoneInitialQuaternion = this.headBone.quaternion.clone()
     this.neckBoneInitialQuaternion = this.neckBone.quaternion.clone()
@@ -99,9 +98,9 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     this.maximoModel.position.set(1, 0.1, -1)
     this.animation.mixer = new AnimationMixer(this.maximoModel)
 
-    this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
-    this.animation.current = this.animation.actions.typing
-    this.playAnimation()
+    // this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
+    // this.animation.current = this.animation.actions.typing
+    // this.playAnimation()
 
     const skeletalMesh = this.maximoModel.getObjectByName('SkeletalMesh_01') as SkinnedMesh
     const rpmMesh = this.model.getObjectByName('Wolf3D_Avatar') as SkinnedMesh
@@ -126,13 +125,13 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   }
 
   updateBlendShapes(blendShapes: BlendShapes) {
+    console.log(blendShapes)
     for (const key in blendShapes) {
       const value = this._tuneMorphTargetValue(key, blendShapes[key])
 
       const arKitKey = BlendShapeKeys.toARKitConvention(key)
 
-      setMorphTarget(this.headMesh, arKitKey, value)
-      setMorphTarget(this.teethMesh, arKitKey, value)
+      setMorphTarget(this.avatarMesh, arKitKey, value)
     }
 
     // Eye rotation
