@@ -64,6 +64,23 @@ export class HallwayStreamWorld extends World {
         cameraFolder.add(cameraDebugObject, 'isometric')
         cameraFolder.add(cameraDebugObject, 'portrait')
       }
+
+      if (this.experience.debug.active) {
+        const liveModeDebugObject = {
+          start: () => {
+            this.rpmModel.stopAnimation()
+            this.startLiveMode()
+          },
+          stop: () => {
+            this.rpmModel.playAnimation()
+            this.stopLiveMode()
+          }
+        }
+        const liveModeFolder = this.experience.debug.ui.addFolder('live mode')
+        this.startController = liveModeFolder.add(liveModeDebugObject, 'start')
+        this.stopController = liveModeFolder.add(liveModeDebugObject, 'stop')
+        this.stopController.hide()
+      }
     })
   }
 

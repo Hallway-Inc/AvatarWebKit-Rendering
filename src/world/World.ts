@@ -6,7 +6,14 @@ import { Scene } from 'three'
 import { Experience } from '../Experience.js'
 import Resources from '../utils/Resources.js'
 
-export class World {
+// https://stackoverflow.com/questions/44153378/typescript-abstract-optional-method
+export interface World {
+  stopAnimation?(): void
+  playAnimation?(): void
+  update?(): void
+}
+
+export abstract class World {
   experience: Experience
   scene: Scene
   resources: Resources

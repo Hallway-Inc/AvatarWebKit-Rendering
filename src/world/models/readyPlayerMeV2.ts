@@ -44,6 +44,11 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     this.animation.play('typing')
   }
 
+  stopAnimation() {
+    console.log('yeet')
+    this.animation.mixer.stopAllAction()
+  }
+
   setModel() {
     this.model = this.resource.scene
     console.log(this.maximoModel)
@@ -98,9 +103,9 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     this.maximoModel.position.set(1, 0.1, -1)
     this.animation.mixer = new AnimationMixer(this.maximoModel)
 
-    // this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
-    // this.animation.current = this.animation.actions.typing
-    // this.playAnimation()
+    this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
+    this.animation.current = this.animation.actions.typing
+    this.playAnimation()
 
     const skeletalMesh = this.maximoModel.getObjectByName('SkeletalMesh_01') as SkinnedMesh
     const rpmMesh = this.model.getObjectByName('Wolf3D_Avatar') as SkinnedMesh
@@ -125,7 +130,6 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   }
 
   updateBlendShapes(blendShapes: BlendShapes) {
-    console.log(blendShapes)
     for (const key in blendShapes) {
       const value = this._tuneMorphTargetValue(key, blendShapes[key])
 
