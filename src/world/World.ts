@@ -1,10 +1,11 @@
-import type { Controller } from 'lil-gui'
+import type { Controller, GUI } from 'lil-gui'
 
 import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
 import { Scene } from 'three'
 
 import { Experience } from '../Experience.js'
 import Resources from '../utils/Resources.js'
+import { FoxWorld } from './FoxWorld/FoxWorld.js'
 
 export class World {
   experience: Experience
@@ -12,8 +13,12 @@ export class World {
   resources: Resources
   predictor: AUWorkerManager
   stream?: MediaStream
+  videoDevices: MediaDeviceInfo[]
+  liveModeDebugObject?: { start: () => void; stop: () => void; deviceId: string }
+  liveModeFolder?: GUI
   startController?: Controller
   stopController?: Controller
+  deviceIdController?: Controller
 
   constructor() {
     this.experience = Experience.instance
@@ -22,14 +27,18 @@ export class World {
     this.predictor = new AUWorkerManager()
 
     if (this.experience.debug.active) {
-      const liveModeDebugObject = {
-        start: () => this.startLiveMode(),
-        stop: () => this.stopLiveMode()
+      this.liveModeDebugObject = {
+        start: () => this.handleStart(),
+        stop: () => this.stopLiveMode(),
+        deviceId: ''
       }
-      const liveModeFolder = this.experience.debug.ui.addFolder('live mode')
-      this.startController = liveModeFolder.add(liveModeDebugObject, 'start')
-      this.stopController = liveModeFolder.add(liveModeDebugObject, 'stop')
+      this.liveModeFolder = this.experience.debug.ui.addFolder('live mode')
+      this.startController = this.liveModeFolder.add(this.liveModeDebugObject, 'start')
+      this.stopController = this.liveModeFolder.add(this.liveModeDebugObject, 'stop')
       this.stopController.hide()
+
+      navigator.mediaDevices.addEventListener('devicechange', () => this.updateVideoDevices())
+      window['updateVideoDevices'] = () => this.updateVideoDevices()
     }
   }
 
@@ -42,10 +51,45 @@ export class World {
     this.predictor.dispose()
   }
 
-  async startLiveMode() {
-    const stream = this.stream ?? (await navigator.mediaDevices.getUserMedia({ video: true }))
-    const videoTracks = stream.getVideoTracks()
+  // Runs when start button is clicked
+  async handleStart() {
+    try {
+      await this.updateVideoDevices()
+      await this.startLiveMode()
+    } catch (e) {
+      console.error('Failed to start:', e)
+    }
+  }
 
+  // Runs when video device dropdown value changes
+  async handleDeviceIdControllerChange() {
+    if (this.stream !== undefined) {
+      await this.stopLiveMode()
+      await this.startLiveMode()
+    }
+  }
+
+  // Runs when 'devicechange' event fires (e.g. device disconnected)
+  async handleDeviceChange() {
+    await this.updateVideoDevices()
+
+    await this.stopLiveMode()
+    await this.startLiveMode()
+  }
+
+  /**
+   * Start live mode with currently selected video device
+   */
+  async startLiveMode() {
+    if (this.stream) return
+
+    const deviceId = this.deviceIdController.getValue()
+    const constraints: MediaStreamConstraints = {
+      video: { deviceId }
+    }
+    const stream = await navigator.mediaDevices.getUserMedia(constraints)
+
+    const videoTracks = stream.getVideoTracks()
     if (videoTracks.length === 0) throw new Error('no video tracks found')
 
     await this.predictor.initialize({
@@ -65,5 +109,32 @@ export class World {
 
     this.stopController?.hide()
     this.startController?.show()
+  }
+
+  async updateVideoDevices() {
+    // Must call .getUserMedia() so Firefox can read device labels
+    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
+    this.liveModeDebugObject.deviceId = stream.getVideoTracks()[0].getSettings().deviceId
+
+    const devices = await navigator.mediaDevices.enumerateDevices()
+    const videoDevices = devices.filter(device => device.kind === 'videoinput')
+
+    console.log({ videoDevices })
+
+    // Format for lil-gui
+
+    const options = Object.fromEntries(videoDevices.map(info => [info.label, info.deviceId]))
+    this.deviceIdController ??= this.liveModeFolder.add(this.liveModeDebugObject, 'deviceId') // Add the controller on first time only
+    this.deviceIdController = this.deviceIdController // Reassign because updating options() destroys old reference
+      .options(options)
+      .onChange(() => this.handleDeviceIdControllerChange())
+
+    // Verify the selected deviceId exists. If not, pick the first available device
+
+    const deviceId = this.deviceIdController.getValue()
+    if (videoDevices.find(info => info.deviceId === deviceId) === undefined) {
+      if (videoDevices.length === 0) throw new Error('No video devices found')
+      this.deviceIdController.setValue(videoDevices[0].deviceId)
+    }
   }
 }
