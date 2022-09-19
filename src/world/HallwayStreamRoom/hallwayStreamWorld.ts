@@ -14,10 +14,6 @@ import HallwayStreamRoom from './cube'
 export class HallwayStreamWorld extends World {
   roomModel: HallwayStreamRoom
   rpmModel: ReadyPlayerMeModelV2
-  predictor: AUWorkerManager
-  stream?: MediaStream
-  startController?: Controller
-  stopController?: Controller
 
   readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
     isometric: {
@@ -34,8 +30,6 @@ export class HallwayStreamWorld extends World {
 
   constructor() {
     super()
-
-    this.predictor = new AUWorkerManager()
 
     // Wait for resources
     this.resources.on('ready', () => {
@@ -58,7 +52,6 @@ export class HallwayStreamWorld extends World {
 
       // Debug
       if (this.experience.debug.active) {
-        // Camera
         const cameraDebugObject = {
           isometric: () => this.experience.camera.setView(this.views.isometric, true),
           portrait: () => this.experience.camera.setView(this.views.portrait, true)
@@ -66,16 +59,6 @@ export class HallwayStreamWorld extends World {
         const cameraFolder = this.experience.debug.ui.addFolder('camera')
         cameraFolder.add(cameraDebugObject, 'isometric')
         cameraFolder.add(cameraDebugObject, 'portrait')
-
-        // Live Mode
-        const liveModeDebugObject = {
-          start: () => this.startLiveMode(),
-          stop: () => this.stopLiveMode()
-        }
-        const liveModeFolder = this.experience.debug.ui.addFolder('live mode')
-        this.startController = liveModeFolder.add(liveModeDebugObject, 'start')
-        this.stopController = liveModeFolder.add(liveModeDebugObject, 'stop')
-        this.stopController.hide()
       }
     })
   }
@@ -88,35 +71,5 @@ export class HallwayStreamWorld extends World {
         this.rpmModel.updateBlendShapes(blendShapes)
       })
     }
-  }
-
-  dispose() {
-    this.stopLiveMode()
-    this.predictor.dispose()
-  }
-
-  async startLiveMode() {
-    const stream = this.stream ?? (await navigator.mediaDevices.getUserMedia({ video: true }))
-    const videoTracks = stream.getVideoTracks()
-
-    if (videoTracks.length === 0) throw new Error('no video tracks found')
-
-    await this.predictor.initialize({
-      apiToken: process.env.AVATAR_WEBKIT_AUTH_TOKEN
-    })
-
-    this.predictor.start(stream)
-    this.stream = stream
-    this.startController?.hide()
-    this.stopController?.show()
-  }
-
-  stopLiveMode() {
-    this.predictor.stop()
-    this.stream?.getTracks()?.forEach(track => track.stop())
-    this.stream = undefined
-
-    this.stopController?.hide()
-    this.startController?.show()
   }
 }
