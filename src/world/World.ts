@@ -11,12 +11,23 @@ export class World {
   scene: Scene
   resources: Resources
   predictor: AUWorkerManager
+
+  /** Stream used for predictor, if one is active */
   stream?: MediaStream
-  videoDevices: MediaDeviceInfo[]
+
+  /** Lil-gui properties for live mode */
   liveModeDebugObject?: { start: () => void; stop: () => void; deviceId: string }
+
+  /** Folder for live mode */
   liveModeFolder?: GUI
+
+  /** Start button */
   startController?: Controller
+
+  /** Stop button */
   stopController?: Controller
+
+  /** Dropdown for video devices */
   deviceIdController?: Controller
 
   constructor() {
@@ -36,8 +47,7 @@ export class World {
       this.stopController = this.liveModeFolder.add(this.liveModeDebugObject, 'stop')
       this.stopController.hide()
 
-      navigator.mediaDevices.addEventListener('devicechange', () => this.requestCamera())
-      window['updateVideoDevices'] = () => this.requestCamera()
+      navigator.mediaDevices.addEventListener('devicechange', () => this.handleDeviceChange())
     }
   }
 
@@ -50,22 +60,11 @@ export class World {
     this.predictor.dispose()
   }
 
-  // Runs when start button is clicked
+  /**
+   * Runs when start button is pressed
+   */
   async handleStart() {
     try {
-      /**
-       * FIRST TIME
-       * Request a stream (provide deviceId if user has selected one)
-       * Determine which deviceId was actually retrieved from stream (maybe the requested deviceId wasn't available)
-       * Save the stream for later
-       * Enumerate available device
-       * Update lil-gui to show the device list
-       * Update lil-gui to show the active device
-       *
-       * MANUAL RESTART
-       * Request a stream with the provided deviceId (assume it is still available)
-       * Save the stream for later
-       */
       const stream = await this.requestCamera()
       await this.startLiveMode(stream)
     } catch (e) {
@@ -73,28 +72,23 @@ export class World {
     }
   }
 
-  // Runs when video device dropdown value changes
-  async handleDeviceIdControllerChange() {
-    if (this.stream !== undefined) {
+  /**
+   * Runs when device list has potentially changed. If necessary, restarts live mode.
+   */
+  async handleDeviceChange() {
+    if (this.stream === undefined) return // Live mode not active
+
+    try {
       await this.stopLiveMode()
-
       const stream = await this.requestCamera()
-
       await this.startLiveMode(stream)
+    } catch (e) {
+      console.error('Failed to restart: ', e)
     }
   }
 
-  // Runs when 'devicechange' event fires (e.g. device disconnected)
-  async handleDeviceChange() {
-    await this.stopLiveMode()
-
-    const stream = await this.requestCamera()
-
-    await this.startLiveMode(stream)
-  }
-
   /**
-   * Start live mode with currently selected video device
+   * Start live mode with the provided stream
    */
   async startLiveMode(stream: MediaStream) {
     const videoTracks = stream.getVideoTracks()
@@ -110,6 +104,9 @@ export class World {
     this.stopController?.show()
   }
 
+  /**
+   * Tear down stream and stop predictions
+   */
   stopLiveMode() {
     this.predictor.stop()
     this.stream?.getTracks()?.forEach(track => track.stop())
@@ -122,7 +119,7 @@ export class World {
   /**
    * Request camera access and enumerate available devices
    *
-   * Note: this returns a stream obtained during the permission flow
+   * @returns Stream obtained during the permission flow
    */
   async requestCamera() {
     // DeviceId as selected in lil-gui (may be invalid)
@@ -139,15 +136,12 @@ export class World {
     const devices = await navigator.mediaDevices.enumerateDevices()
     const videoDevices = devices.filter(device => device.kind === 'videoinput')
 
-    console.log({ videoDevices })
-
     // Format for lil-gui
-
     const options = Object.fromEntries(videoDevices.map(info => [info.label, info.deviceId])) // Lil-gui options take the shape { label: value }
     this.deviceIdController ??= this.liveModeFolder.add(this.liveModeDebugObject, 'deviceId').name('Camera') // Add the controller on first time only
     this.deviceIdController = this.deviceIdController // Reassign because updating options() destroys old reference
       .options(options) // Update options and destroy old controller
-      .onChange(() => this.handleDeviceIdControllerChange()) // Needs to be set each time on new controller
+      .onChange(() => this.handleDeviceChange()) // Needs to be set each time on new controller
     this.deviceIdController.setValue(browserSelectedDeviceId) // Update to reflect true value
 
     return stream
