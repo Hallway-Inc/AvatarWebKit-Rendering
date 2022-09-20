@@ -1,0 +1,32 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"problemMatcher": [],
+			"label": "Dev (Root)",
+			"detail": "rollup -cw"
+		},
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "demo",
+			"problemMatcher": [],
+			"label": "Dev (Demo)",
+			"detail": "react-scripts start",
+		},
+		{
+				"label": "Dev",
+				"dependsOn": [
+					"Dev (Root)",
+					"Dev (Demo)",
+				],
+				"dependsOrder": "parallel",
+				"problemMatcher": [
+						"$tsc-watch"
+				],
+				"isBackground": true
+		},
+	]
+}

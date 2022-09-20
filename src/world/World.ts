@@ -5,7 +5,6 @@ import { Scene } from 'three'
 
 import { Experience } from '../Experience.js'
 import Resources from '../utils/Resources.js'
-import { FoxWorld } from './FoxWorld/FoxWorld.js'
 
 export class World {
   experience: Experience
@@ -37,8 +36,8 @@ export class World {
       this.stopController = this.liveModeFolder.add(this.liveModeDebugObject, 'stop')
       this.stopController.hide()
 
-      navigator.mediaDevices.addEventListener('devicechange', () => this.updateVideoDevices())
-      window['updateVideoDevices'] = () => this.updateVideoDevices()
+      navigator.mediaDevices.addEventListener('devicechange', () => this.requestCamera())
+      window['updateVideoDevices'] = () => this.requestCamera()
     }
   }
 
@@ -54,8 +53,21 @@ export class World {
   // Runs when start button is clicked
   async handleStart() {
     try {
-      await this.updateVideoDevices()
-      await this.startLiveMode()
+      /**
+       * FIRST TIME
+       * Request a stream (provide deviceId if user has selected one)
+       * Determine which deviceId was actually retrieved from stream (maybe the requested deviceId wasn't available)
+       * Save the stream for later
+       * Enumerate available device
+       * Update lil-gui to show the device list
+       * Update lil-gui to show the active device
+       *
+       * MANUAL RESTART
+       * Request a stream with the provided deviceId (assume it is still available)
+       * Save the stream for later
+       */
+      const stream = await this.requestCamera()
+      await this.startLiveMode(stream)
     } catch (e) {
       console.error('Failed to start:', e)
     }
@@ -65,30 +77,26 @@ export class World {
   async handleDeviceIdControllerChange() {
     if (this.stream !== undefined) {
       await this.stopLiveMode()
-      await this.startLiveMode()
+
+      const stream = await this.requestCamera()
+
+      await this.startLiveMode(stream)
     }
   }
 
   // Runs when 'devicechange' event fires (e.g. device disconnected)
   async handleDeviceChange() {
-    await this.updateVideoDevices()
-
     await this.stopLiveMode()
-    await this.startLiveMode()
+
+    const stream = await this.requestCamera()
+
+    await this.startLiveMode(stream)
   }
 
   /**
    * Start live mode with currently selected video device
    */
-  async startLiveMode() {
-    if (this.stream) return
-
-    const deviceId = this.deviceIdController.getValue()
-    const constraints: MediaStreamConstraints = {
-      video: { deviceId }
-    }
-    const stream = await navigator.mediaDevices.getUserMedia(constraints)
-
+  async startLiveMode(stream: MediaStream) {
     const videoTracks = stream.getVideoTracks()
     if (videoTracks.length === 0) throw new Error('no video tracks found')
 
@@ -111,11 +119,23 @@ export class World {
     this.startController?.show()
   }
 
-  async updateVideoDevices() {
-    // Must call .getUserMedia() so Firefox can read device labels
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true })
-    this.liveModeDebugObject.deviceId = stream.getVideoTracks()[0].getSettings().deviceId
+  /**
+   * Request camera access and enumerate available devices
+   *
+   * Note: this returns a stream obtained during the permission flow
+   */
+  async requestCamera() {
+    // DeviceId as selected in lil-gui (may be invalid)
+    const guiSelectedDeviceId = this.liveModeDebugObject.deviceId
 
+    // Must call .getUserMedia() so Firefox can read device labels
+    // We provide our UI's selected deviceId as preference, but it may be overriden by browser UI
+    const stream = await navigator.mediaDevices.getUserMedia({ video: { deviceId: guiSelectedDeviceId } })
+
+    // Which deviceId was ultimately selected by the browser
+    const browserSelectedDeviceId = stream.getVideoTracks()[0].getSettings().deviceId
+
+    // Now we have permission to view all device labels
     const devices = await navigator.mediaDevices.enumerateDevices()
     const videoDevices = devices.filter(device => device.kind === 'videoinput')
 
@@ -123,18 +143,13 @@ export class World {
 
     // Format for lil-gui
 
-    const options = Object.fromEntries(videoDevices.map(info => [info.label, info.deviceId]))
-    this.deviceIdController ??= this.liveModeFolder.add(this.liveModeDebugObject, 'deviceId') // Add the controller on first time only
+    const options = Object.fromEntries(videoDevices.map(info => [info.label, info.deviceId])) // Lil-gui options take the shape { label: value }
+    this.deviceIdController ??= this.liveModeFolder.add(this.liveModeDebugObject, 'deviceId').name('Camera') // Add the controller on first time only
     this.deviceIdController = this.deviceIdController // Reassign because updating options() destroys old reference
-      .options(options)
-      .onChange(() => this.handleDeviceIdControllerChange())
+      .options(options) // Update options and destroy old controller
+      .onChange(() => this.handleDeviceIdControllerChange()) // Needs to be set each time on new controller
+    this.deviceIdController.setValue(browserSelectedDeviceId) // Update to reflect true value
 
-    // Verify the selected deviceId exists. If not, pick the first available device
-
-    const deviceId = this.deviceIdController.getValue()
-    if (videoDevices.find(info => info.deviceId === deviceId) === undefined) {
-      if (videoDevices.length === 0) throw new Error('No video devices found')
-      this.deviceIdController.setValue(videoDevices[0].deviceId)
-    }
+    return stream
   }
 }
