@@ -6,6 +6,7 @@ import Time from './utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
 import Resources from './utils/Resources.js'
+import { nameForModelType } from './utils/utils.js'
 import { World } from './world/World'
 
 // Worlds
@@ -35,6 +36,7 @@ import hallwayStreamWorldSources from './world/HallwayStreamRoom/sources'
 export type ExperienceProps = {
   _canvas: HTMLCanvasElement
   name: string
+  modelType: string
   modelUrl: string
 }
 
@@ -50,7 +52,7 @@ export class Experience {
   renderer: Renderer
   world: World
 
-  constructor({ _canvas, name, modelUrl }: ExperienceProps) {
+  constructor({ _canvas, name, modelType, modelUrl }: ExperienceProps) {
     // Singleton
     if (Experience.instance) {
       return Experience.instance
@@ -73,7 +75,7 @@ export class Experience {
 
     const modelSource = [
       {
-        name: 'rpmModel',
+        name: nameForModelType(modelType),
         path: modelUrl,
         type: 'gltfModel'
       }

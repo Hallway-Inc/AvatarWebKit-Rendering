@@ -1,7 +1,8 @@
-import { BlendShapeKeys, BlendShapes, Rotation, Transform } from '@quarkworks-inc/avatar-webkit'
-import { WorldObject } from '../worldObject'
+import { BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import * as THREE from 'three'
+
 import { getObjectByNameAssert, setMorphTarget } from '../../utils/three'
+import { WorldObject } from '../worldObject'
 
 const euler = new THREE.Euler()
 

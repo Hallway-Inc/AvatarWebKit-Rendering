@@ -1,19 +1,20 @@
-import type { Controller } from 'lil-gui'
-
 import { AmbientLight, DirectionalLight } from 'three'
 
-import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
+import { CameraView } from '../../Camera'
 
 import ReadyPlayerMeModelV2 from '../models/readyPlayerMeV2'
-
 import { World } from '../World'
-import { CameraView } from '../../Camera'
+import { WorldObject } from '../worldObject'
+
+import ChibModelV2 from '../models/chibV2'
 
 import HallwayStreamRoom from './cube'
 
 export class HallwayStreamWorld extends World {
   roomModel: HallwayStreamRoom
+  model: WorldObject
   rpmModel: ReadyPlayerMeModelV2
+  chibModel: ChibModelV2
 
   readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
     isometric: {
@@ -46,6 +47,9 @@ export class HallwayStreamWorld extends World {
       if (this.resources.items.rpmModel) {
         this.rpmModel = new ReadyPlayerMeModelV2()
         this.rpmModel.sitHallwayStreamRoom()
+      } else if (this.resources.items.chibModel) {
+        this.chibModel = new ChibModelV2()
+        this.chibModel.sitHallwayStreamRoom()
       }
 
       this.experience.camera.setView(this.views.isometric)
@@ -66,9 +70,14 @@ export class HallwayStreamWorld extends World {
   update() {
     if (this.stream) {
       this.predictor.update(({ rotation, transform, blendShapes }) => {
-        this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
-        this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
-        this.rpmModel.updateBlendShapes(blendShapes)
+        if (this.rpmModel) {
+          this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+          this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
+          this.rpmModel.updateBlendShapes(blendShapes)
+        } else if (this.chibModel) {
+          this.chibModel.updateBlendShapes(blendShapes)
+          this.chibModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+        }
       })
     }
   }

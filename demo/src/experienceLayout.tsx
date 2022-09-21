@@ -9,7 +9,10 @@ const ExperienceLayout = () => {
     const experience = new Experience({
       _canvas: sceneCanvasRef.current,
       name: 'streamRoom',
+      modelType: 'rpm',
       modelUrl: 'https://d1a370nemizbjq.cloudfront.net/9f35ad26-5b47-4530-b245-be743317e094.glb'
+      // modelType: 'chib',
+      // modelUrl: '/models/chibs/1.glb'
     })
 
     setExperience(experience)

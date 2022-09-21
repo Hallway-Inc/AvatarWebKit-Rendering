@@ -32,9 +32,9 @@ export const enumerateChildNodes = (object: Object3D, callback: (object: Object3
 
 export const setMorphTarget = (mesh: Mesh | undefined, key: string, value: any) => {
   if (!mesh) return
-  const idx = mesh.morphTargetDictionary[key]
-  if (!idx) return
-  mesh.morphTargetInfluences[idx] = value
+  const index = mesh.morphTargetDictionary[key]
+  if (index === undefined) return
+  mesh.morphTargetInfluences[index] = value
 }
 
 export type AvailableMorphTarget = {
