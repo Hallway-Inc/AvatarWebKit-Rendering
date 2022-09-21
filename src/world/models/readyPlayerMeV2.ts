@@ -1,6 +1,6 @@
 import { BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import * as THREE from 'three'
-import { AnimationMixer, Object3D, SkinnedMesh } from 'three'
+import { AnimationMixer, Object3D, SkinnedMesh, Vector3 } from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import { getObjectByNameAssert, setMorphTarget } from '../../utils/three'
@@ -36,8 +36,9 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     //   child.frustumCulled = false
     // })
 
-    // this.scene.add(this.maximoModel)
+    this.scene.add(this.maximoModel)
     this.setModel()
+
     // console.log(this.model)
   }
 
@@ -100,22 +101,24 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
   sitHallwayStreamRoom() {
     // this.maximoModel.scale.set(2.5, 2.5, 2.5)
     // this.maximoModel.position.set(1, 0.1, -1)
+    this.model.scale.set(this.maximoModel.scale.x, this.maximoModel.scale.y, this.maximoModel.scale.z)
 
-    this.model.animations.push(this.maximoResource.animations[0])
-    this.animation.mixer = new AnimationMixer(this.model)
-    this.animation.actions.typing = this.animation.mixer.clipAction(this.model.animations[0])
+    // this.model.animations.push(this.maximoResource.animations[0])
+    this.animation.mixer = new AnimationMixer(this.maximoModel)
+    console.log(this.maximoModel)
+    this.animation.actions.typing = this.animation.mixer.clipAction(this.maximoResource.animations[0])
     this.animation.current = this.animation.actions.typing
 
     // this comes from second animation data from maximo
-    this.model.quaternion.set(0.7071, 0, 0, 0.707)
-    this.model.scale.set(0.01, 0.01, 0.01)
-    this.model.position.set(0, 0, 0)
+    // this.model.quaternion.set(0.7071, 0, 0, 0.707)
+    // this.model.scale.set(0.01, 0.01, 0.01)
+    // this.model.position.set(0, 0, 0)
 
     this.playAnimation()
 
     const skeletalMesh = this.maximoModel.getObjectByName('SkeletalMesh_01') as SkinnedMesh
     const rpmMesh = this.model.getObjectByName('Wolf3D_Avatar') as SkinnedMesh
-    skeletalMesh.material = rpmMesh.material
+    // skeletalMesh.material = rpmMesh.material
     // const armature = this.maximoModel.getObjectByName('Armature') as Object3D
     // const bones = []
 
@@ -144,24 +147,56 @@ export default class ReadyPlayerMeModelV2 extends WorldObject {
     // rpmMesh.geometry.setAttribute('skinIndex', skeletalMesh.geometry.getAttribute('skinIndex'))
     // rpmMesh.geometry.setAttribute('skinWeight', skeletalMesh.geometry.getAttribute('skinWeight'))
     // rpmMesh.geometry.copy(skeletalMesh.geometry.clone())
-    console.log(rpmMesh)
-    console.log(skeletalMesh)
+
     // rpmMesh.bind(skeleton)
     // rpmMesh.normalizeSkinWeights()
     rpmMesh.frustumCulled = false
     const skeletonHelper = new THREE.SkeletonHelper(this.model)
     this.scene.add(skeletonHelper)
 
-    // const skeletonHelper2 = new THREE.SkeletonHelper(this.maximoModel)
-    // this.scene.add(skeletonHelper2)
-    skeletalMesh.visible = false
+    const skeletonHelper2 = new THREE.SkeletonHelper(this.maximoModel)
+    this.scene.add(skeletonHelper2)
+    // skeletalMesh.visible = false
     // this.model.visible = false
     // console.log(this.model)
     // console.log(rpmMesh)
+
+    const rpmArmature = this.model.getObjectByName('Armature')
+    const maximoChild = this.maximoModel.getObjectByName('Armature')
+    // rpmArmature.position.set(maximoChild.position.x, maximoChild.position.y, maximoChild.position.z)
+    rpmArmature.matrixWorld = maximoChild.matrixWorld
+    rpmArmature.matrixWorldNeedsUpdate = true
+    console.log(rpmArmature, maximoChild)
   }
 
   update() {
     this.animation.mixer.update(this.time.delta * 0.001)
+
+    const rpmArmature = this.model.getObjectByName('Armature')
+    rpmArmature.traverse(child => {
+      const maximoChild = this.maximoModel.getObjectByName(child.name)
+      if (maximoChild) {
+        // child.position = maximoChild.position
+        // console.log(maximoChild.name)
+        // child.matrixWorld = maximoChild.matrixWorld
+        // child.matrixWorldNeedsUpdate = true
+        // child.matrixWorldNeedsUpdate = true
+        const pos = new Vector3()
+        const worldPosition = maximoChild.getWorldPosition(pos)
+        // const worldQuaternion = maximoChild.getWorldQuaternion(maximoChild.quaternion)
+        // child.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
+        const worldScale = maximoChild.getWorldScale(pos)
+        // child.scale.set(worldScale.x, worldScale.y, worldScale.z)
+        // child.quaternion.set(worldQuaternion.x, worldQuaternion.y, worldQuaternion.z, worldQuaternion.w)
+        // child.quaternion.set(
+        //   maximoChild.quaternion.x,
+        //   maximoChild.quaternion.y,
+        //   maximoChild.quaternion.z,
+        //   maximoChild.quaternion.w
+        // )
+        // child.scale.set(maximoChild.scale.x, maximoChild.scale.y, maximoChild.scale.z)
+      }
+    })
   }
 
   private _tuneMorphTargetValue(key: string, value: number): number {
