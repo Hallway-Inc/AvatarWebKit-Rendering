@@ -1,6 +1,6 @@
 import { BlendShapeKeys, BlendShapes } from '@quarkworks-inc/avatar-webkit'
 import * as THREE from 'three'
-import { AnimationMixer, Bone, Object3D, Quaternion, SkinnedMesh, Vector3 } from 'three'
+import { AnimationMixer, Object3D, SkinnedMesh } from 'three'
 import { GLTF } from 'three/examples/jsm/loaders/GLTFLoader'
 
 import { getObjectByNameAssert, setMorphTarget } from '../../utils/three'
