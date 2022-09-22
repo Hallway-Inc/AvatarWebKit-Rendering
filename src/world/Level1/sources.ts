@@ -1,102 +1,104 @@
 export default [
   {
     name: 'level1IntersectModel',
-    path: '/assets/experience/level1/intersect.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/intersect.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1FloorShadowTexture',
-    path: '/assets/experience/level1/floorShadow.jpg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/floorShadow.jpg',
     type: 'texture'
   },
   {
     name: 'level1BakedTexture',
-    path: '/assets/experience/level1/baked.jpg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/baked.jpg',
     type: 'texture'
   },
   {
     name: 'level1BakedModel',
-    path: '/assets/experience/level1/baked.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/baked.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1CameraHeadModel',
-    path: '/assets/experience/level1/cameraHead.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/cameraHead.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1SudoHeadModel',
-    path: '/assets/experience/level1/sudoHead.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/sudoHead.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1CactusModel',
-    path: '/assets/experience/level1/cactus.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/cactus.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1CubeModel',
-    path: '/assets/experience/level1/cube.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/cube.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1PyramidModel',
-    path: '/assets/experience/level1/pyramid.glb',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/pyramid.glb',
     type: 'gltfModel'
   },
   {
     name: 'level1DogModel',
-    path: `/assets/experience/level1/sudo.glb`,
+    path: `https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/level1/sudo.glb`,
     type: 'gltfModel'
   },
   {
     name: 'matcapPinkOnBeigeTexture',
-    path: '/assets/experience/matcaps/pinkOnBeige.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/pinkOnBeige.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapCyanOnBeigeTexture',
-    path: '/assets/experience/matcaps/cyanOnBeige.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/cyanOnBeige.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapWhiteOnPurpleTexture',
-    path: '/assets/experience/matcaps/whiteOnPurple.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/whiteOnPurple.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapDarkGreyOnWhiteTexture',
-    path: '/assets/experience/matcaps/darkGreyOnWhite.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/darkGreyOnWhite.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapOrangeOnDarkGreyTexture',
-    path: '/assets/experience/matcaps/orangeOnDarkGrey.jpeg',
+    path:
+      'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/orangeOnDarkGrey.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapDarkGreyOnDarkGreyTexture',
-    path: '/assets/experience/matcaps/darkGreyOnDarkGrey.jpeg',
+    path:
+      'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/darkGreyOnDarkGrey.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapGreenOnPurpleTexture',
-    path: '/assets/experience/matcaps/greenOnPurple.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/greenOnPurple.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapPinkOnPurpleTexture',
-    path: '/assets/experience/matcaps/pinkOnPurple.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/pinkOnPurple.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapRedOnPurpleTexture',
-    path: '/assets/experience/matcaps/redOnPurple.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/redOnPurple.jpeg',
     type: 'texture'
   },
   {
     name: 'matcapYellowOnPurpleTexture',
-    path: '/assets/experience/matcaps/yellowOnPurple.jpeg',
+    path: 'https://hallway-public.nyc3.cdn.digitaloceanspaces.com/cubes/assets/experience/matcaps/yellowOnPurple.jpeg',
     type: 'texture'
   }
 ]
