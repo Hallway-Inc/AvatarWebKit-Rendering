@@ -5,8 +5,13 @@ export default [
     type: 'gltfModel'
   },
   {
-    name: 'typingAnimation',
-    path: '/models/rpm/typingFull.glb',
-    type: 'gltfModel'
+    name: 'angry',
+    path: 'https://dmt.kadziolka.net/rpm/public/assets/animations/Angry.fbx',
+    type: 'fbxModel'
+  },
+  {
+    name: 'angry2',
+    path: '/models/rpm/Taunt.fbx',
+    type: 'fbxModel'
   }
 ]

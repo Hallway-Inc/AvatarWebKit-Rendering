@@ -1,4 +1,6 @@
 import { CubeTextureLoader, TextureLoader } from 'three'
+
+import { FBXLoader } from 'three/examples/jsm/loaders/FBXLoader.js'
 import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module'
@@ -7,6 +9,7 @@ import EventEmitter from './EventEmitter.js'
 
 export type ResourceLoaders = {
   gltfLoader: GLTFLoader
+  fbxLoader: FBXLoader
   dracoLoader: DRACOLoader
   textureLoader: TextureLoader
   cubeTextureLoader: CubeTextureLoader
@@ -32,6 +35,7 @@ export default class Resources extends EventEmitter {
   setLoaders() {
     this.loaders = {
       gltfLoader: new GLTFLoader(),
+      fbxLoader: new FBXLoader(),
       dracoLoader: new DRACOLoader(),
       textureLoader: new TextureLoader(),
       cubeTextureLoader: new CubeTextureLoader()
@@ -54,6 +58,10 @@ export default class Resources extends EventEmitter {
         })
       } else if (source.type === 'cubeTexture') {
         this.loaders.cubeTextureLoader.load(source.path, file => {
+          this.sourceLoaded(source, file)
+        })
+      } else if (source.type === 'fbxModel') {
+        this.loaders.fbxLoader.load(source.path, file => {
           this.sourceLoaded(source, file)
         })
       }
