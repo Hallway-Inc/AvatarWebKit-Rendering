@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { AmbientLight, MeshBasicMaterial } from 'three'
+import { CameraView } from '../../Camera'
 
 import ReadyPlayerMeModelV2 from '../models/readyPlayerMeV2'
 
@@ -25,6 +26,19 @@ export class Level1 extends World {
   cubeModel: CubeModel
   pyramidModel: PyramidModel
   rpmModel: ReadyPlayerMeModelV2
+
+  readonly views: { [key in 'isometric' | 'portrait']: CameraView } = {
+    isometric: {
+      position: { x: 4, y: 1.5, z: 4 },
+      target: { x: -0.5, y: 1, z: -0.5 },
+      zoom: 1
+    },
+    portrait: {
+      position: { x: 0.15, y: 1.1, z: 0.25 },
+      target: { x: 0.15, y: 0.8, z: -1 },
+      zoom: 1
+    }
+  }
 
   constructor() {
     super()
@@ -55,10 +69,30 @@ export class Level1 extends World {
         this.rpmModel = new ReadyPlayerMeModelV2()
         this.rpmModel.sitLevel1()
       }
+
+      this.experience.camera.setView(this.views.isometric)
+      // Debug
+      if (this.experience.debug.active) {
+        const cameraDebugObject = {
+          isometric: () => this.experience.camera.setView(this.views.isometric, true),
+          portrait: () => this.experience.camera.setView(this.views.portrait, true)
+        }
+        const cameraFolder = this.experience.debug.ui.addFolder('camera')
+        cameraFolder.add(cameraDebugObject, 'isometric')
+        cameraFolder.add(cameraDebugObject, 'portrait')
+      }
     })
   }
 
   update() {
-    // if (this.fox) this.fox.update()
+    if (this.stream) {
+      this.predictor.update(({ rotation, transform, blendShapes }) => {
+        if (this.rpmModel) {
+          this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+          this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
+          this.rpmModel.updateBlendShapes(blendShapes)
+        }
+      })
+    }
   }
 }
