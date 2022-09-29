@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { AmbientLight, MeshBasicMaterial } from 'three'
+
 import { CameraView } from '../../Camera'
 
 import ReadyPlayerMeModelV2 from '../models/readyPlayerMeV2'
