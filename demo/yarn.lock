@@ -1648,9 +1648,14 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@quarkworks-inc/avatar-webkit-rendering@link:..":
-  version "0.0.0"
-  uid ""
+"@quarkworks-inc/avatar-webkit-rendering@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@quarkworks-inc/avatar-webkit-rendering/-/avatar-webkit-rendering-1.0.1.tgz#c5bebf3a0156cf6fe92e46caa7a07c203c6a70e3"
+  integrity sha512-DzgZsbq7Ebm4wYG68W0CUK9LzEz8eXob1hYfM5R9nMPVhBOdlIvFCZUw3tWGr4yKbPWATpb8+bwwAhQwl/0Qfw==
+  dependencies:
+    "@quarkworks-inc/avatar-webkit" "0.11.0-worker.7"
+    camera-controls "^1.36.2"
+    three "^0.138.3"
 
 "@quarkworks-inc/avatar-webkit@0.11.0-worker.7":
   version "0.11.0-worker.7"
@@ -6329,6 +6334,11 @@ libphonenumber-js@^1.9.43:
   version "1.10.13"
   resolved "https://registry.yarnpkg.com/libphonenumber-js/-/libphonenumber-js-1.10.13.tgz#0b5833c7fdbf671140530d83531c6753f7e0ea3c"
   integrity sha512-b74iyWmwb4GprAUPjPkJ11GTC7KX4Pd3onpJfKxYyY8y9Rbb4ERY47LvCMEDM09WD3thiLDMXtkfDK/AX+zT7Q==
+
+lil-gui@^0.17.0:
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/lil-gui/-/lil-gui-0.17.0.tgz#b41ae55d0023fcd9185f7395a218db0f58189663"
+  integrity sha512-MVBHmgY+uEbmJNApAaPbtvNh1RCAeMnKym82SBjtp5rODTYKWtM+MXHCifLe2H2Ti1HuBGBtK/5SyG4ShQ3pUQ==
 
 lilconfig@^2.0.3, lilconfig@^2.0.5, lilconfig@^2.0.6:
   version "2.0.6"
