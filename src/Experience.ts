@@ -33,11 +33,16 @@ import { Journey } from './world/journey.js'
 import { HallwayStreamWorld } from './world/HallwayStreamRoom/hallwayStreamWorld'
 import hallwayStreamWorldSources from './world/HallwayStreamRoom/sources'
 
+export type ExperienceConfig = {
+  maxPixelRatio: number
+}
+
 export type ExperienceProps = {
   _canvas: HTMLCanvasElement
   name: string
   modelType: string
   modelUrl: string
+  config: ExperienceConfig
 }
 
 export class Experience {
@@ -52,7 +57,7 @@ export class Experience {
   renderer: Renderer
   world: World
 
-  constructor({ _canvas, name, modelType, modelUrl }: ExperienceProps) {
+  constructor({ _canvas, name, modelType, modelUrl, config }: ExperienceProps) {
     // Singleton
     if (Experience.instance) {
       return Experience.instance
@@ -67,7 +72,7 @@ export class Experience {
 
     // Setup
     this.debug = new Debug()
-    this.sizes = new Sizes()
+    this.sizes = new Sizes(config)
     this.time = new Time()
     this.scene = new THREE.Scene()
     this.camera = new Camera()
