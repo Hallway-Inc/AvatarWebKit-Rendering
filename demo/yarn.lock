@@ -1655,10 +1655,10 @@
   resolved "https://registry.yarnpkg.com/@protobufjs/utf8/-/utf8-1.1.0.tgz#a777360b5b39a1a2e5106f8e858f2fd2d060c570"
   integrity sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==
 
-"@quarkworks-inc/avatar-webkit-rendering@^1.0.3":
-  version "1.0.3"
-  resolved "https://registry.yarnpkg.com/@quarkworks-inc/avatar-webkit-rendering/-/avatar-webkit-rendering-1.0.3.tgz#e030fd44fb38ac46d865b702a293ca5fc0db1bec"
-  integrity sha512-0Q/Wl624o80CvSj3WaPQwbqrCkx1NY82W1RrL73Jk9tbhW5PEifOps/n1pvwat9PgIeWLH2UdIyqbEXvYSZv0A==
+"@quarkworks-inc/avatar-webkit-rendering@^1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@quarkworks-inc/avatar-webkit-rendering/-/avatar-webkit-rendering-1.0.4.tgz#513cbfd8a92c8fbc9794d3d7f619b25da040ccb9"
+  integrity sha512-G/u28ffjxrxc+X+28JrToP114q+XYtuCufH3kY8lkZURr0UpvBTCv9kuGGgtnAstyI9NwN0WIbSVKIbif+pEjA==
   dependencies:
     "@quarkworks-inc/avatar-webkit" "0.11.0-worker.7"
     camera-controls "^1.36.2"
