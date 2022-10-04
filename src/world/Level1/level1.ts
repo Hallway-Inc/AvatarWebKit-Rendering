@@ -1,3 +1,4 @@
+import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import * as THREE from 'three'
 import { AmbientLight, MeshBasicMaterial } from 'three'
 
@@ -83,6 +84,20 @@ export class Level1 extends World {
         cameraFolder.add(cameraDebugObject, 'portrait')
       }
     })
+  }
+
+  manualAvatarPrediction({ rotation, transform, blendShapes }: AvatarPrediction) {
+    if (blendShapes) {
+      this.rpmModel.updateBlendShapes(blendShapes)
+    }
+
+    if (transform) {
+      this.rpmModel.updateHeadPosition(transform.x, transform.y, transform.z)
+    }
+
+    if (rotation) {
+      this.rpmModel.updateHeadRotation(rotation.pitch, rotation.yaw, rotation.roll)
+    }
   }
 
   update() {

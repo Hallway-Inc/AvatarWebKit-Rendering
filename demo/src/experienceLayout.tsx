@@ -33,7 +33,8 @@ const ExperienceLayout = () => {
     })
 
     setExperience(experience)
-
+    // @ts-expect-error needed for macosapp
+    window.experience = experience
     // Cleanup
     return () => experience.destroy()
   }, [sceneCanvasRef])

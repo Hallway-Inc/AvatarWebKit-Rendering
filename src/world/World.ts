@@ -1,6 +1,6 @@
 import type { Controller, GUI } from 'lil-gui'
 
-import { AUWorkerManager } from '@quarkworks-inc/avatar-webkit'
+import { AUWorkerManager, AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 import { Scene } from 'three'
 
 import { Experience } from '../Experience.js'
@@ -52,6 +52,10 @@ export class World {
   }
 
   update() {
+    // implement in subclass
+  }
+
+  manualAvatarPrediction(_: AvatarPrediction) {
     // implement in subclass
   }
 

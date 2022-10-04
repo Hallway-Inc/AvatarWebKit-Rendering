@@ -1,4 +1,5 @@
 import * as THREE from 'three'
+import { AvatarPrediction } from '@quarkworks-inc/avatar-webkit'
 
 import Debug from './utils/Debug.js'
 import Sizes from './utils/Sizes.js'
@@ -138,6 +139,11 @@ export class Experience {
     this.camera.update()
     this.world.update()
     this.renderer.update()
+  }
+
+  manualAvatarPrediction(prediction: AvatarPrediction) {
+    const streamRoom = this.world as Level1
+    streamRoom.manualAvatarPrediction(prediction)
   }
 
   destroy() {
